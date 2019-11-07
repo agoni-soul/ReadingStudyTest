@@ -135,8 +135,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             case R.id.dic_button:{
                 textView.setText("第一个Fragment");
                 Toast.makeText(getActivity(), "主页", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
             }
             break;
             case R.id.android:
