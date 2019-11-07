@@ -1,0 +1,247 @@
+<resources>
+    <!--<string name="app_name">ReadingStudyTest</string>-->
+    <!--<string name="title_home">Home</string>-->
+    <string name="app_name">Reading</string>
+    <string name="title_home">首页</string>
+
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+
+    <string name="title_wxarticle">公众号</string>
+    <string name="title_gank">干货</string>
+    <string name="title_todo">TODO</string>
+    <string name="title_done">DONE</string>
+    <string name="title_translate">工作台</string>
+    <string name="title_person">我的</string>
+
+    <string name="home_active">动弹</string>
+    <string name="home_blog">博客</string>
+    <string name="home_post">帖子</string>
+    <string name="home_fab_up">返回顶部</string>
+    <string name="home_fab_refresh">刷新</string>
+    <string name="home_fab_write">分享</string>
+
+    <string name="search_hint">请输入干货关键字</string>
+
+    <string name="home_search_hot">热门搜索</string>
+    <string name="home_search_hot_more">查看更多</string>
+    <string name="home_search_hot_history">搜索历史</string>
+
+    <string name="drawer_collect">我的收藏</string>
+    <string name="drawer_note">单词本</string>
+    <string name="drawer_pwd">账号本子</string>
+    <string name="drawer_about">关于Reading</string>
+    <string name="drawer_exit">退出</string>
+    <string name="drawer_select_header">请选择图片</string>
+
+    <string name="about_version">版本号</string>
+    <string name="about_use">Reading用途</string>
+    <string name="about_license">License</string>
+    <string name="about_follow">关注我</string>
+    <string name="about_close">关闭</string>
+    <string name="about_rate">评分</string>
+    <string name="about_license_content">Copyright 2018 Hankkin \n </string>
+    <string name="about_use_content">Reading是一款基于WanAndroid OpenApi开发的阅读类工具，如果你是一个热衷于Android开发者，那么这款软件能帮助你阅读精品Android文章。
+    同时Reading中还包含"英文单词"、"账号本子"、"天气"、"查单词"、"快递查询"等小工具。项目基于"Kotlin+MVP"架构开发，风格大概也许属于Material Desgin原质化风格，包含主题颜色切换、百变Logo、
+        等功能。在此感谢WanAndroid的OpenApi,以及其它开源项目的贡献。</string>
+
+    <string name="article_detail_share">分享</string>
+    <string name="article_detail_open">浏览器打开</string>
+
+    <string name="translate_search_hint">在此输入单词或句子</string>
+    <string name="translate_delete_hint">是否删除查询历史?</string>
+    <string name="translate_look_more">查看更多释义...</string>
+
+    <string name="word_every">每日推荐</string>
+    <string name="word_next">下一个</string>
+    <string name="word_no_data">暂无单词推荐，快去添加单词本吧</string>
+    <string name="word_go">快去吧^_^</string>
+
+    <string name="format_weather">%1$s  %2$s℃</string>
+
+    <string name="word_note_title">我的单词本</string>
+    <string name="word_note_detail">去看看</string>
+    <string name="word_note_remove">移除单词本</string>
+    <string name="word_note_emphasis">标记为重点</string>
+    <string name="word_note_remove_success">成功移除单词\t</string>
+    <string name="word_note_add_emphasis">已标记为重点\t</string>
+
+    <string name="account_title">账号本子</string>
+    <string name="account_no_data_hint">还没账号，快去新建吧!</string>
+    <string name="account_add_title">新建账号</string>
+    <string name="account_cate_socail">社交</string>
+    <string name="account_cate_bank">银行</string>
+    <string name="account_cate_code">技术</string>
+    <string name="account_cate_email">邮箱</string>
+    <string name="account_cate_work">工作</string>
+    <string name="account_cate_other">其他</string>
+    <string name="account_add_name_hint">请选择应用</string>
+    <string name="account_add_name_input_hint">请选择应用</string>
+    <string name="account_add_number_hint">账号/ID/邮箱/手机号</string>
+    <string name="account_add_number_input_hint">请输入账号</string>
+    <string name="account_add_password_hint">密码</string>
+    <string name="account_add_bz">备注</string>
+    <string name="account_add_password_input_hint">请输入密码</string>
+    <string name="account_add_cate_hint">选择分类</string>
+    <string name="account_add_cate_select_hint">请选择分类</string>
+    <string name="account_add_success">已保存账户</string>
+    <string name="account_detail">账号详情</string>
+    <string name="account_look">查看</string>
+    <string name="account_edit">编辑</string>
+    <string name="account_delete">删除</string>
+    <string name="account_detail_name">标题</string>
+    <string name="account_detail_number">账号</string>
+    <string name="account_detail_pwd">密码</string>
+    <string name="account_detail_cate">分类</string>
+    <string name="account_detail_delete_hint">是否删除该帐号？</string>
+    <string name="account_detail_delete_success_hint">已删除</string>
+    <string name="account_detail_complete_success_hint">已完成该条TODO</string>
+    <string name="account_add_select_app_search">搜索已安装的应用</string>
+
+    <string name="person_title">我的</string>
+    <string name="person_no_login">未登录</string>
+    <string name="person_authorize_login">授权登录</string>
+
+    <string name="login_name">用户名</string>
+    <string name="login_pwd">密码</string>
+    <string name="login_pwd_repeat">重复密码</string>
+    <string name="login_code">验证码</string>
+    <string name="login_login">登 录</string>
+    <string name="login_register">注 册</string>
+    <string name="login_no_register">还没有帐号？</string>
+    <string name="login_registered">已有帐号？</string>
+    <string name="login_forget">忘记密码</string>
+    <string name="login_email">邮箱地址</string>
+    <string name="reg_suc_toast">注册成功...为了保证可持续化登录，需要您再次登录O(∩_∩)O~</string>
+
+    <string name="loading_wait">加载中...</string>
+
+    <string name="person_star">我的关注</string>
+    <string name="person_follow">我收藏的</string>
+    <string name="person_active">动态列表</string>
+    <string name="person_look">阅读的文章</string>
+    <string name="person_comment">评论</string>
+    <string name="person_msg">私信</string>
+    <string name="person_at">\@</string>
+    <string name="person_fans">粉丝</string>
+    <string name="person_theme">主题风格</string>
+    <string name="person_new">NEW</string>
+    <string name="person_new_hint">新建事项</string>
+    <string name="person_todo">TODO</string>
+    <string name="person_todo_hint">待办事项</string>
+    <string name="person_done">DONE</string>
+    <string name="person_done_hint">已办事项</string>
+
+    <string name="person_info_title">个人主页</string>
+    <string name="person_info_boy">男</string>
+    <string name="person_info_girl">女</string>
+    <string name="person_info_fans">粉丝数</string>
+    <string name="person_info_favorite">收藏数</string>
+    <string name="person_info_followers">关注数</string>
+    <string name="person_info_city">所在地区</string>
+    <string name="person_info_join_time">加入时间</string>
+    <string name="person_info_last_login_time">最近登录时间</string>
+    <string name="person_info_logout">注销</string>
+    <string name="person_info_logout_hint">请问您是否注销登录？</string>
+
+    <string name="setting">设置</string>
+    <string name="setting_theme">个性换肤</string>
+    <string name="setting_lock">开启账号锁</string>
+    <string name="setting_lock_backup">数据备份</string>
+    <string name="setting_lock_data_backup">数据备份</string>
+    <string name="setting_lock_data_clear">数据清空</string>
+    <string name="setting_lock_data_restore">数据还原</string>
+    <string name="setting_lock_data_restore_hint">检测到您本地有之前的数据文件，请问您是否需要还原该数据？</string>
+    <string name="setting_lock_data_restore_success">数据还原成功</string>
+    <string name="setting_lock_data_restore_fail">数据还原失败</string>
+    <string name="setting_lock_backup_success">数据备份成功</string>
+    <string name="setting_lock_backup_new">数据已经最新...</string>
+    <string name="setting_lock_backup_fail">数据备份失败</string>
+    <string name="setting_logo">百变logo</string>
+    <string name="setting_logo_hint">开启百变logo后，部分机型可能会因此导致代码崩溃，请问您是否确定开启百变Logo？</string>
+    <string name="setting_logo_success">开启百变logo成功</string>
+    <string name="setting_lock_hint">请注意，为了保护您的账号密码安全，建议开启账号锁，账号本子利用本地数据库进行缓存，密码进行加密。同时账号本子备份到您的手机中，请您放心使用。</string>
+    <string name="setting_lock_backup_hint">开启账号备份后，您保存的账号、单词本将会被扫描，方便您清除缓存或者卸载软件后，下次进入Reading可直接使用您的账号本子、单词本功能。</string>
+    <string name="setting_img">默认加载图片</string>
+    <string name="setting_clear_cache">清除缓存</string>
+    <string name="setting_update">检查更新</string>
+    <string name="setting_clear_cache_hint">确定要清除缓存吗？</string>
+    <string name="setting_clear_cache_success">清除完毕</string>
+    <string name="setting_other">其他</string>
+    <string name="setting_common">通用</string>
+    <string name="setting_api">开源第三方</string>
+    <string name="setting_db">数据恢复</string>
+    <string name="setting_db_hint">请到设置界面先开启数据备份，然后可导入本地数据库,是否去开启？</string>
+    <string name="setting_db_delete_hint">数据清空后不可还原，您之前保存的账号信息以及单词本将被清空，是否清空数据？</string>
+    <string name="setting_db_delete_success">清空成功</string>
+    <string name="setting_db_success">导入数据库成功</string>
+
+    <string name="work_kuaidi">查快递</string>
+    <string name="work_pwd_note">账号本子</string>
+    <string name="work_word">查单词</string>
+    <string name="work_movie">看电影</string>
+    <string name="work_music">听音乐</string>
+    <string name="work_sao">扫一扫</string>
+    <string name="work_weather">天气</string>
+    <string name="work_word_note">单词本</string>
+    <string name="work_news">看资讯</string>
+    <string name="work_juejin">掘金</string>
+    <string name="work_about">关于</string>
+
+    <string name="todo_not_login">登录WanAndroid，体验TODO功能</string>
+    <string name="todo_add_title_hint">标题 例如：学习Kotlin</string>
+    <string name="todo_add_content_hint">详情 非必填</string>
+    <string name="todo_add_time_hint">时间</string>
+    <string name="todo_add_cate_hint">分类</string>
+    <string name="todo_add_time_select_hint">请选择时间</string>
+    <string name="todo_add_title">新建TODO</string>
+    <string name="todo_add_success">新建TODO成功</string>
+    <string name="todo_update_success">更新TODO成功</string>
+    <string name="todo_delete">删除</string>
+    <string name="todo_complete">完成</string>
+    <string name="todo_delete_hint">是否删除该条TODO？</string>
+    <string name="todo_update">编辑</string>
+
+    <string name="tools_kuaidi_number">请输入快递单号</string>
+    <string name="tools_kuaidi_company">请选择快递公司</string>
+    <string name="tools_kuaidi_title">查快递</string>
+    <string name="tools_kuaidi_hint">TIPS：本功能使用【快递100】开源API，请勿作为商业使用，如涉及隐私或构成侵权，请联系我修改或删除。\n 再次声明该功能一切数据解释权归【快递100】所有。</string>
+
+    <string name="lock_title">请设置手势密码</string>
+    <string name="double_click_to_top">双击顶部两次可快速返回</string>
+
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+
+
+    <string name="theme_default">默认</string>
+    <string name="theme_yima">姨妈红</string>
+    <string name="theme_kuan">酷安绿</string>
+    <string name="theme_bili">哔哩粉</string>
+    <string name="theme_yidi">颐堤蓝</string>
+    <string name="theme_yiteng">伊藤橙</string>
+    <string name="theme_jilao">基佬紫</string>
+    <string name="theme_anluolan">暗罗兰</string>
+    <string name="theme_xinghong">猩红</string>
+    <string name="theme_shuiya">水鸭青</string>
+    <string name="theme_zhihu">知乎蓝</string>
+    <string name="theme_gutong">古铜棕</string>
+    <string name="theme_didiao">低调灰</string>
+    <string name="theme_gaoduan">高端黑</string>
+    <string name="theme_aping">A屏黑</string>
+    <string name="theme_liangbai">亮白</string>
+
+    <string-array name="select_img_items">
+        <item>拍照</item>
+        <item>相册</item>
+    </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="hi_login">Hi,小猿猿,请登录呦</string>
+    <string name="change_person_theme">您将切换\'我的\'页面主题，下次启动生效，是否重启Reading？</string>
+    <string name="category_sort">分类展示</string>
+    <string name="slide_left">是否仅仅跟踪左侧边缘的滑动</string>
+    <string name="title_activity_login">LoginActivity</string>
+</resources>
