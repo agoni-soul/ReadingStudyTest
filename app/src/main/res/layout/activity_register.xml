@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="登  录"
+        android:text="注  册"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30sp"
@@ -28,17 +29,17 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:foregroundGravity="center"
-            android:src="@mipmap/icon_person"
+            android:src="@mipmap/icon_email"
             />
 
         <EditText
-            android:id="@+id/user"
+            android:id="@+id/email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:maxLines="1"
-            android:hint="用户名"
+            android:hint="邮箱地址"
             />
     </LinearLayout>
 
@@ -57,51 +58,64 @@
             />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/password_first"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:hint="密码"
+            android:hint="输入密码"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center"
+            android:src="@mipmap/icon_pwd"
+            />
+
+        <EditText
+            android:id="@+id/password_second"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:hint="再次输入密码"
             />
     </LinearLayout>
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/register_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/theme_color_primary"
         android:text="登录"
+        android:textSize="25dp"
         android:layout_marginTop="20dp"
         />
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/back_login"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="还没有用户？"
-            android:layout_gravity="center"
-            android:gravity="right"
-            />
-
-        <TextView
-            android:id="@+id/register"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="立即注册"
-            android:textColor="@color/theme_color_primary"
-            android:layout_gravity="center"
-            android:gravity="left"
-            />
-    </LinearLayout>
+        android:layout_marginTop="15dp"
+        android:text="返回"
+        android:textColor="@color/theme_color_primary"
+        android:layout_gravity="center"
+        android:gravity="bottom"
+        android:textSize="20sp"
+        />
 
 </LinearLayout>
