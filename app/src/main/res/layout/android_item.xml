@@ -45,7 +45,7 @@
             android:id="@+id/envelopePic"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src=""
+            android:src="@mipmap/about_github"
             android:visibility="gone"
             />
     </LinearLayout>

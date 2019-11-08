@@ -56,9 +56,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private Fragment[] fragments;
     private int lastfragment;
 
-    private TextView textView;
-    private Button button;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -75,7 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         initView();
         setupViewPager(dic_viewPager);
         initFragment();
-        setOnclick();
+        initListener();
 
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         if(actionBar != null){
@@ -117,26 +114,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
         dic_viewPager = (ViewPager) getActivity().findViewById(R.id.dic_viewpager);
         drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-
-        textView = (TextView) getActivity().findViewById(R.id.dic_textView);
-        button=(Button) getActivity().findViewById(R.id.dic_button);
     }
 
-    private void setOnclick(){
+    private void initListener(){
         android.setOnClickListener(this);
         hot.setOnClickListener(this);
         info.setOnClickListener(this);
-        button.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.dic_button:{
-                textView.setText("第一个Fragment");
-                Toast.makeText(getActivity(), "主页", Toast.LENGTH_SHORT).show();
-            }
-            break;
             case R.id.android:
                 dic_viewPager.setCurrentItem(0);
                 if(lastfragment != 0) {

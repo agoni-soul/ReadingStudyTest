@@ -4,18 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/dic_android_button"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="android">
-    </Button>
+        android:layout_height="match_parent"
+        >
 
-    <TextView
-        android:id="@+id/dic_android_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="android"/>
+        <TextView
+            android:id="@+id/dic_android_content_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text="android"/>
+
+    </ScrollView>
 
 </LinearLayout>
