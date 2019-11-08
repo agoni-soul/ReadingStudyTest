@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -69,8 +70,16 @@ public class HomeFragment_Android extends Fragment implements View.OnClickListen
                             .url(address)
                             .build();
                     Response response = client.newCall(request).execute();
+                    if(!response.isSuccessful()){
+                        throw new IOException("Unexpected code" + response);
+                    }
                     String responseData = response.body().string();
-                    showResponse(responseData);
+                    Headers responseHeaders = response.headers();
+                    for(int i = 0; i < responseHeaders.size(); i ++){
+                        System.out.println(responseHeaders.name(i) + ":" + responseHeaders.value(i));
+                    }
+                    System.out.println(responseData);
+//                    showResponse(responseData);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -80,37 +89,39 @@ public class HomeFragment_Android extends Fragment implements View.OnClickListen
 
     private void showResponse(final String responseData){
         Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //在这里进行UI操作，将结果显示到界面上
-                String author = null;
-                String chapterName = null;
-                String superChapterName = null;
-                String title = null;
-                Boolean collect = null;
-                Integer niceDate = null;
+        String author = null;
+        String chapterName = null;
+        String superChapterName = null;
+        String title = null;
+        Boolean collect = null;
+        Integer niceDate = null;
 
-                try{
-                    JSONArray jsonArray = new JSONArray(responseData);
-                    for(int i = 0; i < Math.min(jsonArray.length(), 5); i ++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        author = jsonObject.getString("author");
-                        niceDate = jsonObject.getInt("niceDate");
-                        chapterName = jsonObject.getString("chapterName");
-                        superChapterName = jsonObject.getString("superChapterName");
-                        title = jsonObject.getString("title");
-                        collect = jsonObject.getBoolean("collect");
-                        Log.d("HomeFragment_Android", "author is " + author);
-                        Log.d("HomeFragment_Android", "chapter is " + chapterName + " / " + superChapterName);
-                        Log.d("HomeFragment_Android", "title is " + title);
-                        Log.d("HomeFragment_Android", "collect is " + collect);
-                        Log.d("HomeFragment_Android", "niceDate is " + niceDate);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        try{
+            JSONArray jsonArray = new JSONArray(responseData);
+            System.out.println(jsonArray);
+            System.out.println(jsonArray.length());
+            for(int i = 0; i < Math.min(jsonArray.length(), 5); i ++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                author = jsonObject.getString("author");
+                niceDate = jsonObject.getInt("niceDate");
+                chapterName = jsonObject.getString("chapterName");
+                superChapterName = jsonObject.getString("superChapterName");
+                title = jsonObject.getString("title");
+                collect = jsonObject.getBoolean("collect");
+                Log.d("HomeFragment_Android", "author is " + author);
+                Log.d("HomeFragment_Android", "chapter is " + chapterName + " / " + superChapterName);
+                Log.d("HomeFragment_Android", "title is " + title);
+                Log.d("HomeFragment_Android", "collect is " + collect);
+                Log.d("HomeFragment_Android", "niceDate is " + niceDate);
             }
-        });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //在这里进行UI操作，将结果显示到界面上
+//            }
+//        });
     }
 }

@@ -4,18 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/dic_hot_button"
+    <LinearLayout
+        android:id="@+id/HomeHot_header"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="hot">
-    </Button>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/theme_color_primary"
+        >
+        <TextView
+            android:id="@+id/interview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/studio3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/animation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/HomeHot_body"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15">
 
-    <TextView
-        android:id="@+id/dic_hot_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="hot"/>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

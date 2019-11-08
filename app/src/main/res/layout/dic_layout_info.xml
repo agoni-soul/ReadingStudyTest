@@ -4,18 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/dic_info_button"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/HomeInfo_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="info">
-    </Button>
-
-    <TextView
-        android:id="@+id/dic_info_textView"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/theme_color_primary"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/HomeInfo_body"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="info"/>
+        android:layout_height="0dp"
+        android:layout_weight="15">
 
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <!--下面这部分报错-->
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab_cate"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:src="@mipmap/fab_confirm"-->
+        <!--android:layout_marginRight="@dimen/dp_16"-->
+        <!--android:layout_marginBottom="@dimen/dp_16"/>-->
 </LinearLayout>
