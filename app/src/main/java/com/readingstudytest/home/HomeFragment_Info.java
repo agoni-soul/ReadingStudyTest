@@ -23,6 +23,7 @@ public class HomeFragment_Info extends Fragment implements View.OnClickListener{
 
     private List<String> InfoHeader = new ArrayList<>();
     private RecyclerView rvInfoHeader;
+    private InfoHeaderAdapter infoHeaderAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,18 +33,28 @@ public class HomeFragment_Info extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        //清空上次的数据，防止rvInfoHeader中出现多份相同的数据。
+        if(InfoHeader.size() > 0){
+            InfoHeader.removeAll(InfoHeader);
+            infoHeaderAdapter.notifyDataSetChanged();
+            rvInfoHeader.setAdapter(infoHeaderAdapter);
+        }
         initInfoHeader();
         initView();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvInfoHeader.setLayoutManager(layoutManager);
-        InfoHeaderAdapter infoHeaderAdapter = new InfoHeaderAdapter(InfoHeader);
-        if(rvInfoHeader.getAdapter() == null){
-            rvInfoHeader.setAdapter(infoHeaderAdapter);
-        }
+        infoHeaderAdapter = new InfoHeaderAdapter(InfoHeader);
+        rvInfoHeader.setAdapter(infoHeaderAdapter);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

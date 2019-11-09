@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         homeFragment_hot = new HomeFragment_Hot();
         homeFragment_info = new HomeFragment_Info();
         fragments = new Fragment[]{homeFragment_android, homeFragment_hot, homeFragment_info};
-        lastfragment = 0;
+        lastfragment = 1;
         FragmentManager childFragmentManager = getChildFragmentManager();
 
         childFragmentManager.beginTransaction()

@@ -19,6 +19,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textColor="#FFFFFF"
             />
         <TextView
             android:id="@+id/studio3"
@@ -27,6 +28,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textColor="#FFFFFF"
             />
         <TextView
             android:id="@+id/animation"
@@ -35,6 +37,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textColor="#FFFFFF"
             />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView

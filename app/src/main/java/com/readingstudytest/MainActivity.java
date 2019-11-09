@@ -138,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
         gankFragment = new ArticleFragment();
         todoFragment = new TencentFragment();
         personFragment = new PersonFragment();
-        fragments = new Fragment[]{gankFragment, dicFragment, todoFragment, personFragment};
-        lastfragment = 0;
+        fragments = new Fragment[]{dicFragment, gankFragment, todoFragment, personFragment};
+        lastfragment = 1;
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.viewpager, gankFragment)
                 .show(gankFragment)

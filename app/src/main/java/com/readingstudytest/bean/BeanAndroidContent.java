@@ -1,6 +1,6 @@
-package com.readingstudytest.item_content;
+package com.readingstudytest.bean;
 
-public class android_item_content {
+public class BeanAndroidContent {
     private String apkLink;
     private int audit;
     private String author;

@@ -15,6 +15,8 @@ import com.readingstudytest.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private final static String login_address = "http://www.wanandroid.com/user/login";
+
     private EditText user;
     private EditText password;
     private Button login;
@@ -47,6 +49,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login_button:
                 String user_text = user.getText().toString();
                 String psw_text = password.getText().toString();
+                String postData = "username=" + user_text + "&" + "password=" + psw_text;
+                System.out.println(postData);
+
+//                SendPostUtil.sendRequestHttp(login_address, "GET", null, new HttpCallBackListener() {
+//                    @Override
+//                    public void onFinish(String response) {
+//                        //在这里根据返回内容执行具体的逻辑
+//                    }
+//
+//                    @Override
+//                    public void onError(Exception e) {
+//                        //在这里对异常清空进行处理
+//                    }
+//                });
+
                 if(user_text.equals("123456") && psw_text.equals("123456")){
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);

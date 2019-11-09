@@ -43,10 +43,15 @@ public class HomeFragment_Android extends Fragment implements View.OnClickListen
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        initView();
+        sendRequestWithOkHttp(address, "GET");
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
-        sendRequestWithOkHttp(address);
     }
 
     private void initView(){
@@ -57,6 +62,47 @@ public class HomeFragment_Android extends Fragment implements View.OnClickListen
     public void onClick(View view){
         switch (view.getId()){
         }
+    }
+
+    private void sendRequestWithOkHttp(final String address, final String requestMethod){
+        //开启线程来发起网络请求
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection connection = null;
+                BufferedReader reader = null;
+                try{
+                    URL url = new URL(address);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod(requestMethod);
+                    connection.setConnectTimeout(8000);
+                    connection.setReadTimeout(8000);
+                    InputStream in = connection.getInputStream();
+
+                    //下面对获取到的输入流进行读取
+                    reader = new BufferedReader(new InputStreamReader(in));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null){
+                        response.append(line);
+                    };
+                    showResponse(response.toString());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    if(reader != null){
+                        try{
+                            reader.close();
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    if(connection != null){
+                        connection.disconnect();
+                    }
+                }
+            }
+        }).start();
     }
 
     private void sendRequestWithOkHttp(final String address){
@@ -88,40 +134,41 @@ public class HomeFragment_Android extends Fragment implements View.OnClickListen
     }
 
     private void showResponse(final String responseData){
-        Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
-        String author = null;
-        String chapterName = null;
-        String superChapterName = null;
-        String title = null;
-        Boolean collect = null;
-        Integer niceDate = null;
-
-        try{
-            JSONArray jsonArray = new JSONArray(responseData);
-            System.out.println(jsonArray);
-            System.out.println(jsonArray.length());
-            for(int i = 0; i < Math.min(jsonArray.length(), 5); i ++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                author = jsonObject.getString("author");
-                niceDate = jsonObject.getInt("niceDate");
-                chapterName = jsonObject.getString("chapterName");
-                superChapterName = jsonObject.getString("superChapterName");
-                title = jsonObject.getString("title");
-                collect = jsonObject.getBoolean("collect");
-                Log.d("HomeFragment_Android", "author is " + author);
-                Log.d("HomeFragment_Android", "chapter is " + chapterName + " / " + superChapterName);
-                Log.d("HomeFragment_Android", "title is " + title);
-                Log.d("HomeFragment_Android", "collect is " + collect);
-                Log.d("HomeFragment_Android", "niceDate is " + niceDate);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                //在这里进行UI操作，将结果显示到界面上
+//        Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
+//        String author = null;
+//        String chapterName = null;
+//        String superChapterName = null;
+//        String title = null;
+//        Boolean collect = null;
+//        Integer niceDate = null;
+//
+//        try{
+//            JSONArray jsonArray = new JSONArray(responseData);
+//            System.out.println(jsonArray);
+//            System.out.println(jsonArray.length());
+//            for(int i = 0; i < Math.min(jsonArray.length(), 5); i ++){
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                author = jsonObject.getString("author");
+//                niceDate = jsonObject.getInt("niceDate");
+//                chapterName = jsonObject.getString("chapterName");
+//                superChapterName = jsonObject.getString("superChapterName");
+//                title = jsonObject.getString("title");
+//                collect = jsonObject.getBoolean("collect");
+//                Log.d("HomeFragment_Android", "author is " + author);
+//                Log.d("HomeFragment_Android", "chapter is " + chapterName + " / " + superChapterName);
+//                Log.d("HomeFragment_Android", "title is " + title);
+//                Log.d("HomeFragment_Android", "collect is " + collect);
+//                Log.d("HomeFragment_Android", "niceDate is " + niceDate);
 //            }
-//        });
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                dic_android_content_item.setText(responseData);
+            }
+        });
     }
 }

@@ -13,5 +13,6 @@
         android:gravity="center"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
+        android:textColor="#FFFFFF"
         />
 </LinearLayout>
