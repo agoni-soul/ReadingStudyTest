@@ -2,7 +2,6 @@ package com.readingstudytest;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,11 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -28,10 +24,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.readingstudytest.adapter.MyPagerAdapter;
-import com.readingstudytest.home.HomeFragment_Android;
-import com.readingstudytest.home.HomeFragment_Hot;
-import com.readingstudytest.home.HomeFragment_Info;
-import com.readingstudytest.login.LoginActivity;
+import com.readingstudytest.home.AndroidFragment;
+import com.readingstudytest.home.HotFragment;
+import com.readingstudytest.home.InfoFragment;
 
 import java.util.ArrayList;
 
@@ -50,9 +45,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private MyPagerAdapter mAdapter;
 
     //fragment
-    private HomeFragment_Android homeFragment_android;
-    private HomeFragment_Hot homeFragment_hot;
-    private HomeFragment_Info homeFragment_info;
+    private AndroidFragment androidFragment;
+    private HotFragment hotFragment;
+    private InfoFragment infoFragment;
     private Fragment[] fragments;
     private int lastfragment;
 
@@ -181,16 +176,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     //加载home中的子fragment替换
     private void initFragment()
     {
-        homeFragment_android = new HomeFragment_Android();
-        homeFragment_hot = new HomeFragment_Hot();
-        homeFragment_info = new HomeFragment_Info();
-        fragments = new Fragment[]{homeFragment_android, homeFragment_hot, homeFragment_info};
+        androidFragment = new AndroidFragment();
+        hotFragment = new HotFragment();
+        infoFragment = new InfoFragment();
+        fragments = new Fragment[]{androidFragment, hotFragment, infoFragment};
         lastfragment = 1;
         FragmentManager childFragmentManager = getChildFragmentManager();
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.dic_viewpager, homeFragment_android)
-                .show(homeFragment_android)
+                .replace(R.id.dic_viewpager, androidFragment)
+                .show(androidFragment)
                 .commitAllowingStateLoss();
     }
 

@@ -17,8 +17,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private Button register;
     private EditText email;
-    private EditText psw_First;
-    private EditText psw_Second;
+    private EditText password;
+    private EditText repassword;
     private TextView back;
 
     @Override
@@ -32,8 +32,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void initView(){
         email = (EditText) findViewById(R.id.email);
-        psw_First = (EditText) findViewById(R.id.password_first);
-        psw_Second = (EditText) findViewById(R.id.password_second);
+        password = (EditText) findViewById(R.id.password_first);
+        repassword = (EditText) findViewById(R.id.password_second);
         register = (Button) findViewById(R.id.register_button);
         back = (TextView) findViewById(R.id.back_login);
     }
@@ -45,20 +45,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view){
+        LoginRegisterIsSuccessfulInformation loginRegisterIsSuccessfulInformation;
         Intent intent;
         switch (view.getId()){
             case R.id.register_button:
-                String passwordFirst = psw_First.getText().toString();
-                String passwordSecond = psw_Second.getText().toString();
-                if(!passwordFirst.equals(passwordSecond)){
+                String passwordText = password.getText().toString();
+                String repasswordText = repassword.getText().toString();
+                if(!passwordText.equals(repasswordText)){
                     Toast.makeText(this, "两次输入不一致", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 String userName = email.getText().toString();
-                intent = new Intent(RegisterActivity.this, MainActivity.class);
-                intent.putExtra("username", userName);
-                startActivity(intent);
-                finish();
+
+                loginRegisterIsSuccessfulInformation =
+                        new LoginRegisterIsSuccessfulInformation(passwordText, repasswordText, this);
+                loginRegisterIsSuccessfulInformation.getRequestReturnInformation();
                 break;
             case R.id.back_login:
                 intent = new Intent(RegisterActivity.this, LoginActivity.class);

@@ -23,7 +23,7 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-public class HomeFragment_Hot extends Fragment implements View.OnClickListener{
+public class HotFragment extends Fragment implements View.OnClickListener{
     private List<String> HotHeader = new ArrayList<>();
     private LinearLayout llHotHeader;
     private TextView interview;

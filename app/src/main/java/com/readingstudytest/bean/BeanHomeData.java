@@ -1,6 +1,6 @@
 package com.readingstudytest.bean;
 
-public class BeanAndroidContent {
+public class BeanHomeData {
     private String apkLink;
     private int audit;
     private String author;

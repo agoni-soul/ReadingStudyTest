@@ -2,20 +2,31 @@ package com.readingstudytest.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
+import com.readingstudytest.Util.Retrofit;
+import com.readingstudytest.bean.BeanBase;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
-
-    private final static String login_address = "http://www.wanandroid.com/user/login";
 
     private EditText user;
     private EditText password;
@@ -36,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user = (EditText) findViewById(R.id.user);
         password = (EditText) findViewById(R.id.password);
         register = (TextView) findViewById(R.id.register);
+        password.setText("");
+        register.setText("");
     }
 
     private void initListener(){
@@ -45,33 +58,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view){
+        LoginRegisterIsSuccessfulInformation loginRegisterIsSuccessfulInformation;
         switch (view.getId()){
             case R.id.login_button:
-                String user_text = user.getText().toString();
-                String psw_text = password.getText().toString();
-                String postData = "username=" + user_text + "&" + "password=" + psw_text;
-                System.out.println(postData);
+                final String userContent = user.getText().toString();
+                final String passwordContent = password.getText().toString();
 
-//                SendPostUtil.sendRequestHttp(login_address, "GET", null, new HttpCallBackListener() {
-//                    @Override
-//                    public void onFinish(String response) {
-//                        //在这里根据返回内容执行具体的逻辑
-//                    }
-//
-//                    @Override
-//                    public void onError(Exception e) {
-//                        //在这里对异常清空进行处理
-//                    }
-//                });
+                loginRegisterIsSuccessfulInformation =
+                        new LoginRegisterIsSuccessfulInformation(userContent, passwordContent, this);
 
-                if(user_text.equals("123456") && psw_text.equals("123456")){
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(LoginActivity.this, "用户名或密码输入错误！！！", Toast.LENGTH_SHORT).show();
-                    password.setText("");
-                }
+                loginRegisterIsSuccessfulInformation.getRequestReturnInformation();
                 break;
             case R.id.register:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

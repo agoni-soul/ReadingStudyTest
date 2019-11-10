@@ -19,7 +19,7 @@ import com.readingstudytest.adapter.InfoHeaderAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment_Info extends Fragment implements View.OnClickListener{
+public class InfoFragment extends Fragment implements View.OnClickListener{
 
     private List<String> InfoHeader = new ArrayList<>();
     private RecyclerView rvInfoHeader;

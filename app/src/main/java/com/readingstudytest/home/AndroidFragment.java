@@ -30,7 +30,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class HomeFragment_Android extends Fragment implements View.OnClickListener{
+public class AndroidFragment extends Fragment implements View.OnClickListener{
 
     private TextView dic_android_content_item;
     private final static String address = "https://www.wanandroid.com/article/list/0/json";
