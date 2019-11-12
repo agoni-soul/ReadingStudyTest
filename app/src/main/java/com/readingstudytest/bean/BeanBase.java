@@ -1,28 +1,16 @@
 package com.readingstudytest.bean;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+public class BeanBase<T> {
+    T data;
+    int errorCode;
+    String errorMsg;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-public class BeanBase {
-    private ArrayList data;
-    private int errorCode;
-    private String errorMsg;
-
-    public List getData(){
+    public T getData(){
         return data;
     }
 
-    public void setData(List data){
-        this.data = new ArrayList(data.size());
-        for(int i = 0; i < data.size(); i ++){
-            this.data.add(data.get(i));
-        }
+    public void setData(T data){
+        this.data = data;
     }
 
     public int getErrorCode(){
@@ -40,6 +28,4 @@ public class BeanBase {
     public void setErrorMsg(String errorMsg){
         this.errorMsg = errorMsg;
     }
-
-
 }

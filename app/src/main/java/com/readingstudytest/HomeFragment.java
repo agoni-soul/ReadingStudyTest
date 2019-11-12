@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.dic_layout, container, false);
+        View view = inflater.inflate(R.layout.home_fragment, container, false);
         setHasOptionsMenu(true);
         return view;
     }
@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         LayoutInflater inflator = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.dic_layout, null);
+        View v = inflator.inflate(R.layout.home_fragment, null);
         android.app.ActionBar actionBar = getActivity().getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
@@ -165,9 +165,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private void setupViewPager(ViewPager viewPager) {
         dic_ArrayList = new ArrayList<View>();
         LayoutInflater li = getLayoutInflater();
-        dic_ArrayList.add(li.inflate(R.layout.dic_layout_android,null,false));
-        dic_ArrayList.add(li.inflate(R.layout.dic_layout_hot,null,false));
-        dic_ArrayList.add(li.inflate(R.layout.dic_layout_info,null,false));
+        dic_ArrayList.add(li.inflate(R.layout.home_fragment_android,null,false));
+        dic_ArrayList.add(li.inflate(R.layout.home_fragment_hot,null,false));
+        dic_ArrayList.add(li.inflate(R.layout.home_fragment_info,null,false));
         mAdapter = new MyPagerAdapter(dic_ArrayList);
         viewPager.setAdapter(mAdapter);
         viewPager.setCurrentItem(0);
@@ -180,7 +180,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         hotFragment = new HotFragment();
         infoFragment = new InfoFragment();
         fragments = new Fragment[]{androidFragment, hotFragment, infoFragment};
-        lastfragment = 1;
+        lastfragment = 0;
         FragmentManager childFragmentManager = getChildFragmentManager();
 
         childFragmentManager.beginTransaction()

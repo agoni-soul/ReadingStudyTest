@@ -124,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         aList = new ArrayList<View>();
         LayoutInflater li = getLayoutInflater();
-        aList.add(li.inflate(R.layout.dic_layout,null,false));
+        aList.add(li.inflate(R.layout.home_fragment,null,false));
         aList.add(li.inflate(R.layout.gank_layout,null,false));
         aList.add(li.inflate(R.layout.todo_layout,null,false));
-        aList.add(li.inflate(R.layout.tran_layout,null,false));
+        aList.add(li.inflate(R.layout.mine_fragment,null,false));
         mAdapter = new MyPagerAdapter(aList);
         viewPager.setAdapter(mAdapter);
     }

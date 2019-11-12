@@ -2,29 +2,14 @@ package com.readingstudytest.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.readingstudytest.IInterface.GetRequestInterface;
-import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
-import com.readingstudytest.Util.Retrofit;
-import com.readingstudytest.bean.BeanBase;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -47,8 +32,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user = (EditText) findViewById(R.id.user);
         password = (EditText) findViewById(R.id.password);
         register = (TextView) findViewById(R.id.register);
+        user.setText("");
         password.setText("");
-        register.setText("");
     }
 
     private void initListener(){
@@ -76,7 +61,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
                 default:
                     break;
-
         }
     }
 }

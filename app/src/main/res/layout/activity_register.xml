@@ -39,6 +39,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:maxLines="1"
+            android:singleLine="true"
             android:hint="邮箱地址"
             />
     </LinearLayout>
@@ -65,6 +66,7 @@
             android:layout_gravity="center_vertical"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:singleLine="true"
             android:hint="输入密码"
             />
     </LinearLayout>
@@ -91,6 +93,7 @@
             android:layout_gravity="center_vertical"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:singleLine="true"
             android:hint="再次输入密码"
             />
     </LinearLayout>

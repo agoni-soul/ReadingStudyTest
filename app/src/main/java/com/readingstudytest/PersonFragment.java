@@ -19,9 +19,7 @@ public class PersonFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.tran_layout, container, false);
-        TextView txt_content = (TextView) view.findViewById(R.id.tran_textView);
-        txt_content.setText("第四个Fragment");
+        View view = inflater.inflate(R.layout.mine_fragment, container, false);
         return view;
     }
 
@@ -29,14 +27,14 @@ public class PersonFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Button button=(Button)getActivity().findViewById(R.id.tran_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "我的", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+//        Button login =(Button) getActivity().findViewById(R.id.jump_login);
+//        login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getActivity(), "我的", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(getActivity(), LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 }

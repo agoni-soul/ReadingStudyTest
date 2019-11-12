@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.readingstudytest.IInterface.GetRequestInterface;
+import com.readingstudytest.IInterface.IGetRequestInterface;
 import com.readingstudytest.MainActivity;
 import com.readingstudytest.Util.Retrofit;
 import com.readingstudytest.bean.BeanBase;
+import com.readingstudytest.bean.UserBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,17 +25,18 @@ public class LoginRegisterIsSuccessfulInformation{
     private final String url;
     private Activity activity;
 
-    private GetRequestInterface getRequestInterface;
+    private IGetRequestInterface IGetRequestInterface;
     private com.readingstudytest.Util.Retrofit retrofit;
 
-    private Map<String, String> userInfo;
+    private HashMap userInfo;
 
     public LoginRegisterIsSuccessfulInformation(String email, String password, Activity activity){
         this.email = email;
         this.password = password;
         this.activity = activity;
         userInfo = new HashMap<>();
-        userInfo.put(email, password);
+        userInfo.put("username", email);
+        userInfo.put("password", password);
         if(activity.getClass().equals(LoginActivity.class)){
             url = "user/login/";
         }else if(activity.getClass().equals(RegisterActivity.class)){
@@ -62,14 +64,20 @@ public class LoginRegisterIsSuccessfulInformation{
 
     private void postLoginRequestInformation(){
         retrofit = Retrofit.getInstance();
-        getRequestInterface = retrofit.getGetRequestInterface();
+        IGetRequestInterface = retrofit.getIGetRequestInterface();
 
-        retrofit2.Call<BeanBase> call = getRequestInterface.getInfo(url, userInfo);
-        call.enqueue(new Callback<BeanBase>() {
+        //只允许为登录或注册
+        if(url == null || url.equals("")){
+            Toast.makeText(activity, "url信息为空或\"\"", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        retrofit2.Call<BeanBase<UserBean>> call = IGetRequestInterface.getInfo(url, userInfo);
+        call.enqueue(new Callback<BeanBase<UserBean>>() {
             @Override
-            public void onResponse(retrofit2.Call<BeanBase> call, Response<BeanBase> response) {
+            public void onResponse(retrofit2.Call<BeanBase<UserBean>> call, Response<BeanBase<UserBean>> response) {
                 if (response.isSuccessful()) {
-                    BeanBase result = response.body();//关键
+                    BeanBase<UserBean> result = response.body();//关键
                     //判断result数据是否为空
                     if (result != null) {
                         String content = "email="+email+"\npassword="+password+"\nLoginInfo=" +
@@ -80,12 +88,16 @@ public class LoginRegisterIsSuccessfulInformation{
                         }else{
                             loginSuccess();
                         }
+                    }else{
+                        Log.d("login", "result Null");
                     }
+                }else{
+                    Log.d("login", "response Not Successful");
                 }
             }
 
             @Override
-            public void onFailure(Call<BeanBase> call, Throwable t) {
+            public void onFailure(Call<BeanBase<UserBean>> call, Throwable t) {
                 loginFailure();
             }
         });

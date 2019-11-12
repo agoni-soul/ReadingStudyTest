@@ -5,23 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.readingstudytest.R;
-import com.readingstudytest.adapter.InfoHeaderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Headers;
 
 public class HotFragment extends Fragment implements View.OnClickListener{
     private List<String> HotHeader = new ArrayList<>();
@@ -38,7 +32,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.dic_layout_hot, container, false);
+        View view = inflater.inflate(R.layout.home_fragment_hot, container, false);
         return view;
     }
 

@@ -1,22 +1,15 @@
 package com.readingstudytest.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +31,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.dic_layout_android, container, false);
+        View view = inflater.inflate(R.layout.home_fragment_android, container, false);
         return view;
     }
 
@@ -46,7 +39,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         initView();
-        sendRequestWithOkHttp(address, "GET");
+//        sendRequestWithOkHttp(address, "GET");
     }
 
     @Override
