@@ -3,8 +3,8 @@ package com.readingstudytest.bean;
 public class BannerDataBean {
     private String desc;
     private int id;
-    private String imagepath;
-    private int isvisible;
+    private String imagePath;
+    private int isVisible;
     private int order;
     private String title;
     private int type;
@@ -24,18 +24,18 @@ public class BannerDataBean {
         return id;
     }
 
-    public void setImagepath(String imagepath) {
-        this.imagepath = imagepath;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
-    public String getImagepath() {
-        return imagepath;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setIsvisible(int isvisible) {
-        this.isvisible = isvisible;
+    public void setIsVisible(int isVisible) {
+        this.isVisible = isVisible;
     }
-    public int getIsvisible() {
-        return isvisible;
+    public int getIsVisible() {
+        return isVisible;
     }
 
     public void setOrder(int order) {

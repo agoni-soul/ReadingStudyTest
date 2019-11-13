@@ -93,6 +93,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         initListener();
         initView();
         downloadHotBannerData();
+        initBannerContent();
 
         addHeaderContent();
     }
@@ -107,7 +108,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
             case R.id.interview:
                 Toast.makeText(getActivity(), "You clicked view interview", Toast.LENGTH_SHORT).show();
                 rlInterviewSlider.setVisibility(View.VISIBLE);
-                initBannerContent();
                 break;
             case R.id.studio3:
                 Toast.makeText(getActivity(), "You clicked view studio3", Toast.LENGTH_SHORT).show();
@@ -174,7 +174,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                     bannerDatas = result.getData();
                     for(int i = 0; i < bannerDatas.size(); i ++){
                         Log.d("successful", bannerDatas.get(i).getTitle());
-                        Log.d("successful", bannerDatas.get(i).getImagepath());
+                        Log.d("successful", bannerDatas.get(i).getImagePath());
                     }
                 }
             }
@@ -190,7 +190,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         for(int i = 0; i < bannerDatas.size(); i ++){
             TextSliderView textSliderView = new TextSliderView(getActivity());
             textSliderView.description(bannerDatas.get(i).getTitle())
-                    .image(bannerDatas.get(i).getImagepath())
+                    .image("https://www.wanandroid.com/blogimgs/90c6cc12-742e-4c9f-b318-b912f163b8d0.png")
                     .setScaleType(BaseSliderView.ScaleType.Fit)
                     .setOnSliderClickListener(onSliderClickListener);
             textSliderView.bundle(new Bundle());
@@ -207,8 +207,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
 
 
     public void initData(){
-//        urlMaps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-//        urlMaps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
 //        urlMaps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
 //        urlMaps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
     }
