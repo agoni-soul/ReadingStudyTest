@@ -92,31 +92,10 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         initView();
         initListener();
         initView();
+        downloadHotBannerData();
 
         addHeaderContent();
     }
-
-    private void initBannerContent(){
-        downloadHotBannerData();
-
-        for(int i = 0; i < bannerDatas.size(); i ++){
-            TextSliderView textSliderView = new TextSliderView(getActivity());
-            textSliderView.description(bannerDatas.get(i).getTitle())
-                    .image(bannerDatas.get(i).getImagepath())
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(onSliderClickListener);
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle().putString("extra", bannerDatas.get(i).getDesc());
-            sliderInterview.addSlider(textSliderView);
-        }
-        sliderInterview.setPresetTransformer(SliderLayout.Transformer.Accordion);//滑动动画
-//        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);//默认指示器样式
-        sliderInterview.setCustomIndicator(customInterviewPagerIndicator);//自定义指示器
-        sliderInterview.setCustomAnimation(new DescriptionAnimation());//设置图片描述显示动画
-        sliderInterview.setDuration(4000);//设置滚动时间，也是计时器时间
-        sliderInterview.addOnPageChangeListener(onPageChangeListener);
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -175,13 +154,12 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         animation.setOnClickListener(this);
     }
 
+    //网络中下载数据添加到ArrayList中
     private void downloadHotBannerData(){
         retrofit2.Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.wanandroid.com/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
-
-        HashMap map = new HashMap<>();
 
         GetRequestInterface service = retrofit.create(GetRequestInterface.class);
         Call<BaseArrayBean<BannerDataBean>> call = service.getHotBannerContent();
@@ -207,6 +185,26 @@ public class HotFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
+
+    private void initBannerContent(){
+        for(int i = 0; i < bannerDatas.size(); i ++){
+            TextSliderView textSliderView = new TextSliderView(getActivity());
+            textSliderView.description(bannerDatas.get(i).getTitle())
+                    .image(bannerDatas.get(i).getImagepath())
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(onSliderClickListener);
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle().putString("extra", bannerDatas.get(i).getDesc());
+            sliderInterview.addSlider(textSliderView);
+        }
+        sliderInterview.setPresetTransformer(SliderLayout.Transformer.Accordion);//滑动动画
+//        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);//默认指示器样式
+        sliderInterview.setCustomIndicator(customInterviewPagerIndicator);//自定义指示器
+        sliderInterview.setCustomAnimation(new DescriptionAnimation());//设置图片描述显示动画
+        sliderInterview.setDuration(4000);//设置滚动时间，也是计时器时间
+        sliderInterview.addOnPageChangeListener(onPageChangeListener);
+    }
+
 
     public void initData(){
 //        urlMaps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
