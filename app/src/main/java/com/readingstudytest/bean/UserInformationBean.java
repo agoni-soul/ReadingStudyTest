@@ -2,7 +2,7 @@ package com.readingstudytest.bean;
 
 import java.util.ArrayList;
 
-public class UserBean {
+public class UserInformationBean {
     public int id;
     public String email;
     public String password;

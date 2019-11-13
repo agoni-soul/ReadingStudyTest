@@ -16,10 +16,14 @@ import com.readingstudytest.adapter.InfoHeaderAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class InfoFragment extends Fragment implements View.OnClickListener{
+    private RecyclerView rvInfoHeader;
 
     private List<String> InfoHeader = new ArrayList<>();
-    private RecyclerView rvInfoHeader;
     private InfoHeaderAdapter infoHeaderAdapter;
 
     @Override

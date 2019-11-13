@@ -13,12 +13,13 @@ import android.widget.Toast;
 import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+import butterknife.BindView;
 
-    private Button register;
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText email;
     private EditText password;
     private EditText repassword;
+    private Button register;
     private TextView back;
 
     @Override

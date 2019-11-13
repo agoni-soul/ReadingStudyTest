@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,8 +9,7 @@
         android:id="@+id/HomeHot_header"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="30dp"
         android:background="@color/theme_color_primary"
         >
         <TextView
@@ -40,11 +40,82 @@
             android:textColor="#FFFFFF"
             />
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/interview_slide_rl"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone">
+
+        <com.daimajia.slider.library.SliderLayout
+            android:id="@+id/interview_slide"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            custom:auto_cycle="true"
+            custom:indicator_visibility="visible"
+            custom:pager_animation="Accordion"
+            custom:pager_animation_span="1100"/>
+
+        <com.daimajia.slider.library.Indicators.PagerIndicator
+            android:id="@+id/interview_custom_indicator"
+            style="@style/AndroidImageSlider_Corner_Oval_Orange"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_10">
+
+        </com.daimajia.slider.library.Indicators.PagerIndicator>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_8"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:background="@color/theme_color_primary"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_20"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="热门搜索"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/mine_onclick_selector"
+            android:text="查看更多"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:src="@mipmap/icon_common_arrow" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/HomeHot_body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15">
+        android:layout_weight="1">
 
     </androidx.recyclerview.widget.RecyclerView>
 

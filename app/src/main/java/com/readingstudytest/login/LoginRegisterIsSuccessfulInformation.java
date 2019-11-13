@@ -6,14 +6,13 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.readingstudytest.IInterface.IGetRequestInterface;
+import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.MainActivity;
 import com.readingstudytest.Util.Retrofit;
-import com.readingstudytest.bean.BeanBase;
-import com.readingstudytest.bean.UserBean;
+import com.readingstudytest.bean.BaseBean;
+import com.readingstudytest.bean.UserInformationBean;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +24,7 @@ public class LoginRegisterIsSuccessfulInformation{
     private final String url;
     private Activity activity;
 
-    private IGetRequestInterface IGetRequestInterface;
+    private GetRequestInterface iGetRequestInterface;
     private com.readingstudytest.Util.Retrofit retrofit;
 
     private HashMap userInfo;
@@ -40,6 +39,7 @@ public class LoginRegisterIsSuccessfulInformation{
         if(activity.getClass().equals(LoginActivity.class)){
             url = "user/login/";
         }else if(activity.getClass().equals(RegisterActivity.class)){
+            userInfo.put("repassword", password);
             url = "user/register/";
         }else{
             url = "";
@@ -64,7 +64,7 @@ public class LoginRegisterIsSuccessfulInformation{
 
     private void postLoginRequestInformation(){
         retrofit = Retrofit.getInstance();
-        IGetRequestInterface = retrofit.getIGetRequestInterface();
+        iGetRequestInterface = retrofit.getIGetRequestInterface();
 
         //只允许为登录或注册
         if(url == null || url.equals("")){
@@ -72,21 +72,22 @@ public class LoginRegisterIsSuccessfulInformation{
             return;
         }
 
-        retrofit2.Call<BeanBase<UserBean>> call = IGetRequestInterface.getInfo(url, userInfo);
-        call.enqueue(new Callback<BeanBase<UserBean>>() {
+        retrofit2.Call<BaseBean<UserInformationBean>> call = iGetRequestInterface.getInfoAddUrl(url, userInfo);
+        call.enqueue(new Callback<BaseBean<UserInformationBean>>() {
             @Override
-            public void onResponse(retrofit2.Call<BeanBase<UserBean>> call, Response<BeanBase<UserBean>> response) {
+            public void onResponse(retrofit2.Call<BaseBean<UserInformationBean>> call, Response<BaseBean<UserInformationBean>> response) {
                 if (response.isSuccessful()) {
-                    BeanBase<UserBean> result = response.body();//关键
+                    BaseBean<UserInformationBean> result = response.body();//关键
                     //判断result数据是否为空
                     if (result != null) {
                         String content = "email="+email+"\npassword="+password+"\nLoginInfo=" +
                                 result.getData() + "\t" + result.getErrorCode() + "\t" + result.getErrorMsg();
                         Log.d("login", content);
-                        if(result.getErrorCode() != 0){
-                            loginFailure();
-                        }else{
+                        //登录成功时返回0
+                        if(result.getErrorCode() == 0){
                             loginSuccess();
+                        }else{
+                            loginFailure(result.getErrorMsg());
                         }
                     }else{
                         Log.d("login", "result Null");
@@ -97,8 +98,8 @@ public class LoginRegisterIsSuccessfulInformation{
             }
 
             @Override
-            public void onFailure(Call<BeanBase<UserBean>> call, Throwable t) {
-                loginFailure();
+            public void onFailure(Call<BaseBean<UserInformationBean>> call, Throwable t) {
+                Log.e("tag", t.getMessage());
             }
         });
     }
@@ -110,11 +111,11 @@ public class LoginRegisterIsSuccessfulInformation{
         activity.finish();
     }
 
-    private void loginFailure(){
+    private void loginFailure(String errorMsg){
         if(activity.getClass().equals(LoginActivity.class)){
-            Toast.makeText(activity, "邮箱或密码输入错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
         }else if(activity.getClass().equals(RegisterActivity.class)){
-            Toast.makeText(activity, "注册失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
         }
     }
 }

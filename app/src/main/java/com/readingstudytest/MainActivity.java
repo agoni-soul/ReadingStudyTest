@@ -17,6 +17,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private ViewPager viewPager;
+
     private MenuItem menuItem;
     private ArrayList<View> aList;
     private MyPagerAdapter mAdapter;
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+
         setupViewPager(viewPager);
 
         initFragment();
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         aList.add(li.inflate(R.layout.home_fragment,null,false));
         aList.add(li.inflate(R.layout.gank_layout,null,false));
         aList.add(li.inflate(R.layout.todo_layout,null,false));
-        aList.add(li.inflate(R.layout.mine_fragment,null,false));
+        aList.add(li.inflate(R.layout.person_fragment,null,false));
         mAdapter = new MyPagerAdapter(aList);
         viewPager.setAdapter(mAdapter);
     }

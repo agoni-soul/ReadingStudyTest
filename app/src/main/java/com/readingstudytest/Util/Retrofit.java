@@ -1,12 +1,12 @@
 package com.readingstudytest.Util;
 
 import com.google.gson.GsonBuilder;
-import com.readingstudytest.IInterface.IGetRequestInterface;
+import com.readingstudytest.IInterface.GetRequestInterface;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Retrofit {
-    private IGetRequestInterface iGetRequestInterface;
+    private GetRequestInterface igetRequestInterface;
 
     public static Retrofit getInstance(){
         return new Retrofit();
@@ -17,14 +17,14 @@ public class Retrofit {
                 .baseUrl("https://www.wanandroid.com/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
-        iGetRequestInterface = retrofit.create(IGetRequestInterface.class);
+        igetRequestInterface = retrofit.create(GetRequestInterface.class);
     }
 
     /**
      * 获得GetRequestInterface实例
      * @return
      * */
-    public IGetRequestInterface getIGetRequestInterface(){
-        return iGetRequestInterface;
+    public GetRequestInterface getIGetRequestInterface(){
+        return igetRequestInterface;
     }
 }

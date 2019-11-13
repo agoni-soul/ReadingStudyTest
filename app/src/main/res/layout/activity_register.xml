@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/theme_color_primary"
-        android:text="登录"
+        android:text="注册"
         android:textSize="25dp"
         android:layout_marginTop="20dp"
         />

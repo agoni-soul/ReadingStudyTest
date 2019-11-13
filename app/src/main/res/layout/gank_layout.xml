@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/gank_toolbar"
@@ -24,14 +25,16 @@
     <Button
         android:id="@+id/gank_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
         android:textAllCaps="true"
         android:text="gank" />
 
     <TextView
         android:id="@+id/gank_textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="10.3"
         android:textSize="30dp"
         android:text="干货"/>
 

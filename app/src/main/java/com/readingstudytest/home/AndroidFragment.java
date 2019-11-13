@@ -1,32 +1,40 @@
 package com.readingstudytest.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.GsonBuilder;
+import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
+import com.readingstudytest.adapter.HomeAndroidContentAdapter;
+import com.readingstudytest.bean.HomeAndroidDataBean;
+import com.readingstudytest.bean.HomeAndroidDatasBean;
+import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
+import com.readingstudytest.bean.BaseBean;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AndroidFragment extends Fragment implements View.OnClickListener{
+    private RecyclerView rvHomeAndroid;
 
-    private TextView dic_android_content_item;
-    private final static String address = "https://www.wanandroid.com/article/list/0/json";
+    private ArrayList<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> mAndroidContent =
+            new ArrayList<>();
+    private HomeAndroidContentAdapter homeAndroidContentAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,8 +46,51 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        initAndroidContent();
         initView();
-//        sendRequestWithOkHttp(address, "GET");
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        rvHomeAndroid.setLayoutManager(layoutManager);
+        homeAndroidContentAdapter = new HomeAndroidContentAdapter(mAndroidContent);
+        rvHomeAndroid.setAdapter(homeAndroidContentAdapter);
+    }
+
+    public void initAndroidContent(){
+        retrofit2.Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://www.wanandroid.com/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .build();
+
+        HashMap map = new HashMap<>();
+
+        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
+        Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call = service.getAndroidContent(0);
+        call.enqueue(new Callback<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>>() {
+            @Override
+            public void onResponse(Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call,
+                                   Response<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> response) {
+                BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>> result = response.body();//关键
+                //判断result数据是否为空
+                if (result != null) {
+                    Log.d("successful", result.getData().toString());
+                    mAndroidContent = result.getData().getDatas();
+                }
+
+                ArrayList<String> al = new ArrayList<>();
+                al.add("1");
+            }
+
+            @Override
+            public void onFailure(Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call, Throwable t) {
+                Log.e("tag", t.getMessage());
+            }
+        });
+    }
+
+    public void initView(){
+        rvHomeAndroid = (RecyclerView) getActivity().findViewById(R.id.rl_home_android);
     }
 
     @Override
@@ -47,121 +98,9 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void initView(){
-        dic_android_content_item = (TextView) getActivity().findViewById(R.id.dic_android_content_item);
-    }
-
     @Override
     public void onClick(View view){
         switch (view.getId()){
         }
-    }
-
-    private void sendRequestWithOkHttp(final String address, final String requestMethod){
-        //开启线程来发起网络请求
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection = null;
-                BufferedReader reader = null;
-                try{
-                    URL url = new URL(address);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod(requestMethod);
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    InputStream in = connection.getInputStream();
-
-                    //下面对获取到的输入流进行读取
-                    reader = new BufferedReader(new InputStreamReader(in));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null){
-                        response.append(line);
-                    };
-                    showResponse(response.toString());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if(reader != null){
-                        try{
-                            reader.close();
-                        }catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                    if(connection != null){
-                        connection.disconnect();
-                    }
-                }
-            }
-        }).start();
-    }
-
-    private void sendRequestWithOkHttp(final String address){
-        //开启线程来发起网络请求
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder()
-                            .url(address)
-                            .build();
-                    Response response = client.newCall(request).execute();
-                    if(!response.isSuccessful()){
-                        throw new IOException("Unexpected code" + response);
-                    }
-                    String responseData = response.body().string();
-                    Headers responseHeaders = response.headers();
-                    for(int i = 0; i < responseHeaders.size(); i ++){
-                        System.out.println(responseHeaders.name(i) + ":" + responseHeaders.value(i));
-                    }
-                    System.out.println(responseData);
-//                    showResponse(responseData);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private void showResponse(final String responseData){
-//        Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
-//        String author = null;
-//        String chapterName = null;
-//        String superChapterName = null;
-//        String title = null;
-//        Boolean collect = null;
-//        Integer niceDate = null;
-//
-//        try{
-//            JSONArray jsonArray = new JSONArray(responseData);
-//            System.out.println(jsonArray);
-//            System.out.println(jsonArray.length());
-//            for(int i = 0; i < Math.min(jsonArray.length(), 5); i ++){
-//                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                author = jsonObject.getString("author");
-//                niceDate = jsonObject.getInt("niceDate");
-//                chapterName = jsonObject.getString("chapterName");
-//                superChapterName = jsonObject.getString("superChapterName");
-//                title = jsonObject.getString("title");
-//                collect = jsonObject.getBoolean("collect");
-//                Log.d("HomeFragment_Android", "author is " + author);
-//                Log.d("HomeFragment_Android", "chapter is " + chapterName + " / " + superChapterName);
-//                Log.d("HomeFragment_Android", "title is " + title);
-//                Log.d("HomeFragment_Android", "collect is " + collect);
-//                Log.d("HomeFragment_Android", "niceDate is " + niceDate);
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //在这里进行UI操作，将结果显示到界面上
-                dic_android_content_item.setText(responseData);
-            }
-        });
     }
 }

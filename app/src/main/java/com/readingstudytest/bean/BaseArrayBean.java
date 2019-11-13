@@ -1,22 +1,22 @@
 package com.readingstudytest.bean;
 
-public class BeanBase<T> {
-    T data;
+import java.util.ArrayList;
+
+public class BaseArrayBean<T> {
+    ArrayList<T> data;
     int errorCode;
     String errorMsg;
 
-    public T getData(){
+    public ArrayList<T> getData(){
         return data;
     }
-
-    public void setData(T data){
+    public void setData(ArrayList<T> data){
         this.data = data;
     }
 
     public int getErrorCode(){
         return errorCode;
     }
-
     public void setErrorCode(int errorCode){
         this.errorCode = errorCode;
     }
@@ -24,7 +24,6 @@ public class BeanBase<T> {
     public String getErrorMsg(){
         return errorMsg;
     }
-
     public void setErrorMsg(String errorMsg){
         this.errorMsg = errorMsg;
     }

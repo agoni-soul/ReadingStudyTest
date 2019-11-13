@@ -30,14 +30,14 @@ import com.readingstudytest.home.InfoFragment;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 public class HomeFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     private ImageView android;
     private ImageView hot;
     private ImageView info;
     private ViewPager dic_viewPager;
-
-    //侧滑栏
     private DrawerLayout drawerLayout;
 
     private MenuItem menuItem;

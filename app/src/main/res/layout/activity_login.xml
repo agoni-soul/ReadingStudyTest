@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:text=""
             android:maxLines="1"
-            android:singleLine="true"
             android:hint="用户名"
             />
     </LinearLayout>
@@ -64,8 +64,8 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:inputType="textPassword"
+            android:text=""
             android:maxLines="1"
-            android:singleLine="true"
             android:hint="密码"
             />
     </LinearLayout>
