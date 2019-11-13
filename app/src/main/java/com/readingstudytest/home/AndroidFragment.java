@@ -32,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AndroidFragment extends Fragment implements View.OnClickListener{
     private RecyclerView rvHomeAndroid;
 
-    private ArrayList<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> mAndroidContent =
+    private ArrayList<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> androidChapterContent =
             new ArrayList<>();
     private HomeAndroidContentAdapter homeAndroidContentAdapter;
 
@@ -47,23 +47,23 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        initAndroidContent();
         initView();
+        if(androidChapterContent == null || androidChapterContent.size() == 0){
+            downloadAndroidChapterContent();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        rvHomeAndroid.setLayoutManager(layoutManager);
-        homeAndroidContentAdapter = new HomeAndroidContentAdapter(mAndroidContent);
-        rvHomeAndroid.setAdapter(homeAndroidContentAdapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            layoutManager.setOrientation(RecyclerView.VERTICAL);
+            rvHomeAndroid.setLayoutManager(layoutManager);
+            homeAndroidContentAdapter = new HomeAndroidContentAdapter(androidChapterContent);
+            rvHomeAndroid.setAdapter(homeAndroidContentAdapter);
+        }
     }
 
-    public void initAndroidContent(){
+    public void downloadAndroidChapterContent(){
         retrofit2.Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.wanandroid.com/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
-
-        HashMap map = new HashMap<>();
 
         GetRequestInterface service = retrofit.create(GetRequestInterface.class);
         Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call = service.getAndroidContent(0);
@@ -75,7 +75,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
                 //判断result数据是否为空
                 if (result != null) {
                     Log.d("successful", result.getData().toString());
-                    mAndroidContent = result.getData().getDatas();
+                    androidChapterContent = result.getData().getDatas();
                 }
 
                 ArrayList<String> al = new ArrayList<>();

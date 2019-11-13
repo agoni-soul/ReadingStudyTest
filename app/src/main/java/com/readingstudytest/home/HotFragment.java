@@ -28,6 +28,7 @@ import com.readingstudytest.bean.BaseArrayBean;
 import com.readingstudytest.bean.HomeAndroidDataBean;
 import com.readingstudytest.bean.HomeAndroidDatasBean;
 import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
+import com.readingstudytest.bean.HotKeyDataBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         public void onPageScrollStateChanged(int state) {}
     };
 
-    private List<String> HotHeader = new ArrayList<>();
+    private List<HotKeyDataBean> hotKeyDatas = new ArrayList<>();
 
     @Override
     public void onAttach(Context context){
@@ -88,14 +89,18 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        initHotHeader();
         initView();
         initListener();
         initView();
-        downloadHotBannerData();
-        initBannerContent();
-
-        addHeaderContent();
+        //避免重复加载
+        if(hotKeyDatas == null || hotKeyDatas.size() == 0){
+            downloadHotKeyData();
+//            initHotKeyContent();
+        }
+        if(bannerDatas == null || bannerDatas.size() == 0){
+            downloadHotBannerData();
+            initBannerContent();
+        }
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -120,12 +125,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void initHotHeader(){
-        HotHeader.add("面试");
-        HotHeader.add("STUDIO3");
-        HotHeader.add("动画");
-    }
-
     private void initView(){
         llHotHeader = (LinearLayout) getActivity().findViewById(R.id.HomeHot_header);
 
@@ -142,16 +141,46 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         animation = (TextView) getActivity().findViewById(R.id.animation);
     }
 
-    private void addHeaderContent(){
-        interview.setText(HotHeader.get(0));
-        studio3.setText(HotHeader.get(1));
-        animation.setText(HotHeader.get(2));
-    }
-
     private void initListener(){
         interview.setOnClickListener(this);
         studio3.setOnClickListener(this);
         animation.setOnClickListener(this);
+    }
+
+    private void downloadHotKeyData(){
+        retrofit2.Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://www.wanandroid.com/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .build();
+
+        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
+        Call<BaseArrayBean<HotKeyDataBean>> call = service.getHotKeyContent();
+        call.enqueue(new Callback<BaseArrayBean<HotKeyDataBean>>() {
+            @Override
+            public void onResponse(Call<BaseArrayBean<HotKeyDataBean>> call,
+                                   Response<BaseArrayBean<HotKeyDataBean>> response) {
+                BaseArrayBean<HotKeyDataBean> result = response.body();//关键
+                //判断result数据是否为空
+                if (result != null) {
+                    Log.d("successful", result.getData().size() + "");
+                    hotKeyDatas = result.getData();
+                    for(int i = 0; i < hotKeyDatas.size(); i ++){
+                        Log.d("successful", hotKeyDatas.get(i).getName());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseArrayBean<HotKeyDataBean>> call, Throwable t) {
+                Log.e("HotKeyErrorInfo", t.getMessage());
+            }
+        });
+    }
+
+    private void initHotKeyContent(){
+        interview.setText(hotKeyDatas.get(0).getName());
+        studio3.setText(hotKeyDatas.get(1).getName());
+        animation.setText(hotKeyDatas.get(2).getName());
     }
 
     //网络中下载数据添加到ArrayList中
@@ -181,7 +210,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onFailure(Call<BaseArrayBean<BannerDataBean>> call, Throwable t) {
-                Log.e("tag", t.getMessage());
+                Log.e("HotBannerErrorInfo", t.getMessage());
             }
         });
     }
@@ -203,11 +232,5 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         sliderInterview.setCustomAnimation(new DescriptionAnimation());//设置图片描述显示动画
         sliderInterview.setDuration(4000);//设置滚动时间，也是计时器时间
         sliderInterview.addOnPageChangeListener(onPageChangeListener);
-    }
-
-
-    public void initData(){
-//        urlMaps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-//        urlMaps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
     }
 }

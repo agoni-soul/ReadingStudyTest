@@ -6,6 +6,8 @@ import com.readingstudytest.bean.BaseBean;
 import com.readingstudytest.bean.HomeAndroidDataBean;
 import com.readingstudytest.bean.HomeAndroidDatasBean;
 import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
+import com.readingstudytest.bean.HotKeyDataBean;
+import com.readingstudytest.bean.ProjectTreeDataBean;
 import com.readingstudytest.bean.UserInformationBean;
 
 import java.util.HashMap;
@@ -24,6 +26,12 @@ public interface GetRequestInterface {
 
     @GET("banner/json")
     Call<BaseArrayBean<BannerDataBean>> getHotBannerContent();
+
+    @GET("hotkey/json")
+    Call<BaseArrayBean<HotKeyDataBean>> getHotKeyContent();
+
+    @GET("project/tree/json")
+    Call<BaseArrayBean<ProjectTreeDataBean>> getInfoProjectTreeContent();
 
     @FormUrlEncoded//百度一下这个标签的使用
     @POST//("user/login")//一定要有接口的路径
