@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.GsonBuilder;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
@@ -31,6 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AndroidFragment extends Fragment implements View.OnClickListener{
     private RecyclerView rvHomeAndroid;
+    private FloatingActionButton floatingActionButton;
 
     private ArrayList<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> androidChapterContent =
             new ArrayList<>();
@@ -48,6 +50,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         initView();
+        floatingActionButton.show();
         if(androidChapterContent == null || androidChapterContent.size() == 0){
             downloadAndroidChapterContent();
 
@@ -91,6 +94,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 
     public void initView(){
         rvHomeAndroid = (RecyclerView) getActivity().findViewById(R.id.rl_home_android);
+        floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
     }
 
     @Override

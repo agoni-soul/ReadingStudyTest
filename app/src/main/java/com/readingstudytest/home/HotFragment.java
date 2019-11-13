@@ -20,6 +20,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.GsonBuilder;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
@@ -45,6 +46,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     private TextView interview;
     private TextView studio3;
     private TextView animation;
+    private FloatingActionButton floatingActionButton;
 
     private RelativeLayout rlInterviewSlider;
     private SliderLayout sliderInterview;
@@ -111,14 +113,17 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.interview:
+                floatingActionButton.show();
                 Toast.makeText(getActivity(), "You clicked view interview", Toast.LENGTH_SHORT).show();
                 rlInterviewSlider.setVisibility(View.VISIBLE);
                 break;
             case R.id.studio3:
+                floatingActionButton.hide();
                 Toast.makeText(getActivity(), "You clicked view studio3", Toast.LENGTH_SHORT).show();
                 rlInterviewSlider.setVisibility(View.GONE);
                 break;
             case R.id.animation:
+                floatingActionButton.hide();
                 Toast.makeText(getActivity(), "You clicked view animation", Toast.LENGTH_SHORT).show();
                 rlInterviewSlider.setVisibility(View.GONE);
                 break;
@@ -127,6 +132,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
 
     private void initView(){
         llHotHeader = (LinearLayout) getActivity().findViewById(R.id.HomeHot_header);
+        floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
 
         //面试 PagerView初始化
         interview = (TextView) getActivity().findViewById(R.id.interview);

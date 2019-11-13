@@ -11,10 +11,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class TencentFragment extends Fragment {
+    private FloatingActionButton floatingActionButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,6 +31,8 @@ public class TencentFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initView();
+        floatingActionButton.hide();
         TextView textView = (TextView) getActivity().findViewById(R.id.todo_textView);
 
         Button button=(Button)getActivity().findViewById(R.id.todo_button);
@@ -37,5 +42,9 @@ public class TencentFragment extends Fragment {
                 Toast.makeText(getActivity(), "公众号", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void initView(){
+        floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
     }
 }
