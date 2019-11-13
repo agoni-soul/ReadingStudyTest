@@ -6,41 +6,41 @@ import java.util.Date;
 import java.util.List;
 
 public class HomeAndroidDatasBean<T> {
-    private String apklink;
+    private String apkLink;
     private int audit;
     private String author;
-    private int chapterid;
-    private String chaptername;
+    private int chapterId;
+    private String chapterName;
     private boolean collect;
-    private int courseid;
+    private int courseId;
     private String desc;
-    private String envelopepic;
+    private String envelopePic;
     private boolean fresh;
     private int id;
     private String link;
-    private Date nicedate;
-    private Date nicesharedate;
+    private String niceDate;
+    private String niceShareDate;
     private String origin;
     private String prefix;
-    private String projectlink;
-    private int publishtime;
-    private int selfvisible;
-    private int sharedate;
-    private String shareuser;
-    private int superchapterid;
-    private String superchaptername;
+    private String projectLink;
+    private long publishTime;
+    private int selfVisible;
+    private long shareDate;
+    private String shareUser;
+    private int superChapterId;
+    private String superChapterName;
     private ArrayList<T> tags;
     private String title;
     private int type;
-    private int userid;
+    private int userId;
     private int visible;
     private int zan;
 
-    public void setApklink(String apklink) {
-        this.apklink = apklink;
+    public void setApkLink(String apkLink) {
+        this.apkLink = apkLink;
     }
-    public String getApklink() {
-        return apklink;
+    public String getApkLink() {
+        return apkLink;
     }
 
     public void setAudit(int audit) {
@@ -57,18 +57,18 @@ public class HomeAndroidDatasBean<T> {
         return author;
     }
 
-    public void setChapterid(int chapterid) {
-        this.chapterid = chapterid;
+    public void setChapterId(int chapterId) {
+        this.chapterId = chapterId;
     }
-    public int getChapterid() {
-        return chapterid;
+    public int getChapterId() {
+        return chapterId;
     }
 
-    public void setChaptername(String chaptername) {
-        this.chaptername = chaptername;
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
     }
-    public String getChaptername() {
-        return chaptername;
+    public String getChapterName() {
+        return chapterName;
     }
 
     public void setCollect(boolean collect) {
@@ -78,11 +78,11 @@ public class HomeAndroidDatasBean<T> {
         return collect;
     }
 
-    public void setCourseid(int courseid) {
-        this.courseid = courseid;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
-    public int getCourseid() {
-        return courseid;
+    public int getCourseId() {
+        return courseId;
     }
 
     public void setDesc(String desc) {
@@ -92,11 +92,11 @@ public class HomeAndroidDatasBean<T> {
         return desc;
     }
 
-    public void setEnvelopepic(String envelopepic) {
-        this.envelopepic = envelopepic;
+    public void setEnvelopePic(String envelopePic) {
+        this.envelopePic = envelopePic;
     }
-    public String getEnvelopepic() {
-        return envelopepic;
+    public String getEnvelopePic() {
+        return envelopePic;
     }
 
     public void setFresh(boolean fresh) {
@@ -120,18 +120,18 @@ public class HomeAndroidDatasBean<T> {
         return link;
     }
 
-    public void setNicedate(Date nicedate) {
-        this.nicedate = nicedate;
+    public void setNiceDate(String niceDate) {
+        this.niceDate = niceDate;
     }
-    public Date getNicedate() {
-        return nicedate;
+    public String getNiceDate() {
+        return niceDate;
     }
 
-    public void setNicesharedate(Date nicesharedate) {
-        this.nicesharedate = nicesharedate;
+    public void setNiceShareDate(String niceShareDate) {
+        this.niceShareDate = niceShareDate;
     }
-    public Date getNicesharedate() {
-        return nicesharedate;
+    public String getNiceShareDate() {
+        return niceShareDate;
     }
 
     public void setOrigin(String origin) {
@@ -148,53 +148,53 @@ public class HomeAndroidDatasBean<T> {
         return prefix;
     }
 
-    public void setProjectlink(String projectlink) {
-        this.projectlink = projectlink;
+    public void setProjectLink(String projectLink) {
+        this.projectLink = projectLink;
     }
-    public String getProjectlink() {
-        return projectlink;
-    }
-
-    public void setPublishtime(int publishtime) {
-        this.publishtime = publishtime;
-    }
-    public int getPublishtime() {
-        return publishtime;
+    public String getProjectLink() {
+        return projectLink;
     }
 
-    public void setSelfvisible(int selfvisible) {
-        this.selfvisible = selfvisible;
+    public void setPublishTime(long publishTime) {
+        this.publishTime = publishTime;
     }
-    public int getSelfvisible() {
-        return selfvisible;
-    }
-
-    public void setSharedate(int sharedate) {
-        this.sharedate = sharedate;
-    }
-    public int getSharedate() {
-        return sharedate;
+    public long getPublishTime() {
+        return publishTime;
     }
 
-    public void setShareuser(String shareuser) {
-        this.shareuser = shareuser;
+    public void setSelfVisible(int selfVisible) {
+        this.selfVisible = selfVisible;
     }
-    public String getShareuser() {
-        return shareuser;
-    }
-
-    public void setSuperchapterid(int superchapterid) {
-        this.superchapterid = superchapterid;
-    }
-    public int getSuperchapterid() {
-        return superchapterid;
+    public int getSelfVisible() {
+        return selfVisible;
     }
 
-    public void setSuperchaptername(String superchaptername) {
-        this.superchaptername = superchaptername;
+    public void setShareDate(long shareDate) {
+        this.shareDate = shareDate;
     }
-    public String getSuperchaptername() {
-        return superchaptername;
+    public long getShareDate() {
+        return shareDate;
+    }
+
+    public void setShareUser(String shareUser) {
+        this.shareUser = shareUser;
+    }
+    public String getShareUser() {
+        return shareUser;
+    }
+
+    public void setSuperChapterId(int superChapterId) {
+        this.superChapterId = superChapterId;
+    }
+    public int getSuperChapterId() {
+        return superChapterId;
+    }
+
+    public void setSuperChapterName(String superChapterName) {
+        this.superChapterName = superChapterName;
+    }
+    public String getSuperChapterName() {
+        return superChapterName;
     }
 
     public void setTags(ArrayList<T> tags) {
@@ -218,11 +218,11 @@ public class HomeAndroidDatasBean<T> {
         return type;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
-    public int getUserid() {
-        return userid;
+    public int getUserId() {
+        return userId;
     }
 
     public void setVisible(int visible) {

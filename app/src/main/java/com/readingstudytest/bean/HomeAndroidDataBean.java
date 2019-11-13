@@ -9,7 +9,7 @@ public class HomeAndroidDataBean<T> {
     private ArrayList<T> datas;
     private int offset;
     private boolean over;
-    private int pagecount;
+    private int pageCount;
     private int size;
     private int total;
     public void setCurpage(int curpage) {
@@ -40,11 +40,11 @@ public class HomeAndroidDataBean<T> {
         return over;
     }
 
-    public void setPagecount(int pagecount) {
-        this.pagecount = pagecount;
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
     }
-    public int getPagecount() {
-        return pagecount;
+    public int getPageCount() {
+        return pageCount;
     }
 
     public void setSize(int size) {

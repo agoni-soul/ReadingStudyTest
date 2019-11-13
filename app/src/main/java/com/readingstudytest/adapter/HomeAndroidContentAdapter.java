@@ -64,13 +64,13 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
         HomeAndroidDatasBean listContentPersonBean = mListContentPerson.get(position);
 
         holder.itemAuthor.setText(listContentPersonBean.getAuthor());
-        String chapterContent = listContentPersonBean.getSuperchaptername() + " / " +
-                listContentPersonBean.getChaptername();
+        String chapterContent = listContentPersonBean.getSuperChapterName() + " / " +
+                listContentPersonBean.getChapterName();
         holder.itemChapter.setText(chapterContent);
 
         holder.itemTitle.setText(listContentPersonBean.getTitle());
-        if(listContentPersonBean.getEnvelopepic() == null ||
-                listContentPersonBean.getEnvelopepic().equals("")){
+        if(listContentPersonBean.getEnvelopePic() == null ||
+                listContentPersonBean.getEnvelopePic().equals("")){
             holder.itemImage.setVisibility(View.GONE);
         }else{
             holder.itemImage.setVisibility(View.VISIBLE);
@@ -92,7 +92,7 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
             holder.itemCollectted.setVisibility(View.GONE);
             holder.itemCollectNormal.setVisibility(View.VISIBLE);
         }
-        holder.itemTime.setText(listContentPersonBean.getPublishtime());
+        holder.itemTime.setText(listContentPersonBean.getNiceDate());
     }
 
     @Override
