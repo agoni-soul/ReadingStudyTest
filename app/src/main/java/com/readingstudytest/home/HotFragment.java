@@ -97,7 +97,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         //避免重复加载
         if(hotKeyDatas == null || hotKeyDatas.size() == 0){
             downloadHotKeyData();
-            initHotKeyContent();
+//            initHotKeyContent();
         }
         if(bannerDatas == null || bannerDatas.size() == 0){
             downloadHotBannerData();
@@ -155,10 +155,13 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     }
 
     private void downloadHotKeyData(){
-        com.readingstudytest.Util.Retrofit retrofit = com.readingstudytest.Util.Retrofit.getInstance();
-        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
+        retrofit2.Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://www.wanandroid.com/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .build();
 
-        Call<BaseArrayBean<HotKeyDataBean>> call = getRequestInterface.getHotKeyContent();
+        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
+        Call<BaseArrayBean<HotKeyDataBean>> call = service.getHotKeyContent();
         call.enqueue(new Callback<BaseArrayBean<HotKeyDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<HotKeyDataBean>> call,
@@ -169,7 +172,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                     Log.d("successful", result.getData().size() + "");
                     hotKeyDatas = result.getData();
                     for(int i = 0; i < hotKeyDatas.size(); i ++){
-                        Log.d("HotKey", hotKeyDatas.get(i).getName());
+                        Log.d("successful", hotKeyDatas.get(i).getName());
                     }
                 }
             }
@@ -182,12 +185,12 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initHotKeyContent(){
-//        interview.setText(hotKeyDatas.get(0).getName());
-//        studio3.setText(hotKeyDatas.get(1).getName());
-//        animation.setText(hotKeyDatas.get(2).getName());
-        interview.setText("面试");
-        studio3.setText("studio3");
-        animation.setText("动画");
+        interview.setText(hotKeyDatas.get(0).getName());
+        studio3.setText(hotKeyDatas.get(1).getName());
+        animation.setText(hotKeyDatas.get(2).getName());
+//        interview.setText("面试");
+//        studio3.setText("studio3");
+//        animation.setText("动画");
     }
 
     //网络中下载数据添加到ArrayList中
@@ -236,5 +239,11 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         sliderInterview.setCustomAnimation(new DescriptionAnimation());//设置图片描述显示动画
         sliderInterview.setDuration(4000);//设置滚动时间，也是计时器时间
         sliderInterview.addOnPageChangeListener(onPageChangeListener);
+    }
+
+
+    public void initData(){
+//        urlMaps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
+//        urlMaps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
     }
 }

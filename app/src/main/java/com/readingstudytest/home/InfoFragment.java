@@ -16,7 +16,6 @@ import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
 import com.readingstudytest.adapter.InfoHeaderAdapter;
 import com.readingstudytest.bean.BaseArrayBean;
-import com.readingstudytest.bean.HotKeyDataBean;
 import com.readingstudytest.bean.ProjectTreeDataBean;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
 //            rvInfoHeader.setAdapter(infoHeaderAdapter);
 //        }
         initView();
-        if(projectTreeDatas == null || projectTreeDatas.size() == 0){
+        if(projectTreeDatas == null || projectTreeDatas.size() == 0) {
             downloadProjectTreeData();
 //            initProjectTreeData();
 
@@ -63,9 +62,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             rvInfoHeader.setLayoutManager(layoutManager);
             infoHeaderAdapter = new InfoHeaderAdapter(projectTreeDatas);
-            rvInfoHeader.setAdapter(infoHeaderAdapter);
         }
-
     }
 
     @Override
