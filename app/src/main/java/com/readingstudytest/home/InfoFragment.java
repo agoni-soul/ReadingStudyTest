@@ -11,30 +11,28 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.GsonBuilder;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
+import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.InfoHeaderAdapter;
 import com.readingstudytest.bean.BaseArrayBean;
 import com.readingstudytest.bean.ProjectTreeDataBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class InfoFragment extends Fragment implements View.OnClickListener{
     private RecyclerView rvInfoHeader;
 
     private ArrayList<String> projectTreeDatas = new ArrayList<>();
     private InfoHeaderAdapter infoHeaderAdapter;
+
+    //网络请求数据
+    private RequestDataByRetrofit retrofit;
+    private GetRequestInterface getRequestInterface;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,13 +96,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     }
 
     private void downloadProjectTreeData(){
-        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.wanandroid.com/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .build();
+        retrofit = RequestDataByRetrofit.getInstance();
+        getRequestInterface = retrofit.getIGetRequestInterface();
 
-        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-        Call<BaseArrayBean<ProjectTreeDataBean>> call = service.getInfoProjectTreeContent();
+        Call<BaseArrayBean<ProjectTreeDataBean>> call = getRequestInterface.getInfoProjectTreeContent();
         call.enqueue(new Callback<BaseArrayBean<ProjectTreeDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<ProjectTreeDataBean>> call,

@@ -5,19 +5,19 @@ import com.readingstudytest.IInterface.GetRequestInterface;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Retrofit {
-    private GetRequestInterface igetRequestInterface;
+public class RequestDataByRetrofit {
+    private GetRequestInterface getRequestInterface;
 
-    public static Retrofit getInstance(){
-        return new Retrofit();
+    public static RequestDataByRetrofit getInstance(){
+        return new RequestDataByRetrofit();
     }
 
-    private Retrofit(){
+    private RequestDataByRetrofit(){
         retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://www.wanandroid.com/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
-        igetRequestInterface = retrofit.create(GetRequestInterface.class);
+        getRequestInterface = retrofit.create(GetRequestInterface.class);
     }
 
     /**
@@ -25,6 +25,6 @@ public class Retrofit {
      * @return
      * */
     public GetRequestInterface getIGetRequestInterface(){
-        return igetRequestInterface;
+        return getRequestInterface;
     }
 }

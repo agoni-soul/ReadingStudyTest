@@ -20,6 +20,7 @@ import com.readingstudytest.bean.HomeAndroidDataBean;
 import com.readingstudytest.bean.HomeAndroidDatasBean;
 import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
 import com.readingstudytest.bean.BaseBean;
+import com.readingstudytest.Util.RequestDataByRetrofit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +34,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AndroidFragment extends Fragment implements View.OnClickListener{
     private RecyclerView rvHomeAndroid;
     private FloatingActionButton fab;
+
+    //网络请求数据
+    private RequestDataByRetrofit retrofit;
+    private GetRequestInterface getRequestInterface;
 
     private ArrayList<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> androidChapterContent =
             new ArrayList<>();
@@ -63,18 +68,11 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     }
 
     public void downloadAndroidChapterContent(){
-//        com.readingstudytest.Util.Retrofit retrofit = com.readingstudytest.Util.Retrofit.getInstance();
-//        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
-//
-//        Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call =
-//                getRequestInterface.getAndroidContent(0);
-        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.wanandroid.com/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .build();
+        retrofit = RequestDataByRetrofit.getInstance();
+        getRequestInterface = retrofit.getIGetRequestInterface();
 
-        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-        Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call = service.getAndroidContent(0);
+        Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call =
+                getRequestInterface.getAndroidContent(0);
         call.enqueue(new Callback<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>>() {
             @Override
             public void onResponse(Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call,
@@ -85,9 +83,6 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
                     Log.d("AndroidChapter", result.getData().toString());
                     androidChapterContent = result.getData().getDatas();
                 }
-
-                ArrayList<String> al = new ArrayList<>();
-                al.add("1");
             }
 
             @Override

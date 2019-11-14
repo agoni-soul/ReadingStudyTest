@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.MainActivity;
-import com.readingstudytest.Util.Retrofit;
+import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.bean.BaseBean;
 import com.readingstudytest.bean.UserInformationBean;
 
@@ -25,7 +25,7 @@ public class LoginRegisterIsSuccessfulInformation{
     private Activity activity;
 
     private GetRequestInterface getRequestInterface;
-    private com.readingstudytest.Util.Retrofit retrofit;
+    private RequestDataByRetrofit retrofit;
 
     private HashMap userInfo;
 
@@ -63,7 +63,7 @@ public class LoginRegisterIsSuccessfulInformation{
     }
 
     private void postLoginRequestInformation(){
-        retrofit = Retrofit.getInstance();
+        retrofit = RequestDataByRetrofit.getInstance();
         getRequestInterface = retrofit.getIGetRequestInterface();
 
         //只允许为登录或注册
