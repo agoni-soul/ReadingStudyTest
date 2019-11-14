@@ -37,11 +37,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private ImageView android;
     private ImageView hot;
     private ImageView info;
-    private ViewPager dic_viewPager;
+    private ViewPager dicViewPager;
     private DrawerLayout drawerLayout;
 
     private MenuItem menuItem;
-    private ArrayList<View> dic_ArrayList;
+    private ArrayList<View> dicArrayList;
     private MyPagerAdapter mAdapter;
 
     //fragment
@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private HotFragment hotFragment;
     private InfoFragment infoFragment;
     private Fragment[] fragments;
-    private int lastfragment;
+    private int lastFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         super.onActivityCreated(savedInstanceState);
 
         initView();
-        setupViewPager(dic_viewPager);
+        setupViewPager(dicViewPager);
         initFragment();
         initListener();
 
@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         hot = (ImageView) getActivity().findViewById(R.id.hot);
         info = (ImageView) getActivity().findViewById(R.id.info);
 
-        dic_viewPager = (ViewPager) getActivity().findViewById(R.id.dic_viewpager);
+        dicViewPager = (ViewPager) getActivity().findViewById(R.id.dic_viewpager);
         drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     }
 
@@ -121,26 +121,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     public void onClick(View view){
         switch (view.getId()){
             case R.id.android:
-                dic_viewPager.setCurrentItem(0);
-                if(lastfragment != 0) {
-                    switchFragment(lastfragment,0);
-                    lastfragment = 0;
+                dicViewPager.setCurrentItem(0);
+                if(lastFragment != 0) {
+                    switchFragment(lastFragment,0);
+                    lastFragment = 0;
                 }
                 Toast.makeText(getActivity(), "android", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.hot:
-                dic_viewPager.setCurrentItem(1);
-                if(lastfragment != 1) {
-                    switchFragment(lastfragment,1);
-                    lastfragment = 1;
+                dicViewPager.setCurrentItem(1);
+                if(lastFragment != 1) {
+                    switchFragment(lastFragment,1);
+                    lastFragment = 1;
                 }
                 Toast.makeText(getActivity(), "hot", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.info:
-                dic_viewPager.setCurrentItem(2);
-                if(lastfragment != 2) {
-                    switchFragment(lastfragment,2);
-                    lastfragment = 2;
+                dicViewPager.setCurrentItem(2);
+                if(lastFragment != 2) {
+                    switchFragment(lastFragment,2);
+                    lastFragment = 2;
                 }
                 Toast.makeText(getActivity(), "info", Toast.LENGTH_SHORT).show();
                 break;
@@ -163,12 +163,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     //将子布局导入到viewPager中
     private void setupViewPager(ViewPager viewPager) {
-        dic_ArrayList = new ArrayList<View>();
+        dicArrayList = new ArrayList<View>();
         LayoutInflater li = getLayoutInflater();
-        dic_ArrayList.add(li.inflate(R.layout.home_fragment_android,null,false));
-        dic_ArrayList.add(li.inflate(R.layout.home_fragment_hot,null,false));
-        dic_ArrayList.add(li.inflate(R.layout.home_fragment_info,null,false));
-        mAdapter = new MyPagerAdapter(dic_ArrayList);
+        dicArrayList.add(li.inflate(R.layout.home_fragment_android,null,false));
+        dicArrayList.add(li.inflate(R.layout.home_fragment_hot,null,false));
+        dicArrayList.add(li.inflate(R.layout.home_fragment_info,null,false));
+        mAdapter = new MyPagerAdapter(dicArrayList);
         viewPager.setAdapter(mAdapter);
         viewPager.setCurrentItem(0);
     }
@@ -180,7 +180,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         hotFragment = new HotFragment();
         infoFragment = new InfoFragment();
         fragments = new Fragment[]{androidFragment, hotFragment, infoFragment};
-        lastfragment = 0;
+        lastFragment = 0;
         FragmentManager childFragmentManager = getChildFragmentManager();
 
         childFragmentManager.beginTransaction()
@@ -190,14 +190,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     //子fragment替换
-    private void switchFragment(int lastfragment, int index)
+    private void switchFragment(int lastFragment, int index)
     {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         //隐藏上个Fragment
-        transaction.remove(fragments[lastfragment]);
+        transaction.remove(fragments[lastFragment]);
         if(fragments[index].isAdded() == false) {
             transaction.replace(R.id.dic_viewpager,fragments[index]);
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
+        mAdapter.notifyDataSetChanged();//要通知adater更新一下
     }
 }

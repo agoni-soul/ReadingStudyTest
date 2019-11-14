@@ -1,5 +1,6 @@
 package com.readingstudytest.IInterface;
 
+import com.readingstudytest.bean.ArticleBean;
 import com.readingstudytest.bean.BannerDataBean;
 import com.readingstudytest.bean.BaseArrayBean;
 import com.readingstudytest.bean.BaseBean;
@@ -22,7 +23,7 @@ import retrofit2.http.Url;
 
 public interface GetRequestInterface {
     @GET("article/list/{page}/json")
-    Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> getAndroidContent(@Path("page") int page);
+    Call<BaseBean<ArticleBean>> getAndroidContent(@Path("page") int page);
 
     @GET("banner/json")
     Call<BaseArrayBean<BannerDataBean>> getHotBannerContent();

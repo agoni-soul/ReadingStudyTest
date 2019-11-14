@@ -24,15 +24,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.GsonBuilder;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
+import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.bean.BannerDataBean;
 import com.readingstudytest.bean.BaseArrayBean;
-import com.readingstudytest.bean.HomeAndroidDataBean;
-import com.readingstudytest.bean.HomeAndroidDatasBean;
-import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
 import com.readingstudytest.bean.HotKeyDataBean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -97,13 +94,13 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         //避免重复加载
         if(hotKeyDatas == null || hotKeyDatas.size() == 0){
             downloadHotKeyData();
-//            initHotKeyContent();
         }
         if(bannerDatas == null || bannerDatas.size() == 0){
             downloadHotBannerData();
-            initBannerContent();
+            initHotBannerContent();
         }
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -155,13 +152,18 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     }
 
     private void downloadHotKeyData(){
-        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.wanandroid.com/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .build();
+//        retrofit2.Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://www.wanandroid.com/")
+//                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+//                .build();
+//
+//        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
+//        Call<BaseArrayBean<HotKeyDataBean>> call = service.getHotKeyContent();
 
-        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-        Call<BaseArrayBean<HotKeyDataBean>> call = service.getHotKeyContent();
+        RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
+        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
+        Call<BaseArrayBean<HotKeyDataBean>> call = getRequestInterface.getHotKeyContent();
+
         call.enqueue(new Callback<BaseArrayBean<HotKeyDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<HotKeyDataBean>> call,
@@ -169,11 +171,11 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                 BaseArrayBean<HotKeyDataBean> result = response.body();//关键
                 //判断result数据是否为空
                 if (result != null) {
-                    Log.d("successful", result.getData().size() + "");
+                    Log.d("HotKey", result.getData().size() + "");
                     hotKeyDatas = result.getData();
-                    for(int i = 0; i < hotKeyDatas.size(); i ++){
-                        Log.d("successful", hotKeyDatas.get(i).getName());
-                    }
+
+                    //子线程更新UI
+                    updateUiHotKeyData();
                 }
             }
 
@@ -184,18 +186,25 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         });
     }
 
+    //使用runonUIThread更新UI
+    private void updateUiHotKeyData(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initHotKeyContent();
+            }
+        });
+    }
+
     private void initHotKeyContent(){
         interview.setText(hotKeyDatas.get(0).getName());
         studio3.setText(hotKeyDatas.get(1).getName());
         animation.setText(hotKeyDatas.get(2).getName());
-//        interview.setText("面试");
-//        studio3.setText("studio3");
-//        animation.setText("动画");
     }
 
     //网络中下载数据添加到ArrayList中
     private void downloadHotBannerData(){
-        com.readingstudytest.Util.Retrofit retrofit = com.readingstudytest.Util.Retrofit.getInstance();
+        RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
 
         Call<BaseArrayBean<BannerDataBean>> call = getRequestInterface.getHotBannerContent();
@@ -208,6 +217,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                 if (result != null) {
                     Log.d("HotBanner", result.getData().size() + "");
                     bannerDatas = result.getData();
+                    updataUiBannerData();
                     for(int i = 0; i < bannerDatas.size(); i ++){
                         Log.d("HotBanner", bannerDatas.get(i).getTitle());
                         Log.d("HotBanner", bannerDatas.get(i).getImagePath());
@@ -222,11 +232,20 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         });
     }
 
-    private void initBannerContent(){
+    private void updataUiBannerData(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initHotBannerContent();
+            }
+        });
+    }
+
+    private void initHotBannerContent(){
         for(int i = 0; i < bannerDatas.size(); i ++){
             TextSliderView textSliderView = new TextSliderView(getActivity());
             textSliderView.description(bannerDatas.get(i).getTitle())
-                    .image("https://www.wanandroid.com/blogimgs/90c6cc12-742e-4c9f-b318-b912f163b8d0.png")
+                    .image(bannerDatas.get(i).getImagePath())
                     .setScaleType(BaseSliderView.ScaleType.Fit)
                     .setOnSliderClickListener(onSliderClickListener);
             textSliderView.bundle(new Bundle());
@@ -239,11 +258,5 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         sliderInterview.setCustomAnimation(new DescriptionAnimation());//设置图片描述显示动画
         sliderInterview.setDuration(4000);//设置滚动时间，也是计时器时间
         sliderInterview.addOnPageChangeListener(onPageChangeListener);
-    }
-
-
-    public void initData(){
-//        urlMaps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-//        urlMaps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
     }
 }

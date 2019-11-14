@@ -1,109 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".login.LoginActivity">
+    android:weightSum="1">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="登  录"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:layout_gravity="center"
         android:gravity="center"
+        android:text="Reading"
+        android:textColor="#FFFFFF"
         android:textSize="30sp"
-        />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:foregroundGravity="center"
-            android:src="@mipmap/icon_person"
-            />
-
-        <EditText
-            android:id="@+id/user"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:text=""
-            android:maxLines="1"
-            android:hint="用户名"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:foregroundGravity="center"
-            android:src="@mipmap/icon_pwd"
-            />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:inputType="textPassword"
-            android:text=""
-            android:maxLines="1"
-            android:hint="密码"
-            />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:background="@color/theme_color_primary"
-        android:text="登录"
-        android:layout_marginTop="20dp"
         />
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center">
+        android:layout_height="0dp"
+        android:layout_weight="0.45"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_gravity="center_vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="还没有用户？"
-            android:layout_gravity="center"
-            android:gravity="right"
-            />
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_margin="@dimen/dp_10">
 
-        <TextView
-            android:id="@+id/register"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="立即注册"
-            android:textColor="@color/theme_color_primary"
-            android:layout_gravity="center"
-            android:gravity="left"
-            />
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="登  录"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/sp_20"
+                android:textColor="@color/theme_color_primary"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:foregroundGravity="center"
+                    android:src="@mipmap/icon_person"
+                    />
+
+                <EditText
+                    android:id="@+id/user"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:singleLine="true"
+                    android:hint="用户名"
+                    android:textSize="@dimen/sp_15"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:foregroundGravity="center"
+                    android:src="@mipmap/icon_pwd"
+                    />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:inputType="textPassword"
+                    android:text=""
+                    android:singleLine="true"
+                    android:hint="密码"
+                    android:textSize="@dimen/sp_15"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/theme_color_primary"
+                android:text="登  录"
+                android:layout_marginTop="@dimen/dp_14"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/dp_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="还没有用户？"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    />
+
+                <TextView
+                    android:id="@+id/register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="立即注册"
+                    android:textColor="@color/theme_color_primary"
+                    android:layout_gravity="center"
+                    android:gravity="left"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
 </LinearLayout>

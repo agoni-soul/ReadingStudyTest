@@ -2,8 +2,8 @@
 
 buildscript {
     repositories {
-        google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google' }//阿里云国内镜像
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }//阿里云国内镜像
         
     }
     dependencies {
@@ -17,8 +17,8 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google' }//阿里云国内镜像
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }//阿里云国内镜像
         
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.readingstudytest.R;
+import com.readingstudytest.bean.ArticleBean;
 import com.readingstudytest.bean.HomeAndroidDatasBean;
 import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
 import com.readingstudytest.bean.ListContentPersonBean;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidContentAdapter.ViewHolder> {
 
-    private List<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> mListContentPerson;
+    private List<ArticleBean.ArticleDetailBean> mListContentPerson;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView itemAuthor;
@@ -47,7 +48,7 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
         }
     }
 
-    public HomeAndroidContentAdapter(List<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> listContentPersonBeans){
+    public HomeAndroidContentAdapter(List<ArticleBean.ArticleDetailBean> listContentPersonBeans){
         mListContentPerson = listContentPersonBeans;
     }
 
@@ -61,7 +62,7 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
 
     @Override
     public void onBindViewHolder(HomeAndroidContentAdapter.ViewHolder holder, int position) {
-        HomeAndroidDatasBean listContentPersonBean = mListContentPerson.get(position);
+        ArticleBean.ArticleDetailBean listContentPersonBean = mListContentPerson.get(position);
 
         holder.itemAuthor.setText(listContentPersonBean.getAuthor());
         String chapterContent = listContentPersonBean.getSuperChapterName() + " / " +

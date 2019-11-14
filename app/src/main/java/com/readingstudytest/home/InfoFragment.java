@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.GsonBuilder;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
+import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.InfoHeaderAdapter;
+import com.readingstudytest.bean.ArticleBean;
 import com.readingstudytest.bean.BaseArrayBean;
+import com.readingstudytest.bean.BaseBean;
 import com.readingstudytest.bean.ProjectTreeDataBean;
 
 import java.util.ArrayList;
@@ -56,12 +59,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         initView();
         if(projectTreeDatas == null || projectTreeDatas.size() == 0) {
             downloadProjectTreeData();
-//            initProjectTreeData();
-
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            rvInfoHeader.setLayoutManager(layoutManager);
-            infoHeaderAdapter = new InfoHeaderAdapter(projectTreeDatas);
         }
     }
 
@@ -76,35 +73,22 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void initProjectTreeData(){
-        projectTreeDatas.add("完整项目");
-        projectTreeDatas.add("跨平台应用");
-        projectTreeDatas.add("资源聚合类");
-        projectTreeDatas.add("动画");
-        projectTreeDatas.add("RV列表动效");
-        projectTreeDatas.add("项目基础功能");
-        projectTreeDatas.add("网络&amp;文件下载");
-        projectTreeDatas.add("TextView");
-        projectTreeDatas.add("键盘");
-        projectTreeDatas.add("快应用");
-        projectTreeDatas.add("日历&amp;时钟");
-        projectTreeDatas.add("K线图");
-        projectTreeDatas.add("硬件相关");
-        projectTreeDatas.add("表格类");
-    }
-
     private void initView(){
         rvInfoHeader = (RecyclerView) getActivity().findViewById(R.id.HomeInfo_header);
     }
 
     private void downloadProjectTreeData(){
-        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.wanandroid.com/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .build();
+//        retrofit2.Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://www.wanandroid.com/")
+//                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+//                .build();
+//
+//        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
+//        Call<BaseArrayBean<ProjectTreeDataBean>> call = service.getInfoProjectTreeContent();
+        RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
+        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
+        Call<BaseArrayBean<ProjectTreeDataBean>> call = getRequestInterface.getInfoProjectTreeContent();
 
-        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-        Call<BaseArrayBean<ProjectTreeDataBean>> call = service.getInfoProjectTreeContent();
         call.enqueue(new Callback<BaseArrayBean<ProjectTreeDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<ProjectTreeDataBean>> call,
@@ -115,14 +99,28 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
                     Log.d("InfoProjectTree", result.getData().size() + "");
                     for(int i = 0; i < result.getData().size(); i ++){
                         projectTreeDatas.add(result.getData().get(i).getName());
-                        Log.d("InfoProjectTree", result.getData().get(i).getName());
+                        Log.d("InfoProjectTree", projectTreeDatas.get(i));
                     }
+                    updateUiProjectTreeData();
                 }
             }
 
             @Override
             public void onFailure(Call<BaseArrayBean<ProjectTreeDataBean>> call, Throwable t) {
                 Log.e("ProjectTreeErrorInfo", t.getMessage());
+            }
+        });
+    }
+
+    private void updateUiProjectTreeData(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                rvInfoHeader.setLayoutManager(layoutManager);
+                infoHeaderAdapter = new InfoHeaderAdapter(projectTreeDatas);
+                rvInfoHeader.setAdapter(infoHeaderAdapter);
             }
         });
     }
