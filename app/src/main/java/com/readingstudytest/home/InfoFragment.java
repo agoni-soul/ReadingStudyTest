@@ -75,7 +75,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     }
 
     private void downloadProjectTreeData(){
-<<<<<<< HEAD
 //        retrofit2.Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl("https://www.wanandroid.com/")
 //                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
@@ -86,13 +85,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
         Call<BaseArrayBean<ProjectTreeDataBean>> call = getRequestInterface.getInfoProjectTreeContent();
-
-=======
-        retrofit = RequestDataByRetrofit.getInstance();
-        getRequestInterface = retrofit.getIGetRequestInterface();
-
-        Call<BaseArrayBean<ProjectTreeDataBean>> call = getRequestInterface.getInfoProjectTreeContent();
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
         call.enqueue(new Callback<BaseArrayBean<ProjectTreeDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<ProjectTreeDataBean>> call,

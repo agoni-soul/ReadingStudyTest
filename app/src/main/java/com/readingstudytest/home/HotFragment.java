@@ -46,10 +46,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     private SliderLayout sliderInterview;
     private PagerIndicator customInterviewPagerIndicator;
 
-    //网络请求数据
-    private RequestDataByRetrofit retrofit;
-    private GetRequestInterface getRequestInterface;
-
     //banner布局
     private ArrayList<BannerDataBean> bannerDatas = new ArrayList<>();
     private BaseSliderView.OnSliderClickListener onSliderClickListener=new BaseSliderView.OnSliderClickListener() {
@@ -153,7 +149,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     }
 
     private void downloadHotKeyData(){
-<<<<<<< HEAD
 //        retrofit2.Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl("https://www.wanandroid.com/")
 //                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
@@ -165,12 +160,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
         Call<BaseArrayBean<HotKeyDataBean>> call = getRequestInterface.getHotKeyContent();
-
-=======
-        retrofit = RequestDataByRetrofit.getInstance();
-        getRequestInterface = retrofit.getIGetRequestInterface();
-        Call<BaseArrayBean<HotKeyDataBean>> call = getRequestInterface.getHotKeyContent();
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
         call.enqueue(new Callback<BaseArrayBean<HotKeyDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<HotKeyDataBean>> call,
@@ -180,15 +169,12 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                 if (result != null) {
                     Log.d("HotKey", result.getData().size() + "");
                     hotKeyDatas = result.getData();
-<<<<<<< HEAD
 
                     //子线程更新UI
                     updateUiHotKeyData();
-=======
                     for(int i = 0; i < hotKeyDatas.size(); i ++){
                         Log.d("HotKey", hotKeyDatas.get(i).getName());
                     }
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
                 }
             }
 
@@ -217,13 +203,8 @@ public class HotFragment extends Fragment implements View.OnClickListener{
 
     //网络中下载数据添加到ArrayList中
     private void downloadHotBannerData(){
-<<<<<<< HEAD
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
-=======
-        retrofit = RequestDataByRetrofit.getInstance();
-        getRequestInterface = retrofit.getIGetRequestInterface();
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
 
         Call<BaseArrayBean<BannerDataBean>> call = getRequestInterface.getHotBannerContent();
         call.enqueue(new Callback<BaseArrayBean<BannerDataBean>>() {

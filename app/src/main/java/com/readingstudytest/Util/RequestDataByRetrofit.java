@@ -6,11 +6,7 @@ import com.readingstudytest.IInterface.GetRequestInterface;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RequestDataByRetrofit {
-<<<<<<< HEAD:app/src/main/java/com/readingstudytest/Util/RequestDataByRetrofit.java
-    private GetRequestInterface igetRequestInterface;
-=======
     private GetRequestInterface getRequestInterface;
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2:app/src/main/java/com/readingstudytest/Util/RequestDataByRetrofit.java
 
     public static RequestDataByRetrofit getInstance(){
         return new RequestDataByRetrofit();

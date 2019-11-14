@@ -17,16 +17,8 @@ import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.HomeAndroidContentAdapter;
-<<<<<<< HEAD
-import com.readingstudytest.adapter.InfoHeaderAdapter;
 import com.readingstudytest.bean.*;
-=======
-import com.readingstudytest.bean.HomeAndroidDataBean;
-import com.readingstudytest.bean.HomeAndroidDatasBean;
-import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
 import com.readingstudytest.bean.BaseBean;
-import com.readingstudytest.Util.RequestDataByRetrofit;
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,16 +33,12 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     private RecyclerView rvHomeAndroid;
     private FloatingActionButton fab;
 
-<<<<<<< HEAD
     private ArrayList<ArticleBean.ArticleDetailBean> androidChapterContent =
-=======
+            new ArrayList<>();
     //网络请求数据
     private RequestDataByRetrofit retrofit;
     private GetRequestInterface getRequestInterface;
 
-    private ArrayList<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> androidChapterContent =
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
-            new ArrayList<>();
     private HomeAndroidContentAdapter homeAndroidContentAdapter;
 
     @Override
@@ -72,7 +60,6 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     }
 
     public void downloadAndroidChapterContent(){
-<<<<<<< HEAD
 //        retrofit2.Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl("https://www.wanandroid.com/")
 //                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
@@ -84,14 +71,6 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
         Call<BaseBean<ArticleBean>> call = getRequestInterface.getAndroidContent(0);
 
         call.enqueue(new Callback<BaseBean<ArticleBean>>() {
-=======
-        retrofit = RequestDataByRetrofit.getInstance();
-        getRequestInterface = retrofit.getIGetRequestInterface();
-
-        Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call =
-                getRequestInterface.getAndroidContent(0);
-        call.enqueue(new Callback<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>>() {
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
             @Override
             public void onResponse(Call<BaseBean<ArticleBean>> call,
                                    Response<BaseBean<ArticleBean>> response) {
@@ -102,14 +81,11 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
                     androidChapterContent = result.getData().getDatas();
                     updateUiAndroidChapterData();
                 }
-<<<<<<< HEAD
             }
 
             @Override
             public void onFailure(Call<BaseBean<ArticleBean>> call, Throwable t) {
                 Log.e("AndroidChapterErrorInfo", t.getMessage());
-=======
->>>>>>> be71a583044f2add1e394f5a35581a66e7347de2
             }
         });
     }
