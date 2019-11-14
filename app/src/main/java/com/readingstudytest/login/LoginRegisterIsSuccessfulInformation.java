@@ -24,7 +24,7 @@ public class LoginRegisterIsSuccessfulInformation{
     private final String url;
     private Activity activity;
 
-    private GetRequestInterface iGetRequestInterface;
+    private GetRequestInterface getRequestInterface;
     private com.readingstudytest.Util.Retrofit retrofit;
 
     private HashMap userInfo;
@@ -64,7 +64,7 @@ public class LoginRegisterIsSuccessfulInformation{
 
     private void postLoginRequestInformation(){
         retrofit = Retrofit.getInstance();
-        iGetRequestInterface = retrofit.getIGetRequestInterface();
+        getRequestInterface = retrofit.getIGetRequestInterface();
 
         //只允许为登录或注册
         if(url == null || url.equals("")){
@@ -72,7 +72,7 @@ public class LoginRegisterIsSuccessfulInformation{
             return;
         }
 
-        retrofit2.Call<BaseBean<UserInformationBean>> call = iGetRequestInterface.getInfoAddUrl(url, userInfo);
+        retrofit2.Call<BaseBean<UserInformationBean>> call = getRequestInterface.getInfoAddUrl(url, userInfo);
         call.enqueue(new Callback<BaseBean<UserInformationBean>>() {
             @Override
             public void onResponse(retrofit2.Call<BaseBean<UserInformationBean>> call, Response<BaseBean<UserInformationBean>> response) {

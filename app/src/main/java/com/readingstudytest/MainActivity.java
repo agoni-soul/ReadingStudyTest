@@ -3,6 +3,7 @@ package com.readingstudytest;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.readingstudytest.adapter.MyPagerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private ViewPager viewPager;
+    private FloatingActionButton fab;
 
     private MenuItem menuItem;
     private ArrayList<View> aList;
@@ -78,10 +80,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-
-        setupViewPager(viewPager);
-
+        initView();
+        setView();
         initFragment();
 
         final BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -123,6 +123,16 @@ public class MainActivity extends AppCompatActivity {
                 // SCROLL_STATE_SETTLING：拖动结束,实际值为2
             }
         });
+    }
+
+    private void initView(){
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        fab = (FloatingActionButton) findViewById(R.id.fab_android_home_fragment);
+    }
+
+    private void setView(){
+        setupViewPager(viewPager);
+        fab.show();
     }
 
     private void setupViewPager(ViewPager viewPager) {

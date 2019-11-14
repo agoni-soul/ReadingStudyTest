@@ -97,7 +97,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         //避免重复加载
         if(hotKeyDatas == null || hotKeyDatas.size() == 0){
             downloadHotKeyData();
-//            initHotKeyContent();
+            initHotKeyContent();
         }
         if(bannerDatas == null || bannerDatas.size() == 0){
             downloadHotBannerData();
@@ -132,6 +132,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
 
     private void initView(){
         llHotHeader = (LinearLayout) getActivity().findViewById(R.id.HomeHot_header);
+        //悬浮按钮初始化
         floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
 
         //面试 PagerView初始化
@@ -154,13 +155,10 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     }
 
     private void downloadHotKeyData(){
-        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.wanandroid.com/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .build();
+        com.readingstudytest.Util.Retrofit retrofit = com.readingstudytest.Util.Retrofit.getInstance();
+        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
 
-        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-        Call<BaseArrayBean<HotKeyDataBean>> call = service.getHotKeyContent();
+        Call<BaseArrayBean<HotKeyDataBean>> call = getRequestInterface.getHotKeyContent();
         call.enqueue(new Callback<BaseArrayBean<HotKeyDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<HotKeyDataBean>> call,
@@ -171,7 +169,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                     Log.d("successful", result.getData().size() + "");
                     hotKeyDatas = result.getData();
                     for(int i = 0; i < hotKeyDatas.size(); i ++){
-                        Log.d("successful", hotKeyDatas.get(i).getName());
+                        Log.d("HotKey", hotKeyDatas.get(i).getName());
                     }
                 }
             }
@@ -184,20 +182,20 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initHotKeyContent(){
-        interview.setText(hotKeyDatas.get(0).getName());
-        studio3.setText(hotKeyDatas.get(1).getName());
-        animation.setText(hotKeyDatas.get(2).getName());
+//        interview.setText(hotKeyDatas.get(0).getName());
+//        studio3.setText(hotKeyDatas.get(1).getName());
+//        animation.setText(hotKeyDatas.get(2).getName());
+        interview.setText("面试");
+        studio3.setText("studio3");
+        animation.setText("动画");
     }
 
     //网络中下载数据添加到ArrayList中
     private void downloadHotBannerData(){
-        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.wanandroid.com/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .build();
+        com.readingstudytest.Util.Retrofit retrofit = com.readingstudytest.Util.Retrofit.getInstance();
+        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
 
-        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-        Call<BaseArrayBean<BannerDataBean>> call = service.getHotBannerContent();
+        Call<BaseArrayBean<BannerDataBean>> call = getRequestInterface.getHotBannerContent();
         call.enqueue(new Callback<BaseArrayBean<BannerDataBean>>() {
             @Override
             public void onResponse(Call<BaseArrayBean<BannerDataBean>> call,
@@ -205,11 +203,11 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                 BaseArrayBean<BannerDataBean> result = response.body();//关键
                 //判断result数据是否为空
                 if (result != null) {
-                    Log.d("successful", result.getData().size() + "");
+                    Log.d("HotBanner", result.getData().size() + "");
                     bannerDatas = result.getData();
                     for(int i = 0; i < bannerDatas.size(); i ++){
-                        Log.d("successful", bannerDatas.get(i).getTitle());
-                        Log.d("successful", bannerDatas.get(i).getImagePath());
+                        Log.d("HotBanner", bannerDatas.get(i).getTitle());
+                        Log.d("HotBanner", bannerDatas.get(i).getImagePath());
                     }
                 }
             }

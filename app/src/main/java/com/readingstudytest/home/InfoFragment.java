@@ -115,10 +115,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
                 BaseArrayBean<ProjectTreeDataBean> result = response.body();//关键
                 //判断result数据是否为空
                 if (result != null) {
-                    Log.d("successful", result.getData().size() + "");
+                    Log.d("InfoProjectTree", result.getData().size() + "");
                     for(int i = 0; i < result.getData().size(); i ++){
                         projectTreeDatas.add(result.getData().get(i).getName());
-                        Log.d("successful", result.getData().get(i).getName());
+                        Log.d("InfoProjectTree", result.getData().get(i).getName());
                     }
                 }
             }

@@ -32,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AndroidFragment extends Fragment implements View.OnClickListener{
     private RecyclerView rvHomeAndroid;
-    private FloatingActionButton floatingActionButton;
+    private FloatingActionButton fab;
 
     private ArrayList<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>> androidChapterContent =
             new ArrayList<>();
@@ -50,7 +50,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         initView();
-        floatingActionButton.show();
+        fab.show();
         if(androidChapterContent == null || androidChapterContent.size() == 0){
             downloadAndroidChapterContent();
 
@@ -63,6 +63,11 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     }
 
     public void downloadAndroidChapterContent(){
+//        com.readingstudytest.Util.Retrofit retrofit = com.readingstudytest.Util.Retrofit.getInstance();
+//        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
+//
+//        Call<BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>>> call =
+//                getRequestInterface.getAndroidContent(0);
         retrofit2.Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.wanandroid.com/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
@@ -77,7 +82,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
                 BaseBean<HomeAndroidDataBean<HomeAndroidDatasBean<HomeAndroidDatasTagsBean>>> result = response.body();//关键
                 //判断result数据是否为空
                 if (result != null) {
-                    Log.d("successful", result.getData().toString());
+                    Log.d("AndroidChapter", result.getData().toString());
                     androidChapterContent = result.getData().getDatas();
                 }
 
@@ -94,7 +99,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 
     public void initView(){
         rvHomeAndroid = (RecyclerView) getActivity().findViewById(R.id.rl_home_android);
-        floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
     }
 
     @Override
