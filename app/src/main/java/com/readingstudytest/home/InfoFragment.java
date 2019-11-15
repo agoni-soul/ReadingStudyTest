@@ -36,6 +36,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     private RequestDataByRetrofit retrofit;
     private GetRequestInterface getRequestInterface;
 
+    //该变量放在updateUiAndroidChapterData()方法中会报错
+    private LinearLayoutManager layoutManagerInfo = new LinearLayoutManager(getActivity());
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -112,9 +115,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                rvInfoHeader.setLayoutManager(layoutManager);
+                layoutManagerInfo.setOrientation(LinearLayoutManager.HORIZONTAL);
+                rvInfoHeader.setLayoutManager(layoutManagerInfo);
                 infoHeaderAdapter = new InfoHeaderAdapter(projectTreeDatas);
                 rvInfoHeader.setAdapter(infoHeaderAdapter);
             }

@@ -108,7 +108,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()){
             case R.id.interview:
                 floatingActionButton.show();
-                Toast.makeText(getActivity(), "You clicked view interview", Toast.LENGTH_SHORT).show();
                 rlInterviewSlider.setVisibility(View.VISIBLE);
                 break;
             case R.id.studio3:

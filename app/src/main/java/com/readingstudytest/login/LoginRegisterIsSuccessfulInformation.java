@@ -47,19 +47,22 @@ public class LoginRegisterIsSuccessfulInformation{
     }
 
     public void getRequestReturnInformation(){
-        JudgeEmailPasswordIsEmpty();
-        postLoginRequestInformation();
+        //当输入的email和password不为空时执行
+        if(judgeEmailPasswordIsEmpty()){
+            postLoginRequestInformation();
+        }
     }
 
-    private void JudgeEmailPasswordIsEmpty(){
+    private boolean judgeEmailPasswordIsEmpty(){
         if(email.isEmpty()){
             Toast.makeText(activity, "请输入邮箱", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if(password.isEmpty()){
             Toast.makeText(activity, "请输入密码", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
+        return true;
     }
 
     private void postLoginRequestInformation(){

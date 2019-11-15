@@ -35,9 +35,13 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 
     private ArrayList<ArticleBean.ArticleDetailBean> androidChapterContent =
             new ArrayList<>();
+
     //网络请求数据
     private RequestDataByRetrofit retrofit;
     private GetRequestInterface getRequestInterface;
+
+    //该变量放在updateUiAndroidChapterData()方法中会报错
+    private LinearLayoutManager layoutManagerAndroid = new LinearLayoutManager(getActivity());
 
     private HomeAndroidContentAdapter homeAndroidContentAdapter;
 
@@ -54,9 +58,12 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 
         initView();
         fab.show();
-        if(androidChapterContent == null || androidChapterContent.size() == 0){
-            downloadAndroidChapterContent();
-        }
+        //临时注销
+//        if(androidChapterContent == null || androidChapterContent.size() == 0){
+//            downloadAndroidChapterContent();
+//        }
+
+        downloadAndroidChapterContent();
     }
 
     public void downloadAndroidChapterContent(){
@@ -94,9 +101,8 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                layoutManager.setOrientation(RecyclerView.VERTICAL);
-                rvHomeAndroid.setLayoutManager(layoutManager);
+                layoutManagerAndroid.setOrientation(RecyclerView.VERTICAL);
+                rvHomeAndroid.setLayoutManager(layoutManagerAndroid);
                 homeAndroidContentAdapter = new HomeAndroidContentAdapter(androidChapterContent);
                 rvHomeAndroid.setAdapter(homeAndroidContentAdapter);
             }
