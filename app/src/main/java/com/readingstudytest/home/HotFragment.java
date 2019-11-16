@@ -1,6 +1,7 @@
 package com.readingstudytest.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.readingstudytest.ContentShowActivity;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
@@ -48,22 +50,40 @@ public class HotFragment extends Fragment implements View.OnClickListener{
 
     //banner布局
     private ArrayList<BannerDataBean> bannerDatas = new ArrayList<>();
+    private int positionSliderView = 0;
     private BaseSliderView.OnSliderClickListener onSliderClickListener=new BaseSliderView.OnSliderClickListener() {
         @Override
         public void onSliderClick(BaseSliderView slider) {
-            Toast.makeText(getActivity(),slider.getBundle().get("extra") + "",
-                    Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), ContentShowActivity.class);
+            intent.putExtra("request_address", bannerDatas.get(positionSliderView).getUrl());
+            startActivity(intent);
         }
     };
     private ViewPagerEx.OnPageChangeListener onPageChangeListener=new ViewPagerEx.OnPageChangeListener() {
+
+        /*
+        * 当页面在滑动的时候会调用此方法，在滑动被停止之前，此方法回一直得到调用。
+        * 其中三个参数的含义分别为：
+        * position :当前页面，及你点击滑动的页面
+        * positionOffset:当前页面偏移的百分比
+        * positionOffsetPixels:当前页面偏移的像素位置
+        * */
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
         @Override
         public void onPageSelected(int position) {
-            Log.d("ansen", "Page Changed: " + position);
+            positionSliderView = position;
         }
 
+        /*
+        * 状态改变时调用，
+        * state有三种状态（0，1，2）。
+        * state ==1的时辰默示正在滑动，
+        * state==2的时辰默示滑动完毕了，
+        * state==0的时辰默示什么都没做。
+        * 当页面开始滑动的时候，三种状态的变化顺序为（1，2，0）
+        * */
         @Override
         public void onPageScrollStateChanged(int state) {}
     };
@@ -171,9 +191,9 @@ public class HotFragment extends Fragment implements View.OnClickListener{
 
                     //子线程更新UI
                     updateUiHotKeyData();
-                    for(int i = 0; i < hotKeyDatas.size(); i ++){
-                        Log.d("HotKey", hotKeyDatas.get(i).getName());
-                    }
+//                    for(int i = 0; i < hotKeyDatas.size(); i ++){
+//                        Log.d("HotKey", hotKeyDatas.get(i).getName());
+//                    }
                 }
             }
 
@@ -216,10 +236,11 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                     Log.d("HotBanner", result.getData().size() + "");
                     bannerDatas = result.getData();
                     updataUiBannerData();
-                    for(int i = 0; i < bannerDatas.size(); i ++){
-                        Log.d("HotBanner", bannerDatas.get(i).getTitle());
-                        Log.d("HotBanner", bannerDatas.get(i).getImagePath());
-                    }
+//                    for(int i = 0; i < bannerDatas.size(); i ++){
+//                        Log.d("HotBanner", bannerDatas.get(i).getTitle());
+//                        Log.d("HotBanner", bannerDatas.get(i).getImagePath());
+//                        Log.d("HotBanner", bannerDatas.get(i).getUrl());
+//                    }
                 }
             }
 

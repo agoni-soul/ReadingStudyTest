@@ -91,19 +91,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
         super.onActivityCreated(savedInstanceState);
 
         personImage.setOnClickListener(this);
-
-//        mineAppbarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-//                if(i == 0){
-//                    mineToolbarTitle.setVisibility(View.GONE);
-//                }else if(Math.abs(i) >= appBarLayout.getTotalScrollRange()){
-//                    mineToolbarTitle.setVisibility(View.VISIBLE);
-//                }else{
-//                    mineToolbarTitle.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -133,7 +120,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_person_avatar:
-                Toast.makeText(getActivity(), "我的", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
         }
