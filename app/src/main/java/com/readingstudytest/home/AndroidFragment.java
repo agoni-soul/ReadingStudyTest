@@ -41,19 +41,22 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     private GetRequestInterface getRequestInterface;
 
     //该变量放在updateUiAndroidChapterData()方法中会报错
-    private LinearLayoutManager layoutManagerAndroid = new LinearLayoutManager(getActivity());
+    private LinearLayoutManager layoutManagerAndroid;
 
     private HomeAndroidContentAdapter homeAndroidContentAdapter;
+
+    private View localView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.home_fragment_android, container, false);
-        return view;
+        localView = inflater.inflate(R.layout.home_fragment_android, container, false);
+
+        return localView;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         initView();
@@ -112,11 +115,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     public void initView(){
         rvHomeAndroid = (RecyclerView) getActivity().findViewById(R.id.rl_home_android);
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        layoutManagerAndroid = new LinearLayoutManager(getActivity());
     }
 
     @Override

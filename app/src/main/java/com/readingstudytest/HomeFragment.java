@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private DrawerLayout drawerLayout;
 
     private MenuItem menuItem;
-    private ArrayList<View> dicArrayList;
+    private ArrayList<View> addChildFragmentList;
     private MyPagerAdapter mAdapter;
 
     //fragment
@@ -51,24 +51,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private Fragment[] fragments;
     private int lastFragment;
 
+    private View localView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.home_fragment, container, false);
+        localView = inflater.inflate(R.layout.home_fragment, container, false);
         setHasOptionsMenu(true);
-        return view;
+        return localView;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         initView();
         setupViewPager(dicViewPager);
         initFragment();
         initListener();
+        setActionBar();
+    }
 
+    private void setActionBar(){
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -121,29 +125,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     public void onClick(View view){
         switch (view.getId()){
             case R.id.android:
-                dicViewPager.setCurrentItem(0);
-                if(lastFragment != 0) {
-                    switchFragment(lastFragment,0);
-                    lastFragment = 0;
-                }
-                Toast.makeText(getActivity(), "android", Toast.LENGTH_SHORT).show();
+                replaceFragment(0);
                 break;
             case R.id.hot:
-                dicViewPager.setCurrentItem(1);
-                if(lastFragment != 1) {
-                    switchFragment(lastFragment,1);
-                    lastFragment = 1;
-                }
-                Toast.makeText(getActivity(), "hot", Toast.LENGTH_SHORT).show();
+                replaceFragment(1);
                 break;
             case R.id.info:
-                dicViewPager.setCurrentItem(2);
-                if(lastFragment != 2) {
-                    switchFragment(lastFragment,2);
-                    lastFragment = 2;
-                }
-                Toast.makeText(getActivity(), "info", Toast.LENGTH_SHORT).show();
+                replaceFragment(2);
                 break;
+        }
+    }
+
+    private void replaceFragment(int curIndex){
+        dicViewPager.setCurrentItem(curIndex);
+        if(lastFragment != curIndex) {
+            switchFragment(lastFragment,curIndex);
+            lastFragment = curIndex;
         }
     }
 
@@ -163,41 +160,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     //将子布局导入到viewPager中
     private void setupViewPager(ViewPager viewPager) {
-        dicArrayList = new ArrayList<View>();
+        addChildFragmentList = new ArrayList<View>();
         LayoutInflater li = getLayoutInflater();
-        dicArrayList.add(li.inflate(R.layout.home_fragment_android,null,false));
-        dicArrayList.add(li.inflate(R.layout.home_fragment_hot,null,false));
-        dicArrayList.add(li.inflate(R.layout.home_fragment_info,null,false));
-        mAdapter = new MyPagerAdapter(dicArrayList);
+        addChildFragmentList.add(li.inflate(R.layout.home_fragment_android,null,false));
+        addChildFragmentList.add(li.inflate(R.layout.home_fragment_hot,null,false));
+        addChildFragmentList.add(li.inflate(R.layout.home_fragment_info,null,false));
+        mAdapter = new MyPagerAdapter(addChildFragmentList);
         viewPager.setAdapter(mAdapter);
         viewPager.setCurrentItem(0);
     }
 
     //加载home中的子fragment替换
-    private void initFragment()
-    {
+    private void initFragment() {
         androidFragment = new AndroidFragment();
         hotFragment = new HotFragment();
         infoFragment = new InfoFragment();
         fragments = new Fragment[]{androidFragment, hotFragment, infoFragment};
         lastFragment = 0;
-        FragmentManager childFragmentManager = getChildFragmentManager();
 
-        childFragmentManager.beginTransaction()
+        getChildFragmentManager().beginTransaction()
                 .replace(R.id.dic_viewpager, androidFragment)
                 .show(androidFragment)
                 .commitAllowingStateLoss();
     }
 
     //子fragment替换
-    private void switchFragment(int lastFragment, int index)
-    {
+    private void switchFragment(int lastFragment, int index) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         //隐藏上个Fragment
         transaction.remove(fragments[lastFragment]);
-        if(fragments[index].isAdded() == false) {
-            transaction.replace(R.id.dic_viewpager,fragments[index]);
-        }
+        if(!fragments[index].isAdded()) transaction.replace(R.id.dic_viewpager, fragments[index]);
         transaction.show(fragments[index]).commitAllowingStateLoss();
         mAdapter.notifyDataSetChanged();//要通知adater更新一下
     }

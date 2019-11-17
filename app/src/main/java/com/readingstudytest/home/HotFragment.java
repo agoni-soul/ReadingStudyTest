@@ -37,7 +37,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HotFragment extends Fragment implements View.OnClickListener{
+public class HotFragment extends Fragment implements View.OnClickListener,
+        BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
     private LinearLayout llHotHeader;
     private TextView interview;
     private TextView studio3;
@@ -51,55 +52,16 @@ public class HotFragment extends Fragment implements View.OnClickListener{
     //banner布局
     private ArrayList<BannerDataBean> bannerDatas = new ArrayList<>();
     private int positionSliderView = 0;
-    private BaseSliderView.OnSliderClickListener onSliderClickListener=new BaseSliderView.OnSliderClickListener() {
-        @Override
-        public void onSliderClick(BaseSliderView slider) {
-            Intent intent = new Intent(getActivity(), ContentShowActivity.class);
-            intent.putExtra("request_address", bannerDatas.get(positionSliderView).getUrl());
-            startActivity(intent);
-        }
-    };
-    private ViewPagerEx.OnPageChangeListener onPageChangeListener=new ViewPagerEx.OnPageChangeListener() {
-
-        /*
-        * 当页面在滑动的时候会调用此方法，在滑动被停止之前，此方法回一直得到调用。
-        * 其中三个参数的含义分别为：
-        * position :当前页面，及你点击滑动的页面
-        * positionOffset:当前页面偏移的百分比
-        * positionOffsetPixels:当前页面偏移的像素位置
-        * */
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-        @Override
-        public void onPageSelected(int position) {
-            positionSliderView = position;
-        }
-
-        /*
-        * 状态改变时调用，
-        * state有三种状态（0，1，2）。
-        * state ==1的时辰默示正在滑动，
-        * state==2的时辰默示滑动完毕了，
-        * state==0的时辰默示什么都没做。
-        * 当页面开始滑动的时候，三种状态的变化顺序为（1，2，0）
-        * */
-        @Override
-        public void onPageScrollStateChanged(int state) {}
-    };
 
     private List<HotKeyDataBean> hotKeyDatas = new ArrayList<>();
 
-    @Override
-    public void onAttach(Context context){
-        super.onAttach(context);
-    }
+    private View localView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.home_fragment_hot, container, false);
-        return view;
+        localView = inflater.inflate(R.layout.home_fragment_hot, container, false);
+        return localView;
     }
 
     @Override
@@ -116,11 +78,6 @@ public class HotFragment extends Fragment implements View.OnClickListener{
             downloadHotBannerData();
             initHotBannerContent();
         }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -235,7 +192,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
                 if (result != null) {
                     Log.d("HotBanner", result.getData().size() + "");
                     bannerDatas = result.getData();
-                    updataUiBannerData();
+                    updateUiBannerData();
 //                    for(int i = 0; i < bannerDatas.size(); i ++){
 //                        Log.d("HotBanner", bannerDatas.get(i).getTitle());
 //                        Log.d("HotBanner", bannerDatas.get(i).getImagePath());
@@ -251,7 +208,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         });
     }
 
-    private void updataUiBannerData(){
+    private void updateUiBannerData(){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -266,7 +223,7 @@ public class HotFragment extends Fragment implements View.OnClickListener{
             textSliderView.description(bannerDatas.get(i).getTitle())
                     .image(bannerDatas.get(i).getImagePath())
                     .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(onSliderClickListener);
+                    .setOnSliderClickListener(this);
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle().putString("extra", bannerDatas.get(i).getDesc());
             sliderInterview.addSlider(textSliderView);
@@ -276,6 +233,41 @@ public class HotFragment extends Fragment implements View.OnClickListener{
         sliderInterview.setCustomIndicator(customInterviewPagerIndicator);//自定义指示器
         sliderInterview.setCustomAnimation(new DescriptionAnimation());//设置图片描述显示动画
         sliderInterview.setDuration(4000);//设置滚动时间，也是计时器时间
-        sliderInterview.addOnPageChangeListener(onPageChangeListener);
+        sliderInterview.addOnPageChangeListener(this);
     }
+
+    //BaseSliderView.OnSliderClickListener重写方法
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+        Intent intent = new Intent(getActivity(), ContentShowActivity.class);
+        intent.putExtra("request_address", bannerDatas.get(positionSliderView).getUrl());
+        startActivity(intent);
+    }
+
+    //ViewPagerEx.OnPageChangeListener中三个重写方法
+    /*
+     * 当页面在滑动的时候会调用此方法，在滑动被停止之前，此方法回一直得到调用。
+     * 其中三个参数的含义分别为：
+     * position :当前页面，及你点击滑动的页面
+     * positionOffset:当前页面偏移的百分比
+     * positionOffsetPixels:当前页面偏移的像素位置
+     * */
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+    @Override
+    public void onPageSelected(int position) {
+        positionSliderView = position;
+    }
+
+    /*
+     * 状态改变时调用，
+     * state有三种状态（0，1，2）。
+     * state ==1的时辰默示正在滑动，
+     * state==2的时辰默示滑动完毕了，
+     * state==0的时辰默示什么都没做。
+     * 当页面开始滑动的时候，三种状态的变化顺序为（1，2，0）
+     * */
+    @Override
+    public void onPageScrollStateChanged(int state) {}
 }
