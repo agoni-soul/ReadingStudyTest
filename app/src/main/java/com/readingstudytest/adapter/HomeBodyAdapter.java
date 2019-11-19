@@ -7,19 +7,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.readingstudytest.R;
 import com.readingstudytest.bean.ArticleBean;
-import com.readingstudytest.bean.HomeAndroidDatasBean;
-import com.readingstudytest.bean.HomeAndroidDatasTagsBean;
-import com.readingstudytest.bean.ListContentPersonBean;
 
 import java.util.List;
 
-public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidContentAdapter.ViewHolder> {
+public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHolder> {
 
     private List<ArticleBean.ArticleDetailBean> mListContentPerson;
+    private HomeBodyAdapter.ViewHolder localHolder;
+    private View localView;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView itemAuthor;
@@ -29,7 +30,7 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
         ImageView itemImage;
 
         LinearLayout itemTags;
-        ImageView itemCollectted;
+        ImageView itemCollected;
         ImageView itemCollectNormal;
         TextView itemTime;
 
@@ -42,26 +43,26 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
             itemImage = (ImageView) view.findViewById(R.id.iv_home_android_pic);
 
             itemTags = (LinearLayout) view.findViewById(R.id.ll_home_android_tags);
-            itemCollectted = (ImageView) view.findViewById(R.id.iv_home_android_collected);
+            itemCollected = (ImageView) view.findViewById(R.id.iv_home_android_collected);
             itemCollectNormal = (ImageView) view.findViewById(R.id.iv_home_android_collect_normal);
             itemTime = (TextView) view.findViewById(R.id.tv_home_android_time);
         }
     }
 
-    public HomeAndroidContentAdapter(List<ArticleBean.ArticleDetailBean> listContentPersonBeans){
+    public HomeBodyAdapter(List<ArticleBean.ArticleDetailBean> listContentPersonBeans){
         mListContentPerson = listContentPersonBeans;
     }
 
     @Override
-    public HomeAndroidContentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+    public HomeBodyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        localView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.home_android_item, parent, false);
-        HomeAndroidContentAdapter.ViewHolder holder = new HomeAndroidContentAdapter.ViewHolder(view);
-        return holder;
+        localHolder = new HomeBodyAdapter.ViewHolder(localView);
+        return localHolder;
     }
 
     @Override
-    public void onBindViewHolder(HomeAndroidContentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeBodyAdapter.ViewHolder holder, int position) {
         ArticleBean.ArticleDetailBean listContentPersonBean = mListContentPerson.get(position);
 
         holder.itemAuthor.setText(listContentPersonBean.getAuthor());
@@ -75,8 +76,9 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
             holder.itemImage.setVisibility(View.GONE);
         }else{
             holder.itemImage.setVisibility(View.VISIBLE);
-            //后续补充下载图片的地址
-//            holder.itemImage.setImageResource(listContentPersonBean.getChapterid());
+            Glide.with(localView.getContext())
+                    .load(listContentPersonBean.getEnvelopePic())
+                    .preload(70, 70);
         }
 
 
@@ -87,10 +89,10 @@ public class HomeAndroidContentAdapter extends RecyclerView.Adapter<HomeAndroidC
             //后续更新该部分布局
         }
         if(listContentPersonBean.getCollect()){
-            holder.itemCollectted.setVisibility(View.VISIBLE);
+            holder.itemCollected.setVisibility(View.VISIBLE);
             holder.itemCollectNormal.setVisibility(View.GONE);
         }else{
-            holder.itemCollectted.setVisibility(View.GONE);
+            holder.itemCollected.setVisibility(View.GONE);
             holder.itemCollectNormal.setVisibility(View.VISIBLE);
         }
         holder.itemTime.setText(listContentPersonBean.getNiceDate());

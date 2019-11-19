@@ -1,18 +1,15 @@
 package com.readingstudytest.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -26,36 +23,44 @@ import com.readingstudytest.ContentShowActivity;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
-import com.readingstudytest.bean.BannerDataBean;
-import com.readingstudytest.bean.BaseArrayBean;
-import com.readingstudytest.bean.HotKeyDataBean;
+import com.readingstudytest.adapter.HomeBodyAdapter;
+import com.readingstudytest.bean.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HotFragment extends Fragment implements View.OnClickListener,
         BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
-    private LinearLayout llHotHeader;
+    //得到该fragment的View实例对象
+    private View localView;
+
+    //home中的悬浮按钮
+    private FloatingActionButton floatingActionButton;
+
+    //hotKey布局
     private TextView interview;
     private TextView studio3;
     private TextView animation;
-    private FloatingActionButton floatingActionButton;
+    private List<HotKeyDataBean> hotKeyDatas = new ArrayList<>();
 
+    //banner布局
     private RelativeLayout rlInterviewSlider;
     private SliderLayout sliderInterview;
     private PagerIndicator customInterviewPagerIndicator;
-
-    //banner布局
     private ArrayList<BannerDataBean> bannerDatas = new ArrayList<>();
     private int positionSliderView = 0;
 
-    private List<HotKeyDataBean> hotKeyDatas = new ArrayList<>();
-
-    private View localView;
+    //hotBody布局
+    private RecyclerView rvHotBody;
+    private LinearLayoutManager layoutManagerHot;
+    private HomeBodyAdapter hotBodyAdapter;
+    private ArrayList<ArticleBean.ArticleDetailBean> hotBodyContent = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,22 +91,27 @@ public class HotFragment extends Fragment implements View.OnClickListener,
             case R.id.interview:
                 floatingActionButton.show();
                 rlInterviewSlider.setVisibility(View.VISIBLE);
+                downloadHotBodyContent(hotKeyDatas.get(0).getName());
+                Log.d("You clicked HotKey", hotKeyDatas.get(0).getName());
                 break;
             case R.id.studio3:
                 floatingActionButton.hide();
                 Toast.makeText(getActivity(), "You clicked view studio3", Toast.LENGTH_SHORT).show();
                 rlInterviewSlider.setVisibility(View.GONE);
+                downloadHotBodyContent(hotKeyDatas.get(1).getName());
+                Log.d("You clicked HotKey", hotKeyDatas.get(1).getName());
                 break;
             case R.id.animation:
                 floatingActionButton.hide();
                 Toast.makeText(getActivity(), "You clicked view animation", Toast.LENGTH_SHORT).show();
                 rlInterviewSlider.setVisibility(View.GONE);
+                downloadHotBodyContent(hotKeyDatas.get(2).getName());
+                Log.d("You clicked HotKey", hotKeyDatas.get(2).getName());
                 break;
         }
     }
 
     private void initView(){
-        llHotHeader = (LinearLayout) getActivity().findViewById(R.id.HomeHot_header);
         //悬浮按钮初始化
         floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
 
@@ -116,12 +126,52 @@ public class HotFragment extends Fragment implements View.OnClickListener,
 
         //动画 PagerView初始化
         animation = (TextView) getActivity().findViewById(R.id.animation);
+
+        //HotBody内容
+        rvHotBody = (RecyclerView) getActivity().findViewById(R.id.rv_hot_body);
+        layoutManagerHot = new LinearLayoutManager(getActivity());
     }
 
     private void initListener(){
         interview.setOnClickListener(this);
         studio3.setOnClickListener(this);
         animation.setOnClickListener(this);
+    }
+
+    private void downloadHotBodyContent(String name){
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("k",name);
+        RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
+        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
+        Call<BaseBean<ArticleBean>> call = getRequestInterface.getHotBodyContent(name);
+        call.enqueue(new Callback<BaseBean<ArticleBean>>() {
+            @Override
+            public void onResponse(Call<BaseBean<ArticleBean>> call, Response<BaseBean<ArticleBean>> response) {
+                BaseBean<ArticleBean> result = response.body();
+                if(result != null){
+                    Log.d("HotContent", result.getData().getDatas().size() + "");
+                    hotBodyContent = result.getData().getDatas();
+                    updateUiHotBodyContent();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseBean<ArticleBean>> call, Throwable t) {
+                Log.e("HotContent", t.getMessage());
+            }
+        });
+    }
+
+    private void updateUiHotBodyContent(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                layoutManagerHot.setOrientation(RecyclerView.VERTICAL);
+                rvHotBody.setLayoutManager(layoutManagerHot);
+                hotBodyAdapter = new HomeBodyAdapter(hotBodyContent);
+                rvHotBody.setAdapter(hotBodyAdapter);
+            }
+        });
     }
 
     private void downloadHotKeyData(){
@@ -148,9 +198,9 @@ public class HotFragment extends Fragment implements View.OnClickListener,
 
                     //子线程更新UI
                     updateUiHotKeyData();
-//                    for(int i = 0; i < hotKeyDatas.size(); i ++){
-//                        Log.d("HotKey", hotKeyDatas.get(i).getName());
-//                    }
+                    for(int i = 0; i < hotKeyDatas.size(); i ++){
+                        Log.d("HotKey", hotKeyDatas.get(i).getName());
+                    }
                 }
             }
 
@@ -193,11 +243,11 @@ public class HotFragment extends Fragment implements View.OnClickListener,
                     Log.d("HotBanner", result.getData().size() + "");
                     bannerDatas = result.getData();
                     updateUiBannerData();
-//                    for(int i = 0; i < bannerDatas.size(); i ++){
-//                        Log.d("HotBanner", bannerDatas.get(i).getTitle());
-//                        Log.d("HotBanner", bannerDatas.get(i).getImagePath());
-//                        Log.d("HotBanner", bannerDatas.get(i).getUrl());
-//                    }
+                    for(int i = 0; i < bannerDatas.size(); i ++){
+                        Log.d("HotBanner", bannerDatas.get(i).getTitle());
+                        Log.d("HotBanner", bannerDatas.get(i).getImagePath());
+                        Log.d("HotBanner", bannerDatas.get(i).getUrl());
+                    }
                 }
             }
 

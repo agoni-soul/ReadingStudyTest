@@ -115,7 +115,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/HomeHot_body"
+        android:id="@+id/rv_hot_body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">

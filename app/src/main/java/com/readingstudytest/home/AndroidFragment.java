@@ -1,54 +1,62 @@
 package com.readingstudytest.home;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.GsonBuilder;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
-import com.readingstudytest.adapter.HomeAndroidContentAdapter;
+import com.readingstudytest.adapter.HomeBodyAdapter;
 import com.readingstudytest.bean.*;
 import com.readingstudytest.bean.BaseBean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+//import io.reactivex.ObservableEmitter;
+//import io.reactivex.ObservableOnSubscribe;
+//import io.reactivex.android.schedulers.AndroidSchedulers;
+//import io.reactivex.functions.Consumer;
+//import io.reactivex.schedulers.Schedulers;
+//import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class AndroidFragment extends Fragment implements View.OnClickListener{
+    private Activity mActivity;
+    private View localView;
+
     private RecyclerView rvHomeAndroid;
     private FloatingActionButton fab;
 
     private ArrayList<ArticleBean.ArticleDetailBean> androidChapterContent =
             new ArrayList<>();
 
-    //网络请求数据
-    private RequestDataByRetrofit retrofit;
-    private GetRequestInterface getRequestInterface;
-
     //该变量放在updateUiAndroidChapterData()方法中会报错
     private LinearLayoutManager layoutManagerAndroid;
 
-    private HomeAndroidContentAdapter homeAndroidContentAdapter;
-
-    private View localView;
+    private HomeBodyAdapter androidBodyAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onAttach(@NonNull Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         localView = inflater.inflate(R.layout.home_fragment_android, container, false);
 
@@ -67,9 +75,40 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 //        }
 
         downloadAndroidChapterContent();
+//        useRxJavaUpdateUI();
     }
 
-    public void downloadAndroidChapterContent(){
+    public void initView(){
+        rvHomeAndroid = (RecyclerView) mActivity.findViewById(R.id.rl_home_android);
+        fab = (FloatingActionButton) mActivity.findViewById(R.id.fab_android_home_fragment);
+        layoutManagerAndroid = new LinearLayoutManager(mActivity);
+    }
+
+    private void useRxJavaUpdateUI(){
+        //使用RxJava第三方库
+        //创建被观察者
+//        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<String> e) throws Exception {
+//                downloadAndroidChapterContent();
+//            }
+//        });
+//
+//        //创建观察者
+//        Consumer<String> consumer = new Consumer<String>() {
+//            @Override
+//            public void accept(String s) throws Exception {
+//                updateUiAndroidChapterData();
+//            }
+//        };
+//
+//        //subscribeOn()指定的是发送事件的线程，observeOn()指定的是接受事件的线程
+//        observable.subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread());
+////                .subscribe(consumer);
+    }
+
+    private void downloadAndroidChapterContent(){
 //        retrofit2.Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl("https://www.wanandroid.com/")
 //                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
@@ -82,8 +121,8 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 
         call.enqueue(new Callback<BaseBean<ArticleBean>>() {
             @Override
-            public void onResponse(Call<BaseBean<ArticleBean>> call,
-                                   Response<BaseBean<ArticleBean>> response) {
+            public void onResponse(@Nullable Call<BaseBean<ArticleBean>> call,
+                                   @Nullable Response<BaseBean<ArticleBean>> response) {
                 BaseBean<ArticleBean> result = response.body();//关键
                 //判断result数据是否为空
                 if (result != null) {
@@ -94,28 +133,27 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
             }
 
             @Override
-            public void onFailure(Call<BaseBean<ArticleBean>> call, Throwable t) {
+            public void onFailure(@Nullable Call<BaseBean<ArticleBean>> call, Throwable t) {
                 Log.e("AndroidChapterErrorInfo", t.getMessage());
             }
         });
     }
 
     private void updateUiAndroidChapterData(){
-        getActivity().runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 layoutManagerAndroid.setOrientation(RecyclerView.VERTICAL);
                 rvHomeAndroid.setLayoutManager(layoutManagerAndroid);
-                homeAndroidContentAdapter = new HomeAndroidContentAdapter(androidChapterContent);
-                rvHomeAndroid.setAdapter(homeAndroidContentAdapter);
+                androidBodyAdapter = new HomeBodyAdapter(androidChapterContent);
+                rvHomeAndroid.setAdapter(androidBodyAdapter);
             }
         });
-    }
 
-    public void initView(){
-        rvHomeAndroid = (RecyclerView) getActivity().findViewById(R.id.rl_home_android);
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
-        layoutManagerAndroid = new LinearLayoutManager(getActivity());
+//        layoutManagerAndroid.setOrientation(RecyclerView.VERTICAL);
+//        rvHomeAndroid.setLayoutManager(layoutManagerAndroid);
+//        androidBodyAdapter = new HomeBodyAdapter(androidChapterContent);
+//        rvHomeAndroid.setAdapter(androidBodyAdapter);
     }
 
     @Override

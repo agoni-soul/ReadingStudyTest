@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/HomeInfo_header"
+        android:id="@+id/rv_info_header"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:gravity="center_vertical"
@@ -14,20 +14,10 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/HomeInfo_body"
+        android:id="@+id/rv_info_body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-    <!--下面这部分报错-->
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab_cate"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:src="@mipmap/fab_confirm"-->
-        <!--android:layout_marginRight="@dimen/dp_16"-->
-        <!--android:layout_marginBottom="@dimen/dp_16"/>-->
 </LinearLayout>
