@@ -1,6 +1,5 @@
 package com.readingstudytest.home;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,7 +31,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
 
     //Header的变量声明
     private RecyclerView rvInfoHeader;
-    private ArrayList<ProjectInfoBean> projectTreeDatas = new ArrayList<>();
+    private ArrayList<ItemNameAndIdBean> projectTreeDatas = new ArrayList<>();
     private InfoHeaderAdapter infoHeaderAdapter;
     //该变量放在updateUiAndroidChapterData()方法中会报错
     private LinearLayoutManager layoutManagerHeader;
@@ -50,7 +49,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
             if(HomeFragment.mActivity != null){
                 infoFragment.downloadBodyContent(msg.arg1);
             }
-//            new InfoFragment().downloadBodyContent(msg.arg1);
         }
     };
 
@@ -93,14 +91,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         layoutManagerInfo = new LinearLayoutManager(HomeFragment.mActivity);
     }
 
+    //获取Header的信息
     private void downloadProjectTreeData(){
-//        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://www.wanandroid.com/")
-//                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-//                .build();
-//
-//        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-//        Call<BaseArrayBean<ProjectTreeDataBean>> call = service.getInfoProjectTreeContent();
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
         Call<BaseArrayBean<ProjectTreeDataBean>> call = getRequestInterface.getInfoProjectTreeContent();
@@ -108,13 +100,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onResponse(Call<BaseArrayBean<ProjectTreeDataBean>> call,
                                    Response<BaseArrayBean<ProjectTreeDataBean>> response) {
-                ArrayList<ProjectTreeDataBean> result = response.body().getData();//关键
-                //判断result数据是否为空
-                if (result != null) {
-                    Log.d("InfoProjectTree", result.size() + "");
-                    for(int i = 0; i < result.size(); i ++){
-                        projectTreeDatas.add(new ProjectInfoBean(result.get(i).getId(),
-                                result.get(i).getName()));
+                //判断response.body()数据是否为空
+                if (response.body() != null) {
+                    for(int i = 0; i < response.body().getData().size(); i ++){
+                        projectTreeDatas.add(new ItemNameAndIdBean(response.body().getData().get(i).getId(),
+                                response.body().getData().get(i).getName()));
                         Log.d("InfoProjectTree", projectTreeDatas.get(i).getName() + "\t" + projectTreeDatas.get(i).getId());
                     }
                     updateUiProjectTreeData();
@@ -127,7 +117,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
-
     private void updateUiProjectTreeData(){
         HomeFragment.mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -140,6 +129,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         });
     }
 
+    //获取Body的信息
     private void downloadBodyContent(int id){
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
@@ -163,7 +153,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
-
     public  void updateUiInfoBodyContent(){
         HomeFragment.mActivity.runOnUiThread(new Runnable() {
             @Override

@@ -21,18 +21,22 @@
             />
     </androidx.appcompat.widget.Toolbar>
 
-    <Button
-        android:id="@+id/todo_button"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_todo_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:text="todo" />
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:background="@color/theme_color_primary"
+        android:layout_marginBottom="@dimen/dp_10">
 
-    <TextView
-        android:id="@+id/todo_textView"
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_todo_body"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="公众号"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

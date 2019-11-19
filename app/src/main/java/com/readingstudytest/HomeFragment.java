@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
-    public final static String TAG_REQUESTURL= "requestUrl";
 
     private ImageView android;
     private ImageView hot;
@@ -57,13 +56,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     private View localView;
     public static Activity mActivity;
-
-    //用于跳转到ContentShowActivity
-    public static void jumpContentShowActivity(String tag, String requestAddress){
-        Intent intent = new Intent(mActivity, ContentShowActivity.class);
-        intent.putExtra(tag, requestAddress);
-        mActivity.startActivity(intent);
-    }
 
     @Override
     public void onAttach(@NonNull Activity activity) {

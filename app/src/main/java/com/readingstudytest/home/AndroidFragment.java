@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.readingstudytest.IInterface.GetRequestInterface;
+import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.HomeBodyAdapter;
@@ -35,7 +37,7 @@ import retrofit2.Response;
 
 
 public class AndroidFragment extends Fragment implements View.OnClickListener{
-    private Activity mActivity;
+    public static Activity mActivity;
     private View localView;
 
     private RecyclerView rvHomeAndroid;
@@ -69,18 +71,14 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 
         initView();
         fab.show();
-        //临时注销
-//        if(androidChapterContent == null || androidChapterContent.size() == 0){
-//            downloadAndroidChapterContent();
-//        }
-
-        downloadAndroidChapterContent();
+        downloadAndroidChapterContent(0);
 //        useRxJavaUpdateUI();
     }
 
     public void initView(){
+        //若点击公众号模板，再点击home模板，该控件就会报错，为空；但是mActivity不为空，不知道这个bug是什么！！
         rvHomeAndroid = (RecyclerView) mActivity.findViewById(R.id.rl_home_android);
-        fab = (FloatingActionButton) mActivity.findViewById(R.id.fab_android_home_fragment);
+        fab = (FloatingActionButton) MainActivity.mActivity.findViewById(R.id.fab_android_home_fragment);
         layoutManagerAndroid = new LinearLayoutManager(mActivity);
     }
 
@@ -108,16 +106,10 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
 ////                .subscribe(consumer);
     }
 
-    private void downloadAndroidChapterContent(){
-//        retrofit2.Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://www.wanandroid.com/")
-//                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-//                .build();
-//        GetRequestInterface service = retrofit.create(GetRequestInterface.class);
-//        Call<BaseBean<ArticleBean>> call = service.getAndroidContent(0);
+    private void downloadAndroidChapterContent(int page){
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
-        Call<BaseBean<ArticleBean>> call = getRequestInterface.getAndroidContent(0);
+        Call<BaseBean<ArticleBean>> call = getRequestInterface.getAndroidContent(page);
 
         call.enqueue(new Callback<BaseBean<ArticleBean>>() {
             @Override

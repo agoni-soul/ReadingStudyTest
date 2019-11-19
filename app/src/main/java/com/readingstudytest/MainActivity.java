@@ -1,10 +1,7 @@
 package com.readingstudytest;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -17,18 +14,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
-
 public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener{
+    public static Activity mActivity;
+    public final static String TAG_REQUESTURL= "requestUrl";
 
     private ViewPager viewPager;
     private FloatingActionButton fab;
@@ -39,17 +34,25 @@ public class MainActivity extends AppCompatActivity implements
 
     private  HomeFragment dicFragment;
     private ArticleFragment gankFragment;
-    private TencentFragment todoFragment;
+    private TodoFragment todoFragment;
     private PersonFragment personFragment;
     private Fragment[] fragments;
     private int lastIndexFragment;
 
     private BottomNavigationView navView;
 
+    //用于跳转到ContentShowActivity
+    public static void jumpContentShowActivity(String tag, String requestAddress){
+        Intent intent = new Intent(mActivity, ContentShowActivity.class);
+        intent.putExtra(tag, requestAddress);
+        mActivity.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mActivity = this;
 
         initView();
         setView();
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements
     private void initFragment() {
         dicFragment = new HomeFragment();
         gankFragment = new ArticleFragment();
-        todoFragment = new TencentFragment();
+        todoFragment = new TodoFragment();
         personFragment = new PersonFragment();
         fragments = new Fragment[]{dicFragment, gankFragment, todoFragment, personFragment};
         lastIndexFragment = 1;

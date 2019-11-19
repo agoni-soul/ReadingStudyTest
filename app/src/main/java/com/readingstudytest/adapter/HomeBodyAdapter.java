@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.readingstudytest.ContentShowActivity;
 import com.readingstudytest.HomeFragment;
+import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
 import com.readingstudytest.bean.ArticleBean;
 
@@ -75,7 +76,7 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
         holder.itemContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeFragment.jumpContentShowActivity(HomeFragment.TAG_REQUESTURL,
+                MainActivity.jumpContentShowActivity(MainActivity.TAG_REQUESTURL,
                         mListContentPerson.get(holder.getAdapterPosition()).getLink());
             }
         });
@@ -130,8 +131,6 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
             holder.itemCollectNormal.setVisibility(View.VISIBLE);
         }
         holder.itemTime.setText(listContentPersonBean.getNiceDate());
-
-        //设置监听
     }
 
     @Override

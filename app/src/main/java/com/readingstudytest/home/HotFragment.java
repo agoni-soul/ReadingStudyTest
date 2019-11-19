@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.readingstudytest.ContentShowActivity;
 import com.readingstudytest.HomeFragment;
 import com.readingstudytest.IInterface.GetRequestInterface;
+import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.HomeBodyAdapter;
@@ -290,7 +291,7 @@ public class HotFragment extends Fragment implements View.OnClickListener,
     //BaseSliderView.OnSliderClickListener重写方法
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        HomeFragment.jumpContentShowActivity(HomeFragment.TAG_REQUESTURL,
+        MainActivity.jumpContentShowActivity(MainActivity.TAG_REQUESTURL,
                 bannerDatas.get(positionSliderView).getUrl());
     }
 

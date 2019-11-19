@@ -1,10 +1,10 @@
 package com.readingstudytest.bean;
 
-public class ProjectInfoBean {
+public class ItemNameAndIdBean {
     private int id;
     private String name;
 
-    public ProjectInfoBean(int id, String name){
+    public ItemNameAndIdBean(int id, String name){
         this.id = id;
         this.name = name;
     }

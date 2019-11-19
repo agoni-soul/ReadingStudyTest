@@ -39,8 +39,7 @@ public interface GetRequestInterface {
     @GET("wxarticle/chapters/json")
     Call<BaseArrayBean<WxArticleBean>> getTodoChaptersContent();
     @GET("wxarticle/list/{id}/0/json")//对应于chapters中getId()
-    Call<BaseBean<ArticleBean>> getTodoContent(@Path("id") int id);
-
+    Call<BaseBean<ArticleBean>> getTodoBodyContent(@Path("id") int id);
 
 
     //person版块
@@ -48,10 +47,6 @@ public interface GetRequestInterface {
     @FormUrlEncoded//百度一下这个标签的使用
     @POST//("user/login")//一定要有接口的路径
     Call<BaseBean<UserInformationBean>> getInfoAddUrl(@Url String url, @FieldMap HashMap<String, Object> map);//看一下@FieldMap 和@Querymap的区别
-
-
-
-
 
     //该部分只是用于测试
     @FormUrlEncoded//百度一下这个标签的使用
