@@ -37,6 +37,7 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
         ImageView itemCollected;
         ImageView itemCollectNormal;
         TextView itemTime;
+        int lastItemCollectStarId;
 
         public ViewHolder(View view){
             super(view);
@@ -52,6 +53,7 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
             itemCollected = (ImageView) view.findViewById(R.id.iv_home_android_collected);
             itemCollectNormal = (ImageView) view.findViewById(R.id.iv_home_android_collect_normal);
             itemTime = (TextView) view.findViewById(R.id.tv_home_android_time);
+            lastItemCollectStarId = R.mipmap.icon_collect_normal;
         }
     }
 
@@ -78,10 +80,17 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
             }
         });
 
-        holder.itemCollected.setOnClickListener(new View.OnClickListener() {
+        holder.itemCollectNormal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                int position = holder.getAdapterPosition();
+                if(holder.lastItemCollectStarId == R.mipmap.ic_stared){
+                    holder.itemCollectNormal.setImageResource(R.mipmap.icon_collect_normal);
+                    holder.lastItemCollectStarId = R.mipmap.icon_collect_normal;
+                }else {
+                    holder.itemCollectNormal.setImageResource(R.mipmap.ic_stared);
+                    holder.lastItemCollectStarId = R.mipmap.ic_stared;
+                }
             }
         });
     }

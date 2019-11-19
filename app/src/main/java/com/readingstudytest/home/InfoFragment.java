@@ -55,7 +55,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.home_fragment_info, container, false);
         return view;
