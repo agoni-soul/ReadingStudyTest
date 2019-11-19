@@ -1,5 +1,6 @@
 package com.readingstudytest.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.readingstudytest.ContentShowActivity;
+import com.readingstudytest.HomeFragment;
 import com.readingstudytest.R;
 import com.readingstudytest.bean.ArticleBean;
 
@@ -19,10 +22,11 @@ import java.util.List;
 public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHolder> {
 
     private List<ArticleBean.ArticleDetailBean> mListContentPerson;
-    private HomeBodyAdapter.ViewHolder localHolder;
     private View localView;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
+        LinearLayout itemContent;
+
         TextView itemAuthor;
         TextView itemChapter;
 
@@ -36,6 +40,8 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
 
         public ViewHolder(View view){
             super(view);
+            itemContent = (LinearLayout) view.findViewById(R.id.ll_adapter_android);
+
             itemAuthor = (TextView) view.findViewById(R.id.tv_home_android_author);
             itemChapter = (TextView) view.findViewById(R.id.tv_home_android_chapter);
 
@@ -53,12 +59,31 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
         mListContentPerson = listContentPersonBeans;
     }
 
+    @NonNull
     @Override
-    public HomeBodyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HomeBodyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         localView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.home_android_item, parent, false);
-        localHolder = new HomeBodyAdapter.ViewHolder(localView);
+        HomeBodyAdapter.ViewHolder localHolder = new HomeBodyAdapter.ViewHolder(localView);
+        setListener(localHolder, localView);
         return localHolder;
+    }
+
+    private void setListener(ViewHolder holder, View view){
+        holder.itemContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeFragment.jumpContentShowActivity(HomeFragment.TAG_REQUESTURL,
+                        mListContentPerson.get(holder.getAdapterPosition()).getLink());
+            }
+        });
+
+        holder.itemCollected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -78,7 +103,7 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
             holder.itemImage.setVisibility(View.VISIBLE);
             Glide.with(localView.getContext())
                     .load(listContentPersonBean.getEnvelopePic())
-                    .preload(70, 70);
+                    .into(holder.itemImage);
         }
 
 
@@ -96,6 +121,8 @@ public class HomeBodyAdapter extends RecyclerView.Adapter<HomeBodyAdapter.ViewHo
             holder.itemCollectNormal.setVisibility(View.VISIBLE);
         }
         holder.itemTime.setText(listContentPersonBean.getNiceDate());
+
+        //设置监听
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.readingstudytest.ContentShowActivity;
+import com.readingstudytest.HomeFragment;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
@@ -289,9 +290,8 @@ public class HotFragment extends Fragment implements View.OnClickListener,
     //BaseSliderView.OnSliderClickListener重写方法
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        Intent intent = new Intent(getActivity(), ContentShowActivity.class);
-        intent.putExtra("request_address", bannerDatas.get(positionSliderView).getUrl());
-        startActivity(intent);
+        HomeFragment.jumpContentShowActivity(HomeFragment.TAG_REQUESTURL,
+                bannerDatas.get(positionSliderView).getUrl());
     }
 
     //ViewPagerEx.OnPageChangeListener中三个重写方法

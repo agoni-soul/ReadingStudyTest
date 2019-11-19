@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.readingstudytest.HomeFragment;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
@@ -28,7 +29,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InfoFragment extends Fragment implements View.OnClickListener{
-    private static Activity mActivity;
 
     //Header的变量声明
     private RecyclerView rvInfoHeader;
@@ -47,18 +47,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     public static Handler handlerInfo = new Handler(){
         public void handleMessage(Message msg){
             InfoFragment infoFragment = new InfoFragment();
-            if(mActivity != null){
+            if(HomeFragment.mActivity != null){
                 infoFragment.downloadBodyContent(msg.arg1);
             }
 //            new InfoFragment().downloadBodyContent(msg.arg1);
         }
     };
-
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,13 +84,13 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView(){
-        rvInfoHeader = (RecyclerView) mActivity.findViewById(R.id.rv_info_header);
-        layoutManagerHeader = new LinearLayoutManager(mActivity);
+        rvInfoHeader = (RecyclerView) HomeFragment.mActivity.findViewById(R.id.rv_info_header);
+        layoutManagerHeader = new LinearLayoutManager(HomeFragment.mActivity);
     }
 
     private void initViewBody(){
-        rvInfoBody = (RecyclerView) mActivity.findViewById(R.id.rv_info_body);
-        layoutManagerInfo = new LinearLayoutManager(mActivity);
+        rvInfoBody = (RecyclerView) HomeFragment.mActivity.findViewById(R.id.rv_info_body);
+        layoutManagerInfo = new LinearLayoutManager(HomeFragment.mActivity);
     }
 
     private void downloadProjectTreeData(){
@@ -135,7 +129,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     }
 
     private void updateUiProjectTreeData(){
-        mActivity.runOnUiThread(new Runnable() {
+        HomeFragment.mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 layoutManagerHeader.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -171,7 +165,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     }
 
     public  void updateUiInfoBodyContent(){
-        mActivity.runOnUiThread(new Runnable() {
+        HomeFragment.mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 initViewBody();

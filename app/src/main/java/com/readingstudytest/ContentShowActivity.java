@@ -24,7 +24,7 @@ public class ContentShowActivity extends AppCompatActivity {
     }
 
     private String getAddress(){
-        return getIntent().getStringExtra("request_address");
+        return getIntent().getStringExtra("requestUrl");
     }
 
     private void showRequestDataContent(final String address){

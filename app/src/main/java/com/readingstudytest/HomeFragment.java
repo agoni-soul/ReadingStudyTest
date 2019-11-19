@@ -1,7 +1,9 @@
 package com.readingstudytest;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
+    public final static String TAG_REQUESTURL= "requestUrl";
 
     private ImageView android;
     private ImageView hot;
@@ -52,6 +56,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private int lastFragment;
 
     private View localView;
+    public static Activity mActivity;
+
+    //用于跳转到ContentShowActivity
+    public static void jumpContentShowActivity(String tag, String requestAddress){
+        Intent intent = new Intent(mActivity, ContentShowActivity.class);
+        intent.putExtra(tag, requestAddress);
+        mActivity.startActivity(intent);
+    }
+
+    @Override
+    public void onAttach(@NonNull Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,9 +100,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        LayoutInflater inflator = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflator = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.home_fragment, null);
-        android.app.ActionBar actionBar = getActivity().getActionBar();
+        android.app.ActionBar actionBar = mActivity.getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
@@ -107,12 +125,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void initView(){
-        android = (ImageView) getActivity().findViewById(R.id.android);
-        hot = (ImageView) getActivity().findViewById(R.id.hot);
-        info = (ImageView) getActivity().findViewById(R.id.info);
+        android = (ImageView) mActivity.findViewById(R.id.android);
+        hot = (ImageView) mActivity.findViewById(R.id.hot);
+        info = (ImageView) mActivity.findViewById(R.id.info);
 
-        dicViewPager = (ViewPager) getActivity().findViewById(R.id.dic_viewpager);
-        drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+        dicViewPager = (ViewPager) mActivity.findViewById(R.id.dic_viewpager);
+        drawerLayout = (DrawerLayout) mActivity.findViewById(R.id.drawer_layout);
     }
 
     private void initListener(){
