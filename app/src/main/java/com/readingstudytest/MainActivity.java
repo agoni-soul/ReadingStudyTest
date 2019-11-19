@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements
         addFragmentList.add(li.inflate(R.layout.person_fragment,null,false));
         mAdapter = new MyPagerAdapter(addFragmentList);
         viewPager.setAdapter(mAdapter);
+        viewPager.setCurrentItem(0);
     }
 
     private void initFragment() {
@@ -93,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements
         todoFragment = new TodoFragment();
         personFragment = new PersonFragment();
         fragments = new Fragment[]{dicFragment, gankFragment, todoFragment, personFragment};
-        lastIndexFragment = 1;
+        lastIndexFragment = 0;
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.viewpager, gankFragment)
-                .show(gankFragment)
+                .replace(R.id.viewpager, dicFragment)
+                .show(dicFragment)
                 .commitAllowingStateLoss();
     }
 

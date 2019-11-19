@@ -68,18 +68,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                              Bundle savedInstanceState){
         localView = inflater.inflate(R.layout.home_fragment, container, false);
         setHasOptionsMenu(true);
-        return localView;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         initView();
         setupViewPager(dicViewPager);
         initFragment();
         initListener();
         setActionBar();
+        return localView;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private void setActionBar(){
@@ -117,12 +117,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void initView(){
-        android = (ImageView) mActivity.findViewById(R.id.android);
-        hot = (ImageView) mActivity.findViewById(R.id.hot);
-        info = (ImageView) mActivity.findViewById(R.id.info);
+        android = (ImageView) localView.findViewById(R.id.android);
+        hot = (ImageView) localView.findViewById(R.id.hot);
+        info = (ImageView) localView.findViewById(R.id.info);
 
-        dicViewPager = (ViewPager) mActivity.findViewById(R.id.dic_viewpager);
-        drawerLayout = (DrawerLayout) mActivity.findViewById(R.id.drawer_layout);
+        dicViewPager = (ViewPager) localView.findViewById(R.id.dic_viewpager);
+        drawerLayout = (DrawerLayout) localView.findViewById(R.id.drawer_layout);
     }
 
     private void initListener(){
@@ -187,7 +187,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         infoFragment = new InfoFragment();
         fragments = new Fragment[]{androidFragment, hotFragment, infoFragment};
         lastFragment = 0;
-
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.dic_viewpager, androidFragment)
                 .show(androidFragment)

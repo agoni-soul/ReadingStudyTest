@@ -62,22 +62,22 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState){
         localView = inflater.inflate(R.layout.home_fragment_android, container, false);
 
+        initView();
+        fab.show();
+        downloadAndroidChapterContent(0);
+//        useRxJavaUpdateUI();
+
         return localView;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initView();
-        fab.show();
-        downloadAndroidChapterContent(0);
-//        useRxJavaUpdateUI();
     }
 
     public void initView(){
         //若点击公众号模板，再点击home模板，该控件就会报错，为空；但是mActivity不为空，不知道这个bug是什么！！
-        rvHomeAndroid = (RecyclerView) mActivity.findViewById(R.id.rl_home_android);
+        rvHomeAndroid = (RecyclerView) localView.findViewById(R.id.rl_home_android);
         fab = (FloatingActionButton) MainActivity.mActivity.findViewById(R.id.fab_android_home_fragment);
         layoutManagerAndroid = new LinearLayoutManager(mActivity);
     }
