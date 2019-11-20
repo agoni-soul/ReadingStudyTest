@@ -51,7 +51,7 @@ public class TodoHeaderAdapter extends RecyclerView.Adapter<TodoHeaderAdapter.Vi
                 //使用handler机制进行消息传输
                 Message message = new Message();
                 message.arg1 = mTodoItemList.get(position).getId();
-                TodoFragment.handlerInfo.sendMessage(message);
+                TodoFragment.handlerTodo.sendMessage(message);
             }
         });
         return localHolder;

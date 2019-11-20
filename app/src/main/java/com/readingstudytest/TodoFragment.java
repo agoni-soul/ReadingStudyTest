@@ -48,8 +48,8 @@ public class TodoFragment extends Fragment {
     private TodoBodyAdapter todoBodyAdapter;
     private static ArrayList<ArticleBean.ArticleDetailBean> todoBodyContent = new ArrayList<>();
 
-    //创建handler机制用于在InfoHeaderAdapter中点击事件发送消息
-    public static Handler handlerInfo = new Handler(){
+    //创建handler机制用于在TodoHeaderAdapter中点击事件发送消息
+    public static Handler handlerTodo = new Handler(){
         public void handleMessage(Message msg){
             TodoFragment todoFragment = new TodoFragment();
             if(mActivity != null){
@@ -105,7 +105,7 @@ public class TodoFragment extends Fragment {
                 ArrayList<WxArticleBean> result = response.body().getData();//关键
                 //判断result数据是否为空
                 if (result != null) {
-                    Log.d("InfoProjectTree", result.size() + "");
+                    Log.d("TodoHeaderData", result.size() + "");
                     for(int i = 0; i < result.size(); i ++){
                         todoHeaderList.add(new ItemNameAndIdBean(result.get(i).getId(),
                                 result.get(i).getName()));

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements
     private MyPagerAdapter mAdapter;
 
     private  HomeFragment dicFragment;
-    private ArticleFragment gankFragment;
+    private GankFragment gankFragment;
     private TodoFragment todoFragment;
     private PersonFragment personFragment;
     private Fragment[] fragments;
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void initFragment() {
         dicFragment = new HomeFragment();
-        gankFragment = new ArticleFragment();
+        gankFragment = new GankFragment();
         todoFragment = new TodoFragment();
         personFragment = new PersonFragment();
         fragments = new Fragment[]{dicFragment, gankFragment, todoFragment, personFragment};

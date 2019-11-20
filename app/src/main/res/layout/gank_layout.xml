@@ -22,20 +22,18 @@
             />
     </androidx.appcompat.widget.Toolbar>
 
-    <Button
-        android:id="@+id/gank_button"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_gank_header"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:textAllCaps="true"
-        android:text="gank" />
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:background="@color/theme_color_primary"
+        android:layout_marginBottom="@dimen/dp_10"/>
 
-    <TextView
-        android:id="@+id/gank_textView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_gank_body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10.3"
-        android:textSize="30dp"
-        android:text="干货"/>
+        android:layout_weight="1"/>
 
 </LinearLayout>

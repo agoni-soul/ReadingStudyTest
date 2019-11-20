@@ -32,7 +32,10 @@ public interface GetRequestInterface {
 
 
     //gank版块
-
+    @GET("today")
+    Call<GankHeaderContentBean> getGankHeaderContent();
+    @GET("data/{cate}/20/0")
+    Call<GankBodyContentBean> getGankBodyContent(@Path("cate") String category);
 
     //todo版块
     //获得header的content
