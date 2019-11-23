@@ -126,6 +126,9 @@ public class GankFragment extends Fragment {
                 rvGankHeader.setLayoutManager(layoutManagerHeader);
                 gankHeaderAdapter = new GankHeaderAdapter(gankHeaderList);
                 rvGankHeader.setAdapter(gankHeaderAdapter);
+                if(gankHeaderList.size() > 0){
+                    downloadBodyContent(gankHeaderList.get(0));
+                }
             }
         });
     }

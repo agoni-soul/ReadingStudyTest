@@ -129,6 +129,9 @@ public class TodoFragment extends Fragment {
                 rvTodoHeader.setLayoutManager(layoutManagerHeader);
                 todoHeaderAdapter = new TodoHeaderAdapter(todoHeaderList);
                 rvTodoHeader.setAdapter(todoHeaderAdapter);
+                if(todoHeaderList.size() > 0){
+                    downloadBodyContent(todoHeaderList.get(0).getId());
+                }
             }
         });
     }

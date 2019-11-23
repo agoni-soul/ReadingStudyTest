@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
+                             Bundle savedInstanceState) {
         localView = inflater.inflate(R.layout.home_fragment, container, false);
         setHasOptionsMenu(true);
 
@@ -82,16 +82,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         super.onCreate(savedInstanceState);
     }
 
-    private void setActionBar(){
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        if(actionBar != null){
+    private void setActionBar() {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.mipmap.icon_category);
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         LayoutInflater inflator = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.home_fragment, null);
         android.app.ActionBar actionBar = mActivity.getActionBar();
@@ -105,18 +105,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.home:
                 drawerLayout.openDrawer(Gravity.LEFT);
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
         return true;
     }
 
-    private void initView(){
+    private void initView() {
         android = (ImageView) localView.findViewById(R.id.android);
         hot = (ImageView) localView.findViewById(R.id.hot);
         info = (ImageView) localView.findViewById(R.id.info);
@@ -125,15 +125,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         drawerLayout = (DrawerLayout) localView.findViewById(R.id.drawer_layout);
     }
 
-    private void initListener(){
+    private void initListener() {
         android.setOnClickListener(this);
         hot.setOnClickListener(this);
         info.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.android:
                 replaceFragment(0);
                 break;
@@ -146,10 +146,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         }
     }
 
-    private void replaceFragment(int curIndex){
+    private void replaceFragment(int curIndex) {
         dicViewPager.setCurrentItem(curIndex);
-        if(lastFragment != curIndex) {
-            switchFragment(lastFragment,curIndex);
+        if (lastFragment != curIndex) {
+            switchFragment(lastFragment, curIndex);
             lastFragment = curIndex;
         }
     }
@@ -172,9 +172,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private void setupViewPager(ViewPager viewPager) {
         addChildFragmentList = new ArrayList<View>();
         LayoutInflater li = getLayoutInflater();
-        addChildFragmentList.add(li.inflate(R.layout.home_fragment_android,null,false));
-        addChildFragmentList.add(li.inflate(R.layout.home_fragment_hot,null,false));
-        addChildFragmentList.add(li.inflate(R.layout.home_fragment_info,null,false));
+        addChildFragmentList.add(li.inflate(R.layout.home_fragment_android, null, false));
+        addChildFragmentList.add(li.inflate(R.layout.home_fragment_hot, null, false));
+        addChildFragmentList.add(li.inflate(R.layout.home_fragment_info, null, false));
         mAdapter = new MyPagerAdapter(addChildFragmentList);
         viewPager.setAdapter(mAdapter);
         viewPager.setCurrentItem(0);
@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         //隐藏上个Fragment
         transaction.remove(fragments[lastFragment]);
-        if(!fragments[index].isAdded()) transaction.replace(R.id.dic_viewpager, fragments[index]);
+        if (!fragments[index].isAdded()) transaction.replace(R.id.dic_viewpager, fragments[index]);
         transaction.show(fragments[index]).commitAllowingStateLoss();
         mAdapter.notifyDataSetChanged();//要通知adater更新一下
     }

@@ -14,16 +14,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener{
     public static Activity mActivity;
     public final static String TAG_REQUESTURL= "requestUrl";
+    //用于存储Activity集合
+    public static HashMap<String, Activity> mActivityMap = new HashMap<>();
 
     private ViewPager viewPager;
     private FloatingActionButton fab;
@@ -40,6 +46,15 @@ public class MainActivity extends AppCompatActivity implements
     private int lastIndexFragment;
 
     private BottomNavigationView navView;
+
+    private static Handler handlerMainActivity = new Handler(){
+        public void handleMessage(Message msg){
+            switch (msg.obj.toString()){
+                case "gankFragment":
+                    break;
+            }
+        }
+    };
 
     //用于跳转到ContentShowActivity
     public static void jumpContentShowActivity(String tag, String requestAddress){
