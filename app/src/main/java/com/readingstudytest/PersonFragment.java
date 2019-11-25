@@ -29,8 +29,6 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonFragment extends Fragment implements View.OnClickListener, AppBarLayout.OnOffsetChangedListener{
-    private FloatingActionButton floatingActionButton;
-
     private AppBarLayout mineAppbarLayout;
     private TextView mineToolbarTitle;
     private LinearLayout llPersonHeader;
@@ -60,7 +58,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
 
         initPersonList();
         initView();
-        floatingActionButton.hide();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPersonList.setLayoutManager(layoutManager);
@@ -77,8 +74,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
     }
 
     public void initView(){
-        floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_android_home_fragment);
-
         mineAppbarLayout = (AppBarLayout) getActivity().findViewById(R.id.app_bar);
         mineToolbarTitle = (TextView) getActivity().findViewById(R.id.tv_person_title);
         llPersonHeader = (LinearLayout) getActivity().findViewById(R.id.ll_person_header);

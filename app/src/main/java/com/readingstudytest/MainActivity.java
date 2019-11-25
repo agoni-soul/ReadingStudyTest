@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.readingstudytest.IInterface.GetRequestInterface;
+import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.MyPagerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener{
     public static Activity mActivity;
     public final static String TAG_REQUESTURL= "requestUrl";
-    //用于存储Activity集合
-    public static HashMap<String, Activity> mActivityMap = new HashMap<>();
+    public final static String GankFragmentURL = "https://gank.io/api/";
+    public final static String BaseURL = "https://www.wanandroid.com/";
 
     private ViewPager viewPager;
     private FloatingActionButton fab;
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements
 
     private BottomNavigationView navView;
 
+    //Retrofit和RxJava的变量
+    public static RequestDataByRetrofit retrofit;
+    public static GetRequestInterface getRequestInterface;
+
     private static Handler handlerMainActivity = new Handler(){
         public void handleMessage(Message msg){
             switch (msg.obj.toString()){
@@ -61,6 +68,17 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(mActivity, ContentShowActivity.class);
         intent.putExtra(tag, requestAddress);
         mActivity.startActivity(intent);
+    }
+
+    //后续将所有使用Retrofit和RxJava合并，减少变量的使用。
+    private static void initRequestDataByRetrofitAndIGetRequestInterface(String url){
+        //步骤4：创建Retrofit对象
+        retrofit = RequestDataByRetrofit.getInstanceCustom(url,
+                RequestDataByRetrofit.getOkHttpClientInstance(),
+                RxJava2CallAdapterFactory.create());
+
+        // 步骤5：创建 网络请求接口 的实例
+        getRequestInterface = retrofit.getIGetRequestInterface();
     }
 
     @Override
@@ -132,12 +150,16 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_dic:
+                fab.show();
                 return replaceFragmentByNavigation(0);
             case R.id.navigation_gank:
+                fab.hide();
                 return replaceFragmentByNavigation(1);
             case R.id.navigation_todo:
+                fab.hide();
                 return replaceFragmentByNavigation(2);
             case R.id.navigation_tran:
+                fab.hide();
                 return replaceFragmentByNavigation(3);
         }
         return false;

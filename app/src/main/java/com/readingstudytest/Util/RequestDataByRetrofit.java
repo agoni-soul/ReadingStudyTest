@@ -14,10 +14,13 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
+import retrofit2.CallAdapter;
+import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RequestDataByRetrofit {
     private GetRequestInterface getRequestInterface;
+    private Retrofit retrofit;
 
     //获得默认baseUrl的实例
     public static RequestDataByRetrofit getInstance(){
@@ -25,21 +28,58 @@ public class RequestDataByRetrofit {
     }
 
     //获得自定义baseUrl的实例
-    public static RequestDataByRetrofit getInstanceCustomBaseUrl(final String baseUrl){
+    public static RequestDataByRetrofit getInstanceCustom(final String baseUrl){
         return new RequestDataByRetrofit(baseUrl);
+    }
+    public static RequestDataByRetrofit getInstanceCustom(final String baseUrl, OkHttpClient client){
+        return new RequestDataByRetrofit(baseUrl, client);
+    }
+    public static RequestDataByRetrofit getInstanceCustom(final String baseUrl, CallAdapter.Factory factory){
+        return new RequestDataByRetrofit(baseUrl, factory);
+    }
+    public static RequestDataByRetrofit getInstanceCustom(final String baseUrl, OkHttpClient client, CallAdapter.Factory factory){
+        return new RequestDataByRetrofit(baseUrl, client,  factory);
     }
 
     private RequestDataByRetrofit(){
-        retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
+        Retrofit retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://www.wanandroid.com/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
         getRequestInterface = retrofit.create(GetRequestInterface.class);
     }
     private RequestDataByRetrofit(final String baseUrl){
-        retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
+        retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .build();
+        getRequestInterface = retrofit.create(GetRequestInterface.class);
+    }
+    //自定义baseUrl，自定义OkHttpClient
+    private RequestDataByRetrofit(final String baseUrl, OkHttpClient client){
+        retrofit = new retrofit2.Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .client(client)
+                .build();
+        getRequestInterface = retrofit.create(GetRequestInterface.class);
+    }
+    //自定义baseUrl，自定义CallAdapter.Factory
+    private RequestDataByRetrofit(final String baseUrl, CallAdapter.Factory factory){
+        retrofit = new retrofit2.Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(factory)
+                .build();
+        getRequestInterface = retrofit.create(GetRequestInterface.class);
+    }
+    //自定义baseUrl，自定义OkHttpClient，自定义CallAdapter.Factory
+    private RequestDataByRetrofit(final String baseUrl, OkHttpClient client, CallAdapter.Factory factory){
+        retrofit = new retrofit2.Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .addCallAdapterFactory(factory)
                 .build();
         getRequestInterface = retrofit.create(GetRequestInterface.class);
     }

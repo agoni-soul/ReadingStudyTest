@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.TodoBodyAdapter;
@@ -26,15 +27,19 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
+import retrofit2.CallAdapter;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TodoFragment extends Fragment {
     private static Activity mActivity;
     private View localView;
-
-    private FloatingActionButton fab;
 
     //Header的变量
     private RecyclerView rvTodoHeader;
@@ -48,13 +53,15 @@ public class TodoFragment extends Fragment {
     private TodoBodyAdapter todoBodyAdapter;
     private static ArrayList<ArticleBean.ArticleDetailBean> todoBodyContent = new ArrayList<>();
 
+    //Retrofit和RxJava的变量
+    private static RequestDataByRetrofit retrofit;
+    private static GetRequestInterface getRequestInterface;
+
     //创建handler机制用于在TodoHeaderAdapter中点击事件发送消息
     public static Handler handlerTodo = new Handler(){
         public void handleMessage(Message msg){
             TodoFragment todoFragment = new TodoFragment();
-            if(mActivity != null){
-                todoFragment.downloadBodyContent(msg.arg1);
-            }
+            todoFragment.downloadBodyContentByRetrofitAndRxJava(msg.arg1);
         }
     };
 
@@ -65,38 +72,78 @@ public class TodoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         localView = inflater.inflate(R.layout.todo_layout, container, false);
+        initView();
+        if(retrofit == null || getRequestInterface == null){
+            initRequestDataByRetrofitAndIGetRequestInterface();
+        }
+        downloadHeaderDataByRetrofitAndRxJava();
         return localView;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private static void initRequestDataByRetrofitAndIGetRequestInterface(){
+        //步骤4：创建Retrofit对象
+        retrofit = RequestDataByRetrofit.getInstanceCustom(MainActivity.BaseURL, RxJava2CallAdapterFactory.create());
+
+        // 步骤5：创建 网络请求接口 的实例
+        getRequestInterface = retrofit.getIGetRequestInterface();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        initView();
-        downloadHeaderData();
     }
 
     public void initView(){
-        fab = (FloatingActionButton) mActivity.findViewById(R.id.fab_android_home_fragment);
         rvTodoHeader = (RecyclerView) mActivity.findViewById(R.id.rv_todo_header);
         layoutManagerHeader = new LinearLayoutManager(mActivity);
     }
 
-    public void initViewBody(){
+    private void initViewBody(){
         rvTodoBody = (RecyclerView) mActivity.findViewById(R.id.rv_todo_body);
         layoutManagerTodo = new LinearLayoutManager(mActivity);
     }
 
+    private void downloadHeaderDataByRetrofitAndRxJava(){
+        // 步骤6：采用Observable<...>形式 对 网络请求 进行封装
+        Observable<BaseArrayBean<WxArticleBean>> observable = getRequestInterface.getTodoChaptersContentByRxJava();
+
+        // 步骤7：发送网络请求
+        observable.subscribeOn(Schedulers.newThread())     // 在常规线程进行网络请求
+                .observeOn(AndroidSchedulers.mainThread()) // 回到主线程 处理请求结果
+                .subscribe(new Observer<BaseArrayBean<WxArticleBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d("TodoHeaderData", "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(BaseArrayBean<WxArticleBean> result) {
+                        // 步骤8：对返回的数据进行处理
+                        if (result != null) {
+                            Log.d("TodoHeaderData", result.getData().size() + "");
+                            for(int i = 0; i < result.getData().size(); i ++){
+                                todoHeaderList.add(new ItemNameAndIdBean(result.getData().get(i).getId(),
+                                        result.getData().get(i).getName()));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("TodoHeaderData", "请求失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("TodoHeaderData", "请求成功");
+                        updateUiHeaderData();
+                    }
+                });
+    }
     private void downloadHeaderData(){
-        RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
-        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
         Call<BaseArrayBean<WxArticleBean>> call = getRequestInterface.getTodoChaptersContent();
         call.enqueue(new Callback<BaseArrayBean<WxArticleBean>>() {
             @Override
@@ -122,23 +169,51 @@ public class TodoFragment extends Fragment {
         });
     }
     private void updateUiHeaderData(){
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                layoutManagerHeader.setOrientation(LinearLayoutManager.HORIZONTAL);
-                rvTodoHeader.setLayoutManager(layoutManagerHeader);
-                todoHeaderAdapter = new TodoHeaderAdapter(todoHeaderList);
-                rvTodoHeader.setAdapter(todoHeaderAdapter);
-                if(todoHeaderList.size() > 0){
-                    downloadBodyContent(todoHeaderList.get(0).getId());
-                }
-            }
-        });
+        layoutManagerHeader.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvTodoHeader.setLayoutManager(layoutManagerHeader);
+        todoHeaderAdapter = new TodoHeaderAdapter(todoHeaderList);
+        rvTodoHeader.setAdapter(todoHeaderAdapter);
+        if(todoHeaderList.size() > 0){
+            downloadBodyContentByRetrofitAndRxJava(todoHeaderList.get(0).getId());
+        }
     }
 
+    private void downloadBodyContentByRetrofitAndRxJava(int id){
+        // 步骤6：采用Observable<...>形式 对 网络请求 进行封装
+        Observable<BaseBean<ArticleBean>> observable = getRequestInterface.getTodoBodyContentByRxJava(id);
+
+        // 步骤7：发送网络请求
+        observable.subscribeOn(Schedulers.newThread())     // 在常规线程进行网络请求
+                .observeOn(AndroidSchedulers.mainThread()) // 回到主线程 处理请求结果
+                .subscribe(new Observer<BaseBean<ArticleBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d("TodoBodyContent", "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<ArticleBean> result) {
+                        // 步骤8：对返回的数据进行处理
+                        //判断result数据是否为空
+                        if (result != null) {
+                            Log.d("TodoBodyContent", result.getData().getDatas().size() + "");
+                            todoBodyContent = result.getData().getDatas();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("TodoBodyContent", "请求失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("TodoBodyContent", "请求成功");
+                        if(todoBodyContent.size() > 0) updateUiTodoBodyContent();
+                    }
+                });
+    }
     private void downloadBodyContent(int id){
-        RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
-        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
         Call<BaseBean<ArticleBean>> call = getRequestInterface.getTodoBodyContent(id);
         call.enqueue(new Callback<BaseBean<ArticleBean>>() {
             @Override
@@ -160,15 +235,10 @@ public class TodoFragment extends Fragment {
         });
     }
     private void updateUiTodoBodyContent(){
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                initViewBody();
-                layoutManagerTodo.setOrientation(RecyclerView.VERTICAL);
-                rvTodoBody.setLayoutManager(layoutManagerTodo);
-                todoBodyAdapter = new TodoBodyAdapter(todoBodyContent);
-                rvTodoBody.setAdapter(todoBodyAdapter);
-            }
-        });
+        initViewBody();
+        layoutManagerTodo.setOrientation(RecyclerView.VERTICAL);
+        rvTodoBody.setLayoutManager(layoutManagerTodo);
+        todoBodyAdapter = new TodoBodyAdapter(todoBodyContent);
+        rvTodoBody.setAdapter(todoBodyAdapter);
     }
 }

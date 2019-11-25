@@ -4,6 +4,7 @@ import com.readingstudytest.bean.*;
 
 import java.util.HashMap;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -36,6 +37,12 @@ public interface GetRequestInterface {
     Call<GankHeaderContentBean> getGankHeaderContent();
     @GET("data/{cate}/20/0")
     Call<GankBodyContentBean> getGankBodyContent(@Path("cate") String category);
+    //使用RxJava
+    @GET("today")
+    Observable<GankHeaderContentBean> getGankHeaderContentByRxJava();
+    @GET("data/{cate}/20/0")
+    Observable<GankBodyContentBean> getGankBodyContentByRxJava(@Path("cate") String category);
+
 
     //todo版块
     //获得header的content
@@ -43,6 +50,11 @@ public interface GetRequestInterface {
     Call<BaseArrayBean<WxArticleBean>> getTodoChaptersContent();
     @GET("wxarticle/list/{id}/0/json")//对应于chapters中getId()
     Call<BaseBean<ArticleBean>> getTodoBodyContent(@Path("id") int id);
+    //使用RxJava
+    @GET("wxarticle/chapters/json")
+    Observable<BaseArrayBean<WxArticleBean>> getTodoChaptersContentByRxJava();
+    @GET("wxarticle/list/{id}/0/json")//对应于chapters中getId()
+    Observable<BaseBean<ArticleBean>> getTodoBodyContentByRxJava(@Path("id") int id);
 
 
     //person版块
