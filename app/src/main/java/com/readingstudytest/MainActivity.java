@@ -9,7 +9,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.Util.RequestDataByRetrofit;
-import com.readingstudytest.adapter.MyPagerAdapter;
+import com.readingstudytest.adapter.MainFragmentPagerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
@@ -24,8 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener{
@@ -38,14 +36,6 @@ public class MainActivity extends AppCompatActivity implements
     private FloatingActionButton fab;
 
     private MenuItem menuItem;
-    private ArrayList<View> addFragmentList;
-    private MyPagerAdapter mAdapter;
-
-    private  HomeFragment dicFragment;
-    private GankFragment gankFragment;
-    private TodoFragment todoFragment;
-    private PersonFragment personFragment;
-    private Fragment[] fragments;
     private int lastIndexFragment;
 
     private BottomNavigationView navView;
@@ -89,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements
 
         initView();
         setView();
-        initFragment();
         initListener();
     }
 
@@ -100,49 +89,24 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void setView(){
-        setupViewPager(viewPager);
+        setFragmentPager();
         fab.show();
+    }
+
+    private void setFragmentPager(){
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new HomeFragment());
+        fragments.add(new GankFragment());
+        fragments.add(new TodoFragment());
+        fragments.add(new PersonFragment());
+        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), fragments));
+        lastIndexFragment = 0;
+        viewPager.setCurrentItem(0);
     }
 
     private void initListener(){
         navView.setOnNavigationItemSelectedListener(this);
         viewPager.addOnPageChangeListener(this);
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        addFragmentList = new ArrayList<View>();
-        LayoutInflater li = getLayoutInflater();
-        addFragmentList.add(li.inflate(R.layout.home_fragment,null,false));
-        addFragmentList.add(li.inflate(R.layout.gank_layout,null,false));
-        addFragmentList.add(li.inflate(R.layout.todo_layout,null,false));
-        addFragmentList.add(li.inflate(R.layout.person_fragment,null,false));
-        mAdapter = new MyPagerAdapter(addFragmentList);
-        viewPager.setAdapter(mAdapter);
-        viewPager.setCurrentItem(0);
-    }
-
-    private void initFragment() {
-        dicFragment = new HomeFragment();
-        gankFragment = new GankFragment();
-        todoFragment = new TodoFragment();
-        personFragment = new PersonFragment();
-        fragments = new Fragment[]{dicFragment, gankFragment, todoFragment, personFragment};
-        lastIndexFragment = 0;
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.viewpager, dicFragment)
-                .show(dicFragment)
-                .commitAllowingStateLoss();
-    }
-
-    private void switchFragment(int lastIndex, int curIndex) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //隐藏上个Fragment
-        transaction.hide(fragments[lastIndex]);
-        if(!fragments[curIndex].isAdded()) {
-            transaction.add(R.id.viewpager,fragments[curIndex]);
-        }
-        transaction.show(fragments[curIndex]).commitAllowingStateLoss();
-        mAdapter.notifyDataSetChanged();//要通知adater更新一下
     }
 
     //BottomNavigationView.OnNavigationItemSelectedListener重写
@@ -166,10 +130,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private boolean replaceFragmentByNavigation(int curIndexFragment){
-        viewPager.setCurrentItem(curIndexFragment);
-        if(lastIndexFragment != curIndexFragment) {
-            switchFragment(lastIndexFragment,curIndexFragment);
+//        viewPager.setCurrentItem(curIndexFragment);
+//        if(lastIndexFragment != curIndexFragment) {
+//            switchFragment(lastIndexFragment,curIndexFragment);
+//            lastIndexFragment = curIndexFragment;
+//        }
+        if(lastIndexFragment != curIndexFragment){
             lastIndexFragment = curIndexFragment;
+            viewPager.setCurrentItem(curIndexFragment);
         }
         return true;
     }
@@ -193,10 +161,14 @@ public class MainActivity extends AppCompatActivity implements
         //该方法只在滑动停止时调用，position滑动停止所在页面位置当滑动到某一位置，导航栏对应位置被按下
         menuItem = navView.getMenu().getItem(position);
         menuItem.setChecked(true);
-        //这里使用navigation.setSelectedItemId(position);无效，
-        //setSelectedItemId(position)的官网原句：Set the selected
-        // menu item ID. This behaves the same as tapping on an item
-        //未找到原因
+
+        //用于左右滑动时进行相应
+        if(position != 0){
+            fab.hide();
+        } else{
+            fab.show();
+        }
+        replaceFragmentByNavigation(position);
     }
 
     @Override

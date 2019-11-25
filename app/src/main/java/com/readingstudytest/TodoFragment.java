@@ -38,8 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TodoFragment extends Fragment {
-    private static Activity mActivity;
-    private View localView;
+    private static View localView;
 
     //Header的变量
     private RecyclerView rvTodoHeader;
@@ -64,12 +63,6 @@ public class TodoFragment extends Fragment {
             todoFragment.downloadBodyContentByRetrofitAndRxJava(msg.arg1);
         }
     };
-
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -97,13 +90,15 @@ public class TodoFragment extends Fragment {
     }
 
     public void initView(){
-        rvTodoHeader = (RecyclerView) mActivity.findViewById(R.id.rv_todo_header);
-        layoutManagerHeader = new LinearLayoutManager(mActivity);
+        rvTodoHeader = (RecyclerView) localView.findViewById(R.id.rv_todo_header);
+        layoutManagerHeader = new LinearLayoutManager(localView.getContext());
+        rvTodoBody = (RecyclerView) localView.findViewById(R.id.rv_todo_body);
+        layoutManagerTodo = new LinearLayoutManager(localView.getContext());
     }
 
     private void initViewBody(){
-        rvTodoBody = (RecyclerView) mActivity.findViewById(R.id.rv_todo_body);
-        layoutManagerTodo = new LinearLayoutManager(mActivity);
+        rvTodoBody = (RecyclerView) localView.findViewById(R.id.rv_todo_body);
+        layoutManagerTodo = new LinearLayoutManager(localView.getContext());
     }
 
     private void downloadHeaderDataByRetrofitAndRxJava(){

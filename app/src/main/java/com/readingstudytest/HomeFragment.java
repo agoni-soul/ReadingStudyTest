@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.readingstudytest.adapter.MyPagerAdapter;
+import com.readingstudytest.adapter.MainFragmentPagerAdapter;
 import com.readingstudytest.home.AndroidFragment;
 import com.readingstudytest.home.HotFragment;
 import com.readingstudytest.home.InfoFragment;
@@ -44,24 +45,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private DrawerLayout drawerLayout;
 
     private MenuItem menuItem;
-    private ArrayList<View> addChildFragmentList;
-    private MyPagerAdapter mAdapter;
-
-    //fragment
-    private AndroidFragment androidFragment;
-    private HotFragment hotFragment;
-    private InfoFragment infoFragment;
-    private Fragment[] fragments;
-    private int lastFragment;
+    private int lastIndexFragment;
 
     private View localView;
-    public static Activity mActivity;
-
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,16 +56,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         setHasOptionsMenu(true);
 
         initView();
-        setupViewPager(dicViewPager);
-        initFragment();
+        setFragmentPager();
         initListener();
         setActionBar();
         return localView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private void setFragmentPager(){
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new AndroidFragment());
+        fragments.add(new HotFragment());
+        fragments.add(new InfoFragment());
+        dicViewPager.setAdapter(new MainFragmentPagerAdapter(getChildFragmentManager(), fragments));
+        lastIndexFragment = 1;
+        dicViewPager.setCurrentItem(1);
     }
 
     private void setActionBar() {
@@ -92,9 +82,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        LayoutInflater inflator = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflator = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.home_fragment, null);
-        android.app.ActionBar actionBar = mActivity.getActionBar();
+        android.app.ActionBar actionBar = getActivity().getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
@@ -124,7 +114,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         dicViewPager = (ViewPager) localView.findViewById(R.id.dic_viewpager);
         drawerLayout = (DrawerLayout) localView.findViewById(R.id.drawer_layout);
     }
-
     private void initListener() {
         android.setOnClickListener(this);
         hot.setOnClickListener(this);
@@ -146,11 +135,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         }
     }
 
-    private void replaceFragment(int curIndex) {
-        dicViewPager.setCurrentItem(curIndex);
-        if (lastFragment != curIndex) {
-            switchFragment(lastFragment, curIndex);
-            lastFragment = curIndex;
+    private void replaceFragment(int curIndexFragment) {
+        if(lastIndexFragment != curIndexFragment){
+            lastIndexFragment = curIndexFragment;
+            dicViewPager.setCurrentItem(curIndexFragment);
         }
     }
 
@@ -162,44 +150,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     @Override
     public void onPageSelected(int position) {
         menuItem.setChecked(true);
+        Log.d("HomeFragment", position + "");
+        replaceFragment(position);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-    }
-
-    //将子布局导入到viewPager中
-    private void setupViewPager(ViewPager viewPager) {
-        addChildFragmentList = new ArrayList<View>();
-        LayoutInflater li = getLayoutInflater();
-        addChildFragmentList.add(li.inflate(R.layout.home_fragment_android, null, false));
-        addChildFragmentList.add(li.inflate(R.layout.home_fragment_hot, null, false));
-        addChildFragmentList.add(li.inflate(R.layout.home_fragment_info, null, false));
-        mAdapter = new MyPagerAdapter(addChildFragmentList);
-        viewPager.setAdapter(mAdapter);
-        viewPager.setCurrentItem(0);
-    }
-
-    //加载home中的子fragment替换
-    private void initFragment() {
-        androidFragment = new AndroidFragment();
-        hotFragment = new HotFragment();
-        infoFragment = new InfoFragment();
-        fragments = new Fragment[]{androidFragment, hotFragment, infoFragment};
-        lastFragment = 0;
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.dic_viewpager, androidFragment)
-                .show(androidFragment)
-                .commitAllowingStateLoss();
-    }
-
-    //子fragment替换
-    private void switchFragment(int lastFragment, int index) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        //隐藏上个Fragment
-        transaction.remove(fragments[lastFragment]);
-        if (!fragments[index].isAdded()) transaction.replace(R.id.dic_viewpager, fragments[index]);
-        transaction.show(fragments[index]).commitAllowingStateLoss();
-        mAdapter.notifyDataSetChanged();//要通知adater更新一下
     }
 }

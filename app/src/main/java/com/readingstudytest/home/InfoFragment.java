@@ -13,8 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.readingstudytest.HomeFragment;
 import com.readingstudytest.IInterface.GetRequestInterface;
+import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
 import com.readingstudytest.Util.RequestDataByRetrofit;
 import com.readingstudytest.adapter.HomeBodyAdapter;
@@ -23,11 +25,17 @@ import com.readingstudytest.bean.*;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InfoFragment extends Fragment implements View.OnClickListener{
+    private static View localView;
 
     //Header的变量声明
     private RecyclerView rvInfoHeader;
@@ -40,39 +48,36 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     private RecyclerView rvInfoBody;
     private LinearLayoutManager layoutManagerInfo;
     private HomeBodyAdapter infoBodyAdapter;
-    private static ArrayList<ArticleBean.ArticleDetailBean> infoBodyContent = new ArrayList<>();
+    private ArrayList<ArticleBean.ArticleDetailBean> infoBodyContent = new ArrayList<>();
+
+    //Retrofit和RxJava的变量
+    private static RequestDataByRetrofit retrofit;
+    private static GetRequestInterface getRequestInterface;
 
     //创建handler机制用于在InfoHeaderAdapter中点击事件发送消息
     public static Handler handlerInfo = new Handler(){
         public void handleMessage(Message msg){
             InfoFragment infoFragment = new InfoFragment();
-            if(HomeFragment.mActivity != null){
-                infoFragment.downloadBodyContent(msg.arg1);
-            }
+            infoFragment.downloadBodyContentByRxJava(msg.arg1);
         }
     };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.home_fragment_info, container, false);
-        return view;
+        localView = inflater.inflate(R.layout.home_fragment_info, container, false);
+        initView();
+        initRequestDataByRetrofitAndIGetRequestInterface();
+        downloadProjectTreeDataByRxJava();
+        return localView;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
+    private static void initRequestDataByRetrofitAndIGetRequestInterface(){
+        //步骤4：创建Retrofit对象
+        retrofit = RequestDataByRetrofit.getInstanceCustom(MainActivity.BaseURL, RxJava2CallAdapterFactory.create());
 
-        //清空上次的数据，防止rvInfoHeader中出现多份相同的数据。
-//        if(projectTreeDatas.size() > 0){
-//            projectTreeDatas.removeAll(projectTreeDatas);
-//            infoHeaderAdapter.notifyDataSetChanged();
-//            rvInfoHeader.setAdapter(infoHeaderAdapter);
-//        }
-        initView();
-        if(projectTreeDatas == null || projectTreeDatas.size() == 0) {
-            downloadProjectTreeData();
-        }
+        // 步骤5：创建 网络请求接口 的实例
+        getRequestInterface = retrofit.getIGetRequestInterface();
     }
 
     @Override
@@ -82,16 +87,54 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView(){
-        rvInfoHeader = (RecyclerView) HomeFragment.mActivity.findViewById(R.id.rv_info_header);
-        layoutManagerHeader = new LinearLayoutManager(HomeFragment.mActivity);
+        rvInfoHeader = (RecyclerView) localView.findViewById(R.id.rv_info_header);
+        layoutManagerHeader = new LinearLayoutManager(localView.getContext());
+        rvInfoBody = (RecyclerView) localView.findViewById(R.id.rv_info_body);
+        layoutManagerInfo = new LinearLayoutManager(localView.getContext());
     }
 
     private void initViewBody(){
-        rvInfoBody = (RecyclerView) HomeFragment.mActivity.findViewById(R.id.rv_info_body);
-        layoutManagerInfo = new LinearLayoutManager(HomeFragment.mActivity);
+        rvInfoBody = (RecyclerView) localView.findViewById(R.id.rv_info_body);
+        layoutManagerInfo = new LinearLayoutManager(localView.getContext());
     }
 
     //获取Header的信息
+    private void downloadProjectTreeDataByRxJava(){
+        // 步骤6：采用Observable<...>形式 对 网络请求 进行封装
+        Observable<BaseArrayBean<ProjectTreeDataBean>> observable = getRequestInterface.getInfoProjectTreeContentByRxJava();
+
+        // 步骤7：发送网络请求
+        observable.subscribeOn(Schedulers.newThread())     // 在常规线程进行网络请求
+                .observeOn(AndroidSchedulers.mainThread()) // 回到主线程 处理请求结果
+                .subscribe(new Observer<BaseArrayBean<ProjectTreeDataBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d("InfoProjectTree", "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(BaseArrayBean<ProjectTreeDataBean> result) {
+                        // 步骤8：对返回的数据进行处理
+                        if (result != null) {
+                            for(int i = 0; i < result.getData().size(); i ++){
+                                projectTreeDatas.add(new ItemNameAndIdBean(result.getData().get(i).getId(),
+                                        result.getData().get(i).getName()));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("InfoProjectTree", "请求失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("InfoProjectTree", "请求成功");
+                        updateUiProjectTreeData();
+                    }
+                });
+    }
     private void downloadProjectTreeData(){
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
@@ -107,7 +150,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
                                 response.body().getData().get(i).getName()));
                         Log.d("InfoProjectTree", projectTreeDatas.get(i).getName() + "\t" + projectTreeDatas.get(i).getId());
                     }
-                    updateUiProjectTreeData();
+//                    updateUiProjectTreeData();
                 }
             }
 
@@ -118,18 +161,50 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         });
     }
     private void updateUiProjectTreeData(){
-        HomeFragment.mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                layoutManagerHeader.setOrientation(LinearLayoutManager.HORIZONTAL);
-                rvInfoHeader.setLayoutManager(layoutManagerHeader);
-                infoHeaderAdapter = new InfoHeaderAdapter(projectTreeDatas);
-                rvInfoHeader.setAdapter(infoHeaderAdapter);
-            }
-        });
+        layoutManagerHeader.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvInfoHeader.setLayoutManager(layoutManagerHeader);
+        infoHeaderAdapter = new InfoHeaderAdapter(projectTreeDatas);
+        rvInfoHeader.setAdapter(infoHeaderAdapter);
+        if(projectTreeDatas.size() > 0){
+            downloadBodyContentByRxJava(projectTreeDatas.get(0).getId());
+        }
     }
 
     //获取Body的信息
+    private void downloadBodyContentByRxJava(int id){
+        // 步骤6：采用Observable<...>形式 对 网络请求 进行封装
+        Observable<BaseBean<ArticleBean>> observable = getRequestInterface.getInfoBodyContentByRxJava(id);
+
+        // 步骤7：发送网络请求
+        observable.subscribeOn(Schedulers.newThread())     // 在常规线程进行网络请求
+                .observeOn(AndroidSchedulers.mainThread()) // 回到主线程 处理请求结果
+                .subscribe(new Observer<BaseBean<ArticleBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d("InfoContent", "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<ArticleBean> result) {
+                        // 步骤8：对返回的数据进行处理
+                        if (result != null) {
+                            Log.d("InfoContent", result.getData().getDatas().size() + "");
+                            infoBodyContent = result.getData().getDatas();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("InfoContent", "请求失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("InfoContent", "请求成功");
+                        updateUiInfoBodyContent();
+                    }
+                });
+    }
     private void downloadBodyContent(int id){
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
@@ -154,15 +229,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener{
         });
     }
     public  void updateUiInfoBodyContent(){
-        HomeFragment.mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                initViewBody();
-                layoutManagerInfo.setOrientation(RecyclerView.VERTICAL);
-                rvInfoBody.setLayoutManager(layoutManagerInfo);
-                infoBodyAdapter = new HomeBodyAdapter(infoBodyContent);
-                rvInfoBody.setAdapter(infoBodyAdapter);
-            }
-        });
+        initViewBody();
+        layoutManagerInfo.setOrientation(RecyclerView.VERTICAL);
+        rvInfoBody.setLayoutManager(layoutManagerInfo);
+        infoBodyAdapter = new HomeBodyAdapter(infoBodyContent);
+        rvInfoBody.setAdapter(infoBodyAdapter);
     }
 }

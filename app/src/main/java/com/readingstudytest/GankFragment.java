@@ -40,8 +40,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GankFragment extends Fragment {
-    private static Activity mActivity;
-    private View localView;
+    private static View localView;
 
     //Header的变量
     private RecyclerView rvGankHeader;
@@ -68,12 +67,6 @@ public class GankFragment extends Fragment {
     };
 
     @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         localView = inflater.inflate(R.layout.gank_layout, container, false);
@@ -86,15 +79,15 @@ public class GankFragment extends Fragment {
     }
 
     public void initView(){
-        rvGankHeader = (RecyclerView) mActivity.findViewById(R.id.rv_gank_header);
-        layoutManagerHeader = new LinearLayoutManager(mActivity);
-        rvGankBody = (RecyclerView) mActivity.findViewById(R.id.rv_gank_body);
-        layoutManagerGank = new LinearLayoutManager(mActivity);
+        rvGankHeader = (RecyclerView) localView.findViewById(R.id.rv_gank_header);
+        layoutManagerHeader = new LinearLayoutManager(localView.getContext());
+        rvGankBody = (RecyclerView) localView.findViewById(R.id.rv_gank_body);
+        layoutManagerGank = new LinearLayoutManager(localView.getContext());
     }
 
     public void initViewBody(){
-        rvGankBody = (RecyclerView) mActivity.findViewById(R.id.rv_gank_body);
-        layoutManagerGank = new LinearLayoutManager(mActivity);
+        rvGankBody = (RecyclerView) localView.findViewById(R.id.rv_gank_body);
+        layoutManagerGank = new LinearLayoutManager(localView.getContext());
     }
 
     private static void initRequestDataByRetrofitAndIGetRequestInterface(){

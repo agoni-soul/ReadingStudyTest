@@ -13,6 +13,8 @@ public interface GetRequestInterface {
     //获得home的android版块的网络请求信息
     @GET("article/list/{page}/json")
     Call<BaseBean<ArticleBean>> getAndroidContent(@Path("page") int page);
+    @GET("article/list/{page}/json")
+    Observable<BaseBean<ArticleBean>> getAndroidContentByRxJava(@Path("page") int page);
 
     //home的hot版块
     @FormUrlEncoded
@@ -24,12 +26,25 @@ public interface GetRequestInterface {
     //获得studio3的key的网络请求信息
     @GET("hotkey/json")
     Call<BaseArrayBean<HotKeyDataBean>> getHotKeyContent();
+    @FormUrlEncoded
+    @POST("article/query/0/json")
+    Observable<BaseBean<ArticleBean>> getHotBodyContentRxJava(@Field("k") String name);
+    //获得interview的banner的网络请求信息
+    @GET("banner/json")
+    Observable<BaseArrayBean<BannerDataBean>> getHotBannerContentRxJava();
+    //获得studio3的key的网络请求信息
+    @GET("hotkey/json")
+    Observable<BaseArrayBean<HotKeyDataBean>> getHotKeyContentByRxJava();
 
     //获得info的header的网络请求信息
     @GET("project/tree/json")
     Call<BaseArrayBean<ProjectTreeDataBean>> getInfoProjectTreeContent();
     @GET("article/list/0/json")
     Call<BaseBean<ArticleBean>> getInfoBodyContent(@Query("cid") int id);
+    @GET("project/tree/json")
+    Observable<BaseArrayBean<ProjectTreeDataBean>> getInfoProjectTreeContentByRxJava();
+    @GET("article/list/0/json")
+    Observable<BaseBean<ArticleBean>> getInfoBodyContentByRxJava(@Query("cid") int id);
 
 
     //gank版块

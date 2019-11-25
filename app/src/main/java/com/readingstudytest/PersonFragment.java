@@ -29,6 +29,8 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonFragment extends Fragment implements View.OnClickListener, AppBarLayout.OnOffsetChangedListener{
+    private View localView;
+
     private AppBarLayout mineAppbarLayout;
     private TextView mineToolbarTitle;
     private LinearLayout llPersonHeader;
@@ -42,13 +44,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.person_fragment, container, false);
-        return view;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        localView = inflater.inflate(R.layout.person_fragment, container, false);
 
         if(mPersonList.size() > 0){
             mPersonList.removeAll(mPersonList);
@@ -59,10 +55,16 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
         initPersonList();
         initView();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(localView.getContext());
         rvPersonList.setLayoutManager(layoutManager);
         personListAdapter = new PersonListAdapter(mPersonList);
         rvPersonList.setAdapter(personListAdapter);
+        return localView;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     public void initPersonList(){
@@ -74,11 +76,11 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
     }
 
     public void initView(){
-        mineAppbarLayout = (AppBarLayout) getActivity().findViewById(R.id.app_bar);
-        mineToolbarTitle = (TextView) getActivity().findViewById(R.id.tv_person_title);
-        llPersonHeader = (LinearLayout) getActivity().findViewById(R.id.ll_person_header);
-        rvPersonList = (RecyclerView) getActivity().findViewById(R.id.mine_person_list);
-        personImage = (CircleImageView) getActivity().findViewById(R.id.iv_person_avatar);
+        mineAppbarLayout = (AppBarLayout) localView.findViewById(R.id.app_bar);
+        mineToolbarTitle = (TextView) localView.findViewById(R.id.tv_person_title);
+        llPersonHeader = (LinearLayout) localView.findViewById(R.id.ll_person_header);
+        rvPersonList = (RecyclerView) localView.findViewById(R.id.mine_person_list);
+        personImage = (CircleImageView) localView.findViewById(R.id.iv_person_avatar);
     }
 
     @Override
@@ -115,7 +117,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener, Ap
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_person_avatar:
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(localView.getContext(), LoginActivity.class);
                 startActivity(intent);
         }
     }

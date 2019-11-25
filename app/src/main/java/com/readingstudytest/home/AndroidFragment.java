@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.readingstudytest.IInterface.GetRequestInterface;
 import com.readingstudytest.MainActivity;
 import com.readingstudytest.R;
@@ -31,17 +32,20 @@ import java.util.ArrayList;
 //import io.reactivex.functions.Consumer;
 //import io.reactivex.schedulers.Schedulers;
 //import io.reactivex.Observable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+import retrofit2.Retrofit;
 
 public class AndroidFragment extends Fragment implements View.OnClickListener{
-    public static Activity mActivity;
-    private View localView;
+    private static View localView;
 
     private RecyclerView rvHomeAndroid;
-    private FloatingActionButton fab;
 
     private ArrayList<ArticleBean.ArticleDetailBean> androidChapterContent =
             new ArrayList<>();
@@ -52,60 +56,57 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
     private HomeBodyAdapter androidBodyAdapter;
 
     @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         localView = inflater.inflate(R.layout.home_fragment_android, container, false);
 
         initView();
-        fab.show();
-        downloadAndroidChapterContent(0);
-//        useRxJavaUpdateUI();
+//        downloadAndroidChapterContent(0);
+        downloadAndroidChapterContentByRxJava(0);
 
         return localView;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     public void initView(){
         //若点击公众号模板，再点击home模板，该控件就会报错，为空；但是mActivity不为空，不知道这个bug是什么！！
         rvHomeAndroid = (RecyclerView) localView.findViewById(R.id.rl_home_android);
-        fab = (FloatingActionButton) MainActivity.mActivity.findViewById(R.id.fab_android_home_fragment);
-        layoutManagerAndroid = new LinearLayoutManager(mActivity);
+        layoutManagerAndroid = new LinearLayoutManager(localView.getContext());
     }
 
-    private void useRxJavaUpdateUI(){
-        //使用RxJava第三方库
-        //创建被观察者
-//        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<String> e) throws Exception {
-//                downloadAndroidChapterContent();
-//            }
-//        });
-//
-//        //创建观察者
-//        Consumer<String> consumer = new Consumer<String>() {
-//            @Override
-//            public void accept(String s) throws Exception {
-//                updateUiAndroidChapterData();
-//            }
-//        };
-//
-//        //subscribeOn()指定的是发送事件的线程，observeOn()指定的是接受事件的线程
-//        observable.subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread());
-////                .subscribe(consumer);
-    }
+    private void downloadAndroidChapterContentByRxJava(int page){
+        RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstanceCustom(MainActivity.BaseURL, RxJava2CallAdapterFactory.create());
+        GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
+        Observable<BaseBean<ArticleBean>> observable = getRequestInterface.getAndroidContentByRxJava(page);
 
+        observable.subscribeOn(Schedulers.newThread())     // 在常规线程进行网络请求
+                .observeOn(AndroidSchedulers.mainThread()) // 回到主线程 处理请求结果
+                .subscribe(new Observer<BaseBean<ArticleBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d("AndroidChapter", "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<ArticleBean> result) {
+                        // 步骤8：对返回的数据进行处理
+                        if (result != null) {
+                            Log.d("AndroidChapter", result.getData().getDatas().size() + "");
+                            androidChapterContent = result.getData().getDatas();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("AndroidChapter", "请求失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("AndroidChapter", "请求成功");
+                        updateUiAndroidChapterData();
+                    }
+                });
+    }
     private void downloadAndroidChapterContent(int page){
         RequestDataByRetrofit retrofit = RequestDataByRetrofit.getInstance();
         GetRequestInterface getRequestInterface = retrofit.getIGetRequestInterface();
@@ -120,7 +121,7 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
                 if (result != null) {
                     Log.d("AndroidChapter", result.getData().getDatas().size() + "");
                     androidChapterContent = result.getData().getDatas();
-                    updateUiAndroidChapterData();
+//                    updateUiAndroidChapterData();
                 }
             }
 
@@ -130,22 +131,11 @@ public class AndroidFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
-
     private void updateUiAndroidChapterData(){
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                layoutManagerAndroid.setOrientation(RecyclerView.VERTICAL);
-                rvHomeAndroid.setLayoutManager(layoutManagerAndroid);
-                androidBodyAdapter = new HomeBodyAdapter(androidChapterContent);
-                rvHomeAndroid.setAdapter(androidBodyAdapter);
-            }
-        });
-
-//        layoutManagerAndroid.setOrientation(RecyclerView.VERTICAL);
-//        rvHomeAndroid.setLayoutManager(layoutManagerAndroid);
-//        androidBodyAdapter = new HomeBodyAdapter(androidChapterContent);
-//        rvHomeAndroid.setAdapter(androidBodyAdapter);
+        layoutManagerAndroid.setOrientation(RecyclerView.VERTICAL);
+        rvHomeAndroid.setLayoutManager(layoutManagerAndroid);
+        androidBodyAdapter = new HomeBodyAdapter(androidChapterContent);
+        rvHomeAndroid.setAdapter(androidBodyAdapter);
     }
 
     @Override
